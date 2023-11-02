@@ -1,9 +1,5 @@
 {
   "name": "libsql-web-api-http-client",
-  "module": "src/main.ts",
-  "peerDependencies": {
-    "typescript": "^5.0.0"
-  },
   "version": "0.3.7-pre.2",
     "keywords": [
         "libsql",
@@ -106,6 +102,6 @@
     },
     "devDependencies": {
         "@types/web": "^0.0.119",
-        "typescript": "^4.9.4"
+        "typescript": "^5.0.0"
     }
 }
