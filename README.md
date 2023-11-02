@@ -1,15 +1,4 @@
 # libsql-web-api-http-client
-
-To install dependencies:
-
-```bash
-bun install
-```
-
-To run:
-
-```bash
-bun run main.ts
-```
-
-This project was created using `bun init` in bun v1.0.7. [Bun](https://bun.sh) is a fast all-in-one JavaScript runtime.
+libSQL http driver for TypeScript and JavaScript running with Web API.
+This is built for edge-functions that quickly spin up, do stuff, and die.
+Is very small package and uses very low memory.
