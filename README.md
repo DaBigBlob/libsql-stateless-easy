@@ -5,7 +5,7 @@
 - This is built for edge-functions that quickly spin up, do stuff, and die.
 - No bullshit classes and nonsense computation to figure out protocol type and shit.
 - Separate and small functions so you're not importing stuff you're not using.
-- Is very small package (85 lines of code) and uses very low memory.
+- Is very small package (85 lines of code) and uses very little memory.
 - Runs extremely fast on Cloudflare Workers, Vercel Edge Funcrions, etc.
 - Works with any libsql server. (eg: Turso, self-hosted, etc.)
 
