@@ -1,27 +1,6 @@
 import { _BatchResponse, _ErrorResponse, _Query } from "./api";
 import { Err, Ok, Result } from "./return-types";
 
-/** Execute a single SQL statement.
-*
-* Every statement executed with this method is executed in its own logical database connection.
-*
-* ```javascript
-* // execute a statement without arguments
-* const rs = await execute(config, "SELECT * FROM books");
-*
-* // execute a statement with positional arguments
-* const rs = await execute(config, {
-*     sql: "SELECT * FROM books WHERE author = ?",
-*     args: ["Jane Austen"],
-* });
-*
-* // execute a statement with named arguments
-* const rs = await execute(config, {
-*     sql: "SELECT * FROM books WHERE published_at > $year",
-*     args: {year: 1719},
-* });
-* ```
-*/
 export async function executeBatch(
     config: {
         url: string,
