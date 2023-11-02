@@ -8,17 +8,18 @@
         "serverless",
         "vercel",
         "netlify",
-        "lambda"
+        "lambda",
+        "http",
+        "https",
+        "webapi"
     ],
-    "description": "libSQL driver for TypeScript and JavaScript",
+    "description": "libSQL http driver for TypeScript and JavaScript running with Web API",
     "repository": {
         "type": "git",
-        "url": "https://github.com/libsql/libsql-client-ts"
+        "url": "TODO"
     },
     "authors": [
-        "Jan Špaček <honza@chiselstrike.com>",
-        "Pekka Enberg <penberg@chiselstrike.com>",
-        "Jan Plhak <jp@chiselstrike.com>"
+        "DaBigBlob <localboxcrox@gmail.com>"
     ],
     "license": "MIT",
     "type": "module",
@@ -26,60 +27,15 @@
     "types": "lib-esm/node.d.ts",
     "exports": {
         ".": {
-            "types": "./lib-esm/node.d.ts",
-            "import": {
-                "workerd": "./lib-esm/web.js",
-                "deno": "./lib-esm/web.js",
-                "edge-light": "./lib-esm/web.js",
-                "netlify": "./lib-esm/web.js",
-                "node": "./lib-esm/node.js",
-                "browser": "./lib-esm/web.js",
-                "default": "./lib-esm/node.js"
-            },
-            "require": "./lib-cjs/node.js"
-        },
-        "./node": {
-            "types": "./lib-esm/node.d.ts",
-            "import": "./lib-esm/node.js",
-            "require": "./lib-cjs/node.js"
-        },
-        "./http": {
             "types": "./lib-esm/http.d.ts",
             "import": "./lib-esm/http.js",
             "require": "./lib-cjs/http.js"
-        },
-        "./ws": {
-            "types": "./lib-esm/ws.d.ts",
-            "import": "./lib-esm/ws.js",
-            "require": "./lib-cjs/ws.js"
-        },
-        "./sqlite3": {
-            "types": "./lib-esm/sqlite3.d.ts",
-            "import": "./lib-esm/sqlite3.js",
-            "require": "./lib-cjs/sqlite3.js"
-        },
-        "./web": {
-            "types": "./lib-esm/web.d.ts",
-            "import": "./lib-esm/web.js",
-            "require": "./lib-cjs/web.js"
         }
     },
     "typesVersions": {
         "*": {
             ".": [
-                "./lib-esm/node.d.ts"
-            ],
-            "http": [
                 "./lib-esm/http.d.ts"
-            ],
-            "hrana": [
-                "./lib-esm/hrana.d.ts"
-            ],
-            "sqlite3": [
-                "./lib-esm/sqlite3.d.ts"
-            ],
-            "web": [
-                "./lib-esm/web.d.ts"
             ]
         }
     },
@@ -94,7 +50,6 @@
         "build:cjs": "tsc -p tsconfig.build-cjs.json",
         "build:esm": "tsc -p tsconfig.build-esm.json",
         "postbuild": "cp package-cjs.json ./lib-cjs/package.json",
-        "test": "jest --runInBand",
         "typecheck": "tsc --noEmit"
     },
     "dependencies": {
