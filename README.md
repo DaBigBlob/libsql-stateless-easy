@@ -167,3 +167,25 @@ if (res.isOk) {
     //do something
 }
 ```
+
+### Other Goodies
+
+```ts
+import {sqlite_text, sqlite_integer, sqlite_real, sqlite_blob, sqlite_null, sqlite_value, sqlite_query} from 'libsql-web-api-http-stateless-client'; //mjs
+//or
+{sqlite_text, sqlite_integer, sqlite_real, sqlite_blob, sqlite_null, sqlite_value, sqlite_query} = require('libsql-web-api-http-stateless-client'); //for cjs
+
+// sqlite_text, sqlite_integer, sqlite_real, sqlite_blob and sqlite_null are the 5 datatypes supported by sqlite
+// sqlite_value is the type union of the above datatypes
+// is the query (the sql stuff you write) type for this library
+
+//thsese are implemented as:
+export type sqlite_value = sqlite_text|sqlite_integer|sqlite_integer|sqlite_real|sqlite_blob|sqlite_null;
+export type sqlite_text = string; //a UTF-8 encoded string
+export type sqlite_integer = number; //a 64-bit signed integer
+export type sqlite_real = number; //a 64-bits floating number
+export type sqlite_blob = string; //some binary data, encoded in base64
+export type sqlite_null = null; //the null value
+
+export type sqlite_query = string | { q: string, params: Record<string, sqlite_value> | Array<sqlite_value> };
+```

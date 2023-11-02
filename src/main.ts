@@ -13,19 +13,19 @@ function Err<E>(err: E): Err<E> {
 
 //### db types ###
 
- type _Value = _Text|_Integer|_Integer|_Real|_Blob|_Null;
- type _Text = string; //a UTF-8 encoded string
- type _Integer = number; //a 64-bit signed integer
- type _Real = number; //a 64-bits floating number
- type _Blob = string; //some binary data, encoded in base64
- type _Null = null; //the null value
+export type sqlite_value = sqlite_text|sqlite_integer|sqlite_integer|sqlite_real|sqlite_blob|sqlite_null;
+export type sqlite_text = string; //a UTF-8 encoded string
+export type sqlite_integer = number; //a 64-bit signed integer
+export type sqlite_real = number; //a 64-bits floating number
+export type sqlite_blob = string; //some binary data, encoded in base64
+export type sqlite_null = null; //the null value
 
- type _Query = string | { q: string, params: Record<string, _Value> | Array<_Value> };
+export type sqlite_query = string | { q: string, params: Record<string, sqlite_value> | Array<sqlite_value> };
 
- type _QueryResponse = {
+ type sqlite_queryResponse = {
     results: {
         columns: Array<string>,
-        rows: Array<Array<_Value>>,
+        rows: Array<Array<sqlite_value>>,
     }
 }
 
@@ -63,14 +63,14 @@ export async function executeBatch(
         /** Authentication token for the database. */
         authToken?: string
     },
-    statements: Array<_Query>
-): Promise<Ok<Array<_QueryResponse>>|Err<string>> {
+    statements: Array<sqlite_query>
+): Promise<Ok<Array<sqlite_queryResponse>>|Err<string>> {
     const res = await fetch(config.url, {
         method: 'POST',
         headers: (!config.authToken)?undefined:{'Authorization': 'Bearer '+config.authToken},
         body: JSON.stringify({statements})
     });
-    if (res.ok) return Ok(await res.json() as Array<_QueryResponse>);
+    if (res.ok) return Ok(await res.json() as Array<sqlite_queryResponse>);
     else return Err((await res.json() as _ErrorResponse).error);
 }
 
@@ -87,17 +87,17 @@ export async function execute(
         /** Authentication token for the database. */
         authToken?: string
     },
-    statement: _Query
-): Promise<Ok<_QueryResponse>|Err<string>> {
+    statement: sqlite_query
+): Promise<Ok<sqlite_queryResponse>|Err<string>> {
     const res = await executeBatch(config, [statement]);
     if (res.isOk) return Ok(res.val[0]);
     else return Err(res.err);
 }
 
-export function extractBatchQueryResultRows(ok_result: Ok<Array<_QueryResponse>>) {
+export function extractBatchQueryResultRows(ok_result: Ok<Array<sqlite_queryResponse>>) {
     return ok_result.val.map((e) => e.results.rows);
 }
 
-export function extractQueryResultRows(ok_result: Ok<_QueryResponse>) {
+export function extractQueryResultRows(ok_result: Ok<sqlite_queryResponse>) {
     return ok_result.val.results.rows;
 }
