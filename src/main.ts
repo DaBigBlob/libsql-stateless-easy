@@ -37,7 +37,11 @@ type _ErrorResponse = {
 
 //### function ###
 
-/** Check if the server is compatible with sqld http API v0 */
+/** Check if the server is compatible with sqld http API v0
+ * 
+ * This only works properly if the database requires authToken.
+ * 
+*/
 export async function checkServerCompat(
     /** The database URL.
      *
