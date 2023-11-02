@@ -12,11 +12,6 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noImplicitReturns": true,
-    "noFallthroughCasesInSwitch": true,
-    "lib": [
-      "esnext"
-    ],
-    "rootDir": "src/"        
-  },
-  "include": ["src/"]
+    "noFallthroughCasesInSwitch": true     
+  }
 }
