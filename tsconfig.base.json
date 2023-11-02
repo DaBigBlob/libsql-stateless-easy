@@ -3,13 +3,13 @@
         "moduleResolution": "node",
         "lib": ["esnext"],
         "target": "esnext",
-
         "esModuleInterop": true,
         "isolatedModules": true,
-
         "rootDir": "src/",
-
-        "strict": true
+        "strict": true,
+        "types": [
+            //nothing
+        ]
     },
     "include": ["src/"]
 }
