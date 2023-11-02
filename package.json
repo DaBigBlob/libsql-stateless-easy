@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "repository": {
     "type": "git",
-    "url": "TODO"
+    "url": "https://github.com/DaBigBlob/libsql-web-api-http-stateless-client.git"
   },
   "main": "lib-cjs/main.js",
   "devDependencies": {
