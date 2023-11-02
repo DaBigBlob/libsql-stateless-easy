@@ -12,12 +12,12 @@ type ParamQuery = { q: string, params: Record<string, _Value> | Array<_Value> }
 
 
 
-export type _BatchResponse = {
+export type _BatchResponse = Array<{
     results: {
         columns: Array<string>,
         rows: Array<Array<_Value>>,
     }
-}
+}>
 
 
 export type _ErrorResponse = {

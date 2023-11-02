@@ -22,7 +22,7 @@ import { Err, Ok, Result } from "./return-types";
 * });
 * ```
 */
-export async function execute(
+export async function executeBatch(
     config: {
         url: string,
         authToken?: string
