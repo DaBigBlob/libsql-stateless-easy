@@ -1,17 +1,11 @@
-import { Config, InStatement, ResultSet, TransactionMode } from "./api";
+import { Config, InStatement, ResultSet } from "./api";
 
-export class createClient {
-    constructor(config: Config) {
-        if (config) {}; //place holder
-    }
+export async function execute(config: Config, stmt: InStatement): Promise<ResultSet> {
+    if (stmt||config) {}; //place holder
+    return {} as ResultSet; //place holder
+}
 
-    async execute(stmt: InStatement): Promise<ResultSet> {
-        if (stmt) {}; //place holder
-        return {} as ResultSet; //place holder
-    }
-
-    async batch(stmts: Array<InStatement>, mode: TransactionMode = "deferred"): Promise<Array<ResultSet>> {
-        if (stmts||mode) {}; //place holder
-        return {} as Array<ResultSet>; //place holder
-    }
+export async function batch(config: Config, stmts: Array<InStatement>): Promise<Array<ResultSet>> {
+    if (stmts||config) {}; //place holder
+    return {} as Array<ResultSet>; //place holder
 }
