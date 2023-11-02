@@ -1,5 +1,4 @@
 {
-  "extends": "./tsconfig.base.json",
   "compilerOptions": {
     "strict": true,
     "noImplicitAny": true,
@@ -12,6 +11,7 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noImplicitReturns": true,
-    "noFallthroughCasesInSwitch": true     
+    "noFallthroughCasesInSwitch": true,
+    "lib": ["DOM"]
   }
 }

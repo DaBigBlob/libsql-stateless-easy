@@ -60,7 +60,13 @@ export async function batchExecute(config: Config, stmts: Array<InStatement>): P
 }
 
 /** Check if the server is compatible with sqld http API v0 */
-export async function checkServerCompat(url: string): Promise<Result<undefined, undefined>> {
-    if (url) {}; //place holder
-    return {} as Result<undefined, undefined>; //place holder
+export async function checkServerCompat(
+    /** The database URL.
+     *
+     * The client supports `http:`/`https:` URL.
+     * 
+     */
+    url: string
+): Promise<Result<undefined, undefined>> {
+    const res = await fetch();
 }

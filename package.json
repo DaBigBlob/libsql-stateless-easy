@@ -1,62 +1,58 @@
 {
   "name": "libsql-web-api-http-stateless-client",
   "version": "1.0.0",
-    "keywords": [
-        "libsql",
-        "database",
-        "sqlite",
-        "serverless",
-        "vercel",
-        "netlify",
-        "lambda",
-        "http",
-        "https",
-        "webapi"
-    ],
-    "description": "libSQL stateless http driver for TypeScript and JavaScript running with Web API",
-    "repository": {
-        "type": "git",
-        "url": "TODO"
-    },
-    "authors": [
-        "DaBigBlob <localboxcrox@gmail.com>"
-    ],
-    "license": "MIT",
-    "type": "module",
-    "main": "lib-cjs/main.js",
-    "types": "lib-esm/main.d.ts",
-    "exports": {
-        ".": {
-            "types": "./lib-esm/main.d.ts",
-            "import": "./lib-esm/main.js",
-            "require": "./lib-cjs/main.js"
-        }
-    },
-    "typesVersions": {
-        "*": {
-            ".": [
-                "./lib-esm/main.d.ts"
-            ]
-        }
-    },
-    "files": [
-        "lib-cjs/**",
-        "lib-esm/**"
-    ],
-    "scripts": {
-        "prepublishOnly": "npm run build",
-        "prebuild": "rm -rf ./lib-cjs ./lib-esm",
-        "build": "npm run build:cjs && npm run build:esm",
-        "build:cjs": "tsc -p tsconfig.build-cjs.json",
-        "build:esm": "tsc -p tsconfig.build-esm.json",
-        "postbuild": "cp package-cjs.json ./lib-cjs/package.json",
-        "typecheck": "tsc --noEmit"
-    },
-    "dependencies": {
-        "@libsql/hrana-client": "^0.5.5"
-    },
-    "devDependencies": {
-        "@types/web": "^0.0.119",
-        "typescript": "^5.0.0"
+  "repository": {
+    "type": "git",
+    "url": "TODO"
+  },
+  "main": "lib-cjs/main.js",
+  "devDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "exports": {
+    ".": {
+      "types": "./lib-esm/main.d.ts",
+      "import": "./lib-esm/main.js",
+      "require": "./lib-cjs/main.js"
     }
+  },
+  "authors": [
+    "DaBigBlob <localboxcrox@gmail.com>"
+  ],
+  "description": "libSQL stateless http driver for TypeScript and JavaScript running with Web API",
+  "files": [
+    "lib-cjs/**",
+    "lib-esm/**"
+  ],
+  "keywords": [
+    "libsql",
+    "database",
+    "sqlite",
+    "serverless",
+    "vercel",
+    "netlify",
+    "lambda",
+    "http",
+    "https",
+    "webapi"
+  ],
+  "license": "MIT",
+  "scripts": {
+    "prepublishOnly": "npm run build",
+    "prebuild": "rm -rf ./lib-cjs ./lib-esm",
+    "build": "npm run build:cjs && npm run build:esm",
+    "build:cjs": "tsc -p tsconfig.build-cjs.json",
+    "build:esm": "tsc -p tsconfig.build-esm.json",
+    "postbuild": "cp package-cjs.json ./lib-cjs/package.json",
+    "typecheck": "tsc --noEmit"
+  },
+  "type": "module",
+  "types": "lib-esm/main.d.ts",
+  "typesVersions": {
+    "*": {
+      ".": [
+        "./lib-esm/main.d.ts"
+      ]
+    }
+  }
 }
