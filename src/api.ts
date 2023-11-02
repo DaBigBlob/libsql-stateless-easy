@@ -128,21 +128,3 @@ export type InValue =
 
 export type InStatement = { sql: string, args: InArgs } | string;
 export type InArgs = Array<InValue> | Record<string, InValue>;
-
-/** Error thrown by the client. */
-export class LibsqlError extends Error {
-    /** Machine-readable error code. */
-    code: string;
-    /** Raw numeric error code */
-    rawCode?: number;
-    
-    constructor(message: string, code: string, rawCode?: number, cause?: Error) {
-        if (code !== undefined) {
-            message = `${code}: ${message}`;
-        }
-        super(message, { cause });
-        this.code = code;
-        this.rawCode = rawCode
-        this.name = "LibsqlError";
-    }
-}
