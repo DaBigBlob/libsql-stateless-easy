@@ -1,4 +1,4 @@
-import { _Query } from "./api";
+import { _BatchResponse, _ErrorResponse, _Query } from "./api";
 import { Err, Ok, Result } from "./return-types";
 
 /** Execute a single SQL statement.
@@ -28,13 +28,14 @@ export async function execute(
         authToken?: string
     },
     statements: Array<_Query>
-): Promise<object> {
+): Promise<Result<_BatchResponse, _ErrorResponse>> {
     const res = await fetch(config.url, {
         method: 'POST',
         headers: (!config.authToken)?undefined:{'Authorization': 'Bearer '+config.authToken},
         body: JSON.stringify({statements})
     });
-    return await res.json();
+    if (res.ok) return Ok(await res.json() as _BatchResponse);
+    else return Err(await res.json() as _ErrorResponse);
 }
 
 /** Check if the server is compatible with sqld http API v0 */
