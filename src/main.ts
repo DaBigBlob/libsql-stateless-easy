@@ -1,4 +1,5 @@
-import { Config, InStatement, ResultSet } from "./api";
+import { Config, InStatement, ResultErr, ResultSet } from "./api";
+import { Ok, Result } from "./return-types";
 
 /** Execute a single SQL statement.
 *
@@ -6,24 +7,24 @@ import { Config, InStatement, ResultSet } from "./api";
 *
 * ```javascript
 * // execute a statement without arguments
-* const rs = await client.execute(config, "SELECT * FROM books");
+* const rs = await execute(config, "SELECT * FROM books");
 *
 * // execute a statement with positional arguments
-* const rs = await client.execute(config, {
+* const rs = await execute(config, {
 *     sql: "SELECT * FROM books WHERE author = ?",
 *     args: ["Jane Austen"],
 * });
 *
 * // execute a statement with named arguments
-* const rs = await client.execute(config, {
+* const rs = await execute(config, {
 *     sql: "SELECT * FROM books WHERE published_at > $year",
 *     args: {year: 1719},
 * });
 * ```
 */
-export async function execute(config: Config, stmt: InStatement): Promise<ResultSet> {
+export async function execute(config: Config, stmt: InStatement): Promise<Result<ResultSet, ResultErr>> {
     if (stmt||config) {}; //place holder
-    return {} as ResultSet; //place holder
+    return Ok({} as ResultSet); //place holder
 }
 
 /** Execute a batch of SQL statements in a transaction.
@@ -35,7 +36,7 @@ export async function execute(config: Config, stmt: InStatement): Promise<Result
  * results are returned returned with #TODO
  *
  * ```javascript
- * const rss = await client.batch(config, [
+ * const rss = await batchExecute(config, [
  *     // batch statement without arguments
  *     "DELETE FROM books WHERE name LIKE '%Crusoe'",
  *
@@ -53,7 +54,7 @@ export async function execute(config: Config, stmt: InStatement): Promise<Result
  * ]);
  * ```
  */
-export async function batch(config: Config, stmts: Array<InStatement>): Promise<Array<ResultSet>> {
+export async function batchExecute(config: Config, stmts: Array<InStatement>): Promise<Array<Result<ResultSet, ResultErr>>> {
     if (stmts||config) {}; //place holder
-    return {} as Array<ResultSet>; //place holder
+    return {} as Array<Result<ResultSet, ResultErr>>; //place holder
 }

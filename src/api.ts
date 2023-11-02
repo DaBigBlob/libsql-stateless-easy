@@ -25,16 +25,21 @@ export interface Config {
 /** Representation of integers from database as JavaScript values. See {@link Config.intMode}. */
 export type IntMode = "number" | "bigint" | "string";
 
+/** Error of unsuccfully executing an SQL statement. */
+export interface ResultErr {
+    //TODO
+}
+
 /** Result of executing an SQL statement.
  *
  * ```javascript
- * const rs = await client.execute("SELECT name, title FROM books");
+ * const rs = await execute(config, "SELECT name, title FROM books");
  * console.log(`Found ${rs.rows.length} books`);
  * for (const row in rs.rows) {
  *     console.log(`Book ${row[0]} by ${row[1]}`);
  * }
  *
- * const rs = await client.execute("DELETE FROM books WHERE author = 'Jane Austen'");
+ * const rs = await execute(config, "DELETE FROM books WHERE author = 'Jane Austen'");
  * console.log(`Deleted ${rs.rowsAffected} books`);
  * ```
  */
@@ -85,7 +90,7 @@ export interface ResultSet {
  * The row object can be used as an `Array` or as an object:
  *
  * ```javascript
- * const rs = await client.execute("SELECT name, title FROM books");
+ * const rs = await execute(config, "SELECT name, title FROM books");
  * for (const row in rs.rows) {
  *     // Get the value from column `name`
  *     console.log(row.name);
