@@ -1,5 +1,5 @@
 {
-  "name": "libsql-web-api-http-client",
+  "name": "libsql-web-api-http-stateless-client",
   "version": "1.0.0",
     "keywords": [
         "libsql",
@@ -13,7 +13,7 @@
         "https",
         "webapi"
     ],
-    "description": "libSQL http driver for TypeScript and JavaScript running with Web API",
+    "description": "libSQL stateless http driver for TypeScript and JavaScript running with Web API",
     "repository": {
         "type": "git",
         "url": "TODO"
