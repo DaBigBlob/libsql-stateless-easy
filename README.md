@@ -1,4 +1,169 @@
 # libsql-web-api-http-stateless-client
-libSQL http driver for TypeScript and JavaScript running with Web API. \
-This is built for edge-functions that quickly spin up, do stuff, and die. \
-Is very small package and uses very low memory. 
+
+> libSQL http driver for TypeScript and JavaScript running with Web API.
+
+- This is built for edge-functions that quickly spin up, do stuff, and die.
+- No bullshit classes and nonsense computation to figure out protocol.
+- Separate and small functions so you're not importing stuff you're not using.
+- Is very small package and uses very low memory.
+- Runs extremely fast on Cloudflare Workers, Vercel Edge Funcrions, etc.
+- Works with any libsql server. (eg: Turso, self-hosted, etc.)
+
+## Installation
+
+```bash
+$ npm i libsql-web-api-http-stateless-client
+# OR
+$ bun add libsql-web-api-http-stateless-client
+```
+
+## Usage
+
+```ts
+import {execute, executeBatch, checkServerCompat} from 'libsql-web-api-http-stateless-client'; //mjs
+//or
+{execute, executeBatch, checkServerCompat} = require('libsql-web-api-http-stateless-client'); //for cjs
+
+//remember to use the following in async functions only (because await)
+const res1 = await execute(
+    {
+        url: "https://the-pink-mad-man.turso.io", //DB url
+        authToken: "skdfkvskdjvfcsjdvc.bd2y309rehwfg" //auth token
+    },
+    "SELECT * FROM chicken_yum_yum;"
+);
+
+const res2 = await execute(
+    {
+        url: "https://the-pink-mad-man.turso.io",
+        authToken: "skdfkvskdjvfcsjdvc.bd2y309rehwfg"
+    },
+    {
+        q: "SELECT * FROM chicken_yum_yum WHERE owner = ?",
+        params: ["the_pink_man"]
+    }
+);
+
+//execute return either
+{
+    isOk: true,
+    val: {
+        results: {
+            columns: Array<string>, //the names of your columns
+            rows: Array<Array<_Value>>, //values
+        }
+    }
+}
+//or
+{
+    isOk: false,
+    err: string //reason for failure
+}
+
+const res3 = await executeBatch(
+    {
+        url: "https://the-pink-mad-man.turso.io",
+        authToken: "skdfkvskdjvfcsjdvc.bd2y309rehwfg"
+    },
+    [
+        {
+            q: "SELECT * FROM chicken_yum_yum WHERE owner = ?",
+            params: ["the_pink_man"]
+        },
+        {
+            q: "SELECT * FROM chicken_yum_yum WHERE dead = ?",
+            params: ["yes"]
+        },
+        "SELECT * FROM chicken_yum_yum;",
+        //keep on going
+    ]
+);
+
+//executeBatch return either
+{
+    isOk: true,
+    val: Array<{ //an array of results cause you made an array or query
+        results: {
+            columns: Array<string>,
+            rows: Array<Array<_Value>>,
+        }
+    }>
+}
+//or
+{
+    isOk: false,
+    err: string //reason for failure
+}
+```
+
+Because `isOk` boolean field is always gaurenteed, you can you something like:
+
+```ts
+if (res.isOk) {
+    //do something with res.val
+} else {
+    //do somthing with res.err
+}
+```
+
+### Other Helper Functions
+
+```ts
+import {extractBatchQueryResultRows, extractQueryResultRows, checkServerCompat} from 'libsql-web-api-http-stateless-client'; //mjs
+//or
+{extractBatchQueryResultRows, extractQueryResultRows, checkServerCompat} = require('libsql-web-api-http-stateless-client'); //for cjs
+
+//you might've noticed that res.val is often pretty cluttered with redundant stuff.
+//this is because of libsql's http api v0's schema, and executeBatch and execute doing exactly as much as fetching the data.
+//this is on purpose. it is to give you the flexibility of being able to choose exactly what post-processing is done to your data.
+//for this purpose, we also provide helper functions to clean thre res.val's up if you want
+const res1 = await executeBatch(
+    //stuff
+);
+if (res1.isOk) {
+    const abc = extractBatchQueryResultRows(res);
+    //returns:
+    Array<Array<Array<Values>>>
+  //  ^     ^   ^^^^^^^^^^^^
+  //  |     |      just a row
+  //  |  array or rows (for 1 query)
+  // array of that (multiple query)
+}
+
+const res2 = await execute(
+    //stuff
+);
+if (res2.isOk) {
+    const abc = extractQueryResultRows(res);
+    //returns:
+    Array<Array<Values>>
+  //  ^   ^^^^^^^^^^^^
+  //  |      just a row
+  //array or rows (for 1 query)
+}
+```
+
+### Checking Server Compatiblity
+
+```ts
+import {checkServerCompat} from 'libsql-web-api-http-stateless-client'; //mjs
+//or
+{checkServerCompat} = require('libsql-web-api-http-stateless-client'); //for cjs
+
+//remember to use the following in async functions only (because await)
+const res = await checkServerCompat("https://the-pink-mad-man.turso.io"); //your db url
+//returns:
+{
+    isOk: true
+}
+//or
+{
+    isOk: false
+}
+//so again you can just use:
+if (res.isOk) {
+    //do something
+} else {
+    //do something
+}
+```

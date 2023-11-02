@@ -64,14 +64,14 @@ export async function executeBatch(
         authToken?: string
     },
     statements: Array<_Query>
-): Promise<Ok<Array<_QueryResponse>>|Err<_ErrorResponse>> {
+): Promise<Ok<Array<_QueryResponse>>|Err<string>> {
     const res = await fetch(config.url, {
         method: 'POST',
         headers: (!config.authToken)?undefined:{'Authorization': 'Bearer '+config.authToken},
         body: JSON.stringify({statements})
     });
     if (res.ok) return Ok(await res.json() as Array<_QueryResponse>);
-    else return Err(await res.json() as _ErrorResponse);
+    else return Err((await res.json() as _ErrorResponse).error);
 }
 
 /** Execute an SQL statements. */
@@ -88,8 +88,16 @@ export async function execute(
         authToken?: string
     },
     statement: _Query
-): Promise<Ok<_QueryResponse>|Err<_ErrorResponse>> {
+): Promise<Ok<_QueryResponse>|Err<string>> {
     const res = await executeBatch(config, [statement]);
     if (res.isOk) return Ok(res.val[0]);
     else return Err(res.err);
+}
+
+export function extractBatchQueryResultRows(ok_result: Ok<Array<_QueryResponse>>) {
+    return ok_result.val.map((e) => e.results.rows);
+}
+
+export function extractQueryResultRows(ok_result: Ok<_QueryResponse>) {
+    return ok_result.val.results.rows;
 }
