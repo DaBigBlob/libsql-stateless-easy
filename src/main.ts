@@ -1,5 +1,5 @@
 import { Config, InStatement, ResultErr, ResultSet } from "./api";
-import { Ok, Result } from "./return-types";
+import { Err, Ok, Result } from "./return-types";
 
 /** Execute a single SQL statement.
 *
@@ -68,5 +68,6 @@ export async function checkServerCompat(
      */
     url: string
 ): Promise<Result<undefined, undefined>> {
-    const res = await fetch();
+    if ((await fetch(url, {method: 'POST'})).status==401) return Ok(undefined);
+    else return Err(undefined);
 }
