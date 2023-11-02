@@ -177,7 +177,7 @@ import {sqlite_text, sqlite_integer, sqlite_real, sqlite_blob, sqlite_null, sqli
 
 // sqlite_text, sqlite_integer, sqlite_real, sqlite_blob and sqlite_null are the 5 datatypes supported by sqlite
 // sqlite_value is the type union of the above datatypes
-// is the query (the sql stuff you write) type for this library
+// sqlite_query is the query (the sql stuff you write) type for this library
 
 //thsese are implemented as:
 export type sqlite_value = sqlite_text|sqlite_integer|sqlite_integer|sqlite_real|sqlite_blob|sqlite_null;
