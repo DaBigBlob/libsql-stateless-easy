@@ -23,19 +23,19 @@
     ],
     "license": "MIT",
     "type": "module",
-    "main": "lib-cjs/node.js",
-    "types": "lib-esm/node.d.ts",
+    "main": "lib-cjs/main.js",
+    "types": "lib-esm/main.d.ts",
     "exports": {
         ".": {
-            "types": "./lib-esm/http.d.ts",
-            "import": "./lib-esm/http.js",
-            "require": "./lib-cjs/http.js"
+            "types": "./lib-esm/main.d.ts",
+            "import": "./lib-esm/main.js",
+            "require": "./lib-cjs/main.js"
         }
     },
     "typesVersions": {
         "*": {
             ".": [
-                "./lib-esm/http.d.ts"
+                "./lib-esm/main.d.ts"
             ]
         }
     },
