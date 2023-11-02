@@ -29,11 +29,6 @@ export async function execute(config: Config, stmt: InStatement): Promise<Result
 
 /** Execute a batch of SQL statements in a transaction.
  *
- * The batch is executed in its own logical database connection but the statements are not wrapped in a
- * transaction. This means the batch is not applied atomically.
- * 
- * If any of the statements in the batch fails with an error, the batch is not aborted and the successful
- * results are returned returned with #TODO
  *
  * ```javascript
  * const rss = await batchExecute(config, [

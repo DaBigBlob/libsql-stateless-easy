@@ -44,7 +44,8 @@
     "build:cjs": "tsc -p tsconfig.build-cjs.json",
     "build:esm": "tsc -p tsconfig.build-esm.json",
     "postbuild": "cp package-cjs.json ./lib-cjs/package.json",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "tests": "bun run _tests/test*.ts"
   },
   "type": "module",
   "types": "lib-esm/main.d.ts",
