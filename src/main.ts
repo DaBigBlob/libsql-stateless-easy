@@ -22,7 +22,7 @@ export type sqlite_null = null; //the null value
 
 export type sqlite_query = string | { q: string, params: Record<string, sqlite_value> | Array<sqlite_value> };
 
- type sqlite_queryResponse = {
+type _QueryResponse = {
     results: {
         columns: Array<string>,
         rows: Array<Array<sqlite_value>>,
@@ -64,13 +64,13 @@ export async function executeBatch(
         authToken?: string
     },
     statements: Array<sqlite_query>
-): Promise<Ok<Array<sqlite_queryResponse>>|Err<string>> {
+): Promise<Ok<Array<_QueryResponse>>|Err<string>> {
     const res = await fetch(config.url, {
         method: 'POST',
         headers: (!config.authToken)?undefined:{'Authorization': 'Bearer '+config.authToken},
         body: JSON.stringify({statements})
     });
-    if (res.ok) return Ok(await res.json() as Array<sqlite_queryResponse>);
+    if (res.ok) return Ok(await res.json() as Array<_QueryResponse>);
     else return Err((await res.json() as _ErrorResponse).error);
 }
 
@@ -88,16 +88,16 @@ export async function execute(
         authToken?: string
     },
     statement: sqlite_query
-): Promise<Ok<sqlite_queryResponse>|Err<string>> {
+): Promise<Ok<_QueryResponse>|Err<string>> {
     const res = await executeBatch(config, [statement]);
     if (res.isOk) return Ok(res.val[0]);
     else return Err(res.err);
 }
 
-export function extractBatchQueryResultRows(ok_result: Ok<Array<sqlite_queryResponse>>) {
+export function extractBatchQueryResultRows(ok_result: Ok<Array<_QueryResponse>>) {
     return ok_result.val.map((e) => e.results.rows);
 }
 
-export function extractQueryResultRows(ok_result: Ok<sqlite_queryResponse>) {
+export function extractQueryResultRows(ok_result: Ok<_QueryResponse>) {
     return ok_result.val.results.rows;
 }
