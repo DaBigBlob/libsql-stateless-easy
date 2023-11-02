@@ -1,7 +1,7 @@
 {
     "compilerOptions": {
         "moduleResolution": "node",
-        "lib": ["esnext"],
+        "lib": ["esnext", "DOM"],
         "target": "esnext",
         "esModuleInterop": true,
         "isolatedModules": true,
