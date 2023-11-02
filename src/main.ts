@@ -13,23 +13,23 @@ function Err<E>(err: E): Err<E> {
 
 //### db types ###
 
-export type _Value = _Text|_Integer|_Integer|_Real|_Blob|_Null;
-export type _Text = string; //a UTF-8 encoded string
-export type _Integer = number; //a 64-bit signed integer
-export type _Real = number; //a 64-bits floating number
-export type _Blob = string; //some binary data, encoded in base64
-export type _Null = null; //the null value
+ type _Value = _Text|_Integer|_Integer|_Real|_Blob|_Null;
+ type _Text = string; //a UTF-8 encoded string
+ type _Integer = number; //a 64-bit signed integer
+ type _Real = number; //a 64-bits floating number
+ type _Blob = string; //some binary data, encoded in base64
+ type _Null = null; //the null value
 
-export type _Query = string | { q: string, params: Record<string, _Value> | Array<_Value> };
+ type _Query = string | { q: string, params: Record<string, _Value> | Array<_Value> };
 
-export type _BatchResponse = Array<{
+ type _QueryResponse = {
     results: {
         columns: Array<string>,
         rows: Array<Array<_Value>>,
     }
-}>
+}
 
-export type _ErrorResponse = {
+type _ErrorResponse = {
     error: string
 }
 
@@ -50,7 +50,7 @@ export async function checkServerCompat(
     else return Err(undefined);
 }
 
-/** Execute a batch of SQL statements in a transaction. */
+/** Execute a batch of SQL statements atomically. */
 export async function executeBatch(
     config: {
         /** The database URL.
@@ -64,12 +64,32 @@ export async function executeBatch(
         authToken?: string
     },
     statements: Array<_Query>
-): Promise<Ok<_BatchResponse>|Err<_ErrorResponse>> {
+): Promise<Ok<Array<_QueryResponse>>|Err<_ErrorResponse>> {
     const res = await fetch(config.url, {
         method: 'POST',
         headers: (!config.authToken)?undefined:{'Authorization': 'Bearer '+config.authToken},
         body: JSON.stringify({statements})
     });
-    if (res.ok) return Ok(await res.json() as _BatchResponse);
+    if (res.ok) return Ok(await res.json() as Array<_QueryResponse>);
     else return Err(await res.json() as _ErrorResponse);
+}
+
+/** Execute an SQL statements. */
+export async function execute(
+    config: {
+        /** The database URL.
+         *
+         * The client supports `http:`/`https:` URL.
+         * 
+         */
+        url: string,
+
+        /** Authentication token for the database. */
+        authToken?: string
+    },
+    statement: _Query
+): Promise<Ok<_QueryResponse>|Err<_ErrorResponse>> {
+    const res = await executeBatch(config, [statement]);
+    if (res.isOk) return Ok(res.val[0]);
+    else return Err(res.err);
 }
