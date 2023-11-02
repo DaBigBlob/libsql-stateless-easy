@@ -1,9 +1,14 @@
 {
   "name": "libsql-web-api-http-stateless-client",
   "version": "1.0.0",
+  "homepage": "https://github.com/DaBigBlob/libsql-web-api-http-stateless-client#readme",
   "repository": {
     "type": "git",
     "url": "https://github.com/DaBigBlob/libsql-web-api-http-stateless-client.git"
+  },
+  "bugs": {
+    "url": "https://github.com/DaBigBlob/libsql-web-api-http-stateless-client/issues",
+    "email": "project@hostname.com"
   },
   "main": "lib-cjs/main.js",
   "devDependencies": {
