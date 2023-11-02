@@ -1,4 +1,4 @@
-import { Config, InStatement, ResultErr, ResultSet } from "./api";
+import { _Query } from "./api";
 import { Err, Ok, Result } from "./return-types";
 
 /** Execute a single SQL statement.
@@ -22,36 +22,19 @@ import { Err, Ok, Result } from "./return-types";
 * });
 * ```
 */
-export async function execute(config: Config, stmt: InStatement): Promise<Result<ResultSet, ResultErr>> {
-    if (stmt||config) {}; //place holder
-    return Ok({} as ResultSet); //place holder
-}
-
-/** Execute a batch of SQL statements in a transaction.
- *
- *
- * ```javascript
- * const rss = await batchExecute(config, [
- *     // batch statement without arguments
- *     "DELETE FROM books WHERE name LIKE '%Crusoe'",
- *
- *     // batch statement with positional arguments
- *     {
- *         sql: "INSERT INTO books (name, author, published_at) VALUES (?, ?, ?)",
- *         args: ["First Impressions", "Jane Austen", 1813],
- *     },
- *
- *     // batch statement with named arguments
- *     {
- *         sql: "UPDATE books SET name = $new WHERE name = $old",
- *         args: {old: "First Impressions", new: "Pride and Prejudice"},
- *     },
- * ]);
- * ```
- */
-export async function batchExecute(config: Config, stmts: Array<InStatement>): Promise<Array<Result<ResultSet, ResultErr>>> {
-    if (stmts||config) {}; //place holder
-    return {} as Array<Result<ResultSet, ResultErr>>; //place holder
+export async function execute(
+    config: {
+        url: string,
+        authToken?: string
+    },
+    statements: Array<_Query>
+): Promise<object> {
+    const res = await fetch(config.url, {
+        method: 'POST',
+        headers: (!config.authToken)?undefined:{'Authorization': 'Bearer '+config.authToken},
+        body: JSON.stringify({statements})
+    });
+    return await res.json();
 }
 
 /** Check if the server is compatible with sqld http API v0 */
