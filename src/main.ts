@@ -68,14 +68,17 @@ export async function executeBatch(
         authToken?: string
     },
     statements: Array<sqlite_query>
-): Promise<Ok<Array<_QueryResponse>>|Err<string>> {
+): Promise<Ok<Array<_QueryResponse>>|Err<Array<_QueryResponse|_ErrorResponse|null>>> {
     const res = await (await fetch(config.url, {
         method: 'POST',
         headers: (!config.authToken)?undefined:{'Authorization': 'Bearer '+config.authToken},
         body: JSON.stringify({statements})
-    })).json() as Array<_QueryResponse>|_ErrorResponse;
-    if ((res as _ErrorResponse).error===undefined) return Ok(res as Array<_QueryResponse>);
-    else return Err((res as _ErrorResponse).error);
+    })).json() as Array<_QueryResponse|_ErrorResponse|null>;
+    if (!res.find(qr => (
+        !qr || 
+        !!(qr as _ErrorResponse).error
+    ))) return Ok(res as Array<_QueryResponse>);
+    else return Err(res as Array<_QueryResponse|_ErrorResponse|null>);
 }
 
 /** Execute an SQL statements. */
@@ -92,10 +95,10 @@ export async function execute(
         authToken?: string
     },
     statement: sqlite_query
-): Promise<Ok<_QueryResponse>|Err<string>> {
+): Promise<Ok<_QueryResponse>|Err<_QueryResponse|_ErrorResponse|null>> {
     const res = await executeBatch(config, [statement]);
     if (res.isOk) return Ok(res.val[0]);
-    else return Err(res.err);
+    else return Err(res.err[0]);
 }
 
 export function extractBatchQueryResultRows(ok_result: Ok<Array<_QueryResponse>>) {
