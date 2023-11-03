@@ -69,13 +69,13 @@ export async function executeBatch(
     },
     statements: Array<sqlite_query>
 ): Promise<Ok<Array<_QueryResponse>>|Err<string>> {
-    const res = await fetch(config.url, {
+    const res = await (await fetch(config.url, {
         method: 'POST',
         headers: (!config.authToken)?undefined:{'Authorization': 'Bearer '+config.authToken},
         body: JSON.stringify({statements})
-    });
-    if (res.ok) return Ok(await res.json() as Array<_QueryResponse>);
-    else return Err((await res.json() as _ErrorResponse).error);
+    })).json() as Array<_QueryResponse>|_ErrorResponse;
+    if ((res as _ErrorResponse).error===undefined) return Ok(res as Array<_QueryResponse>);
+    else return Err((res as _ErrorResponse).error);
 }
 
 /** Execute an SQL statements. */
