@@ -37,24 +37,7 @@ type _ErrorResponse = {
 
 //### function ###
 
-/** Check if the server is compatible with sqld http API v0
- * 
- * This only works properly if the database requires authToken.
- * 
-*/
-export async function checkServerCompat(
-    /** The database URL.
-     *
-     * The client supports `http:`/`https:` URL.
-     * 
-     */
-    url: string
-): Promise<Ok<undefined>|Err<undefined>> {
-    if ((await fetch(url, {method: 'POST'})).status==401) return Ok(undefined);
-    else return Err(undefined);
-}
-
-/** Execute a batch of SQL statements atomically. */
+/** Execute a batch of SQL statements. */
 export async function executeBatch(
     config: {
         /** The database URL.
@@ -115,4 +98,21 @@ export function extractBatchQueryResultRows(result: Ok<Array<_QueryResponse>>|Er
 export function extractQueryResultRows(result: Ok<_QueryResponse>|Err<_QueryResponse|_ErrorResponse>): Array<Array<sqlite_value>>|null {
     if (result.isOk) return result.val.results.rows;
     else return null;
+}
+
+
+/** Check if the server is compatible with sqld http API v0 */
+export async function checkServerCompat(config: {
+    /** The database URL.
+     *
+     * The client supports `http:`/`https:` URL.
+     * 
+     */
+    url: string,
+
+    /** Authentication token for the database. */
+    authToken?: string
+}): Promise<Ok<undefined>|Err<undefined>> {
+    if ((await executeBatch(config, [""])).isOk) return Ok(undefined);
+    else return Err(undefined);
 }
