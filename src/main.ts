@@ -95,10 +95,10 @@ export async function execute(
         authToken?: string
     },
     statement: sqlite_query
-): Promise<Ok<_QueryResponse>|Err<_QueryResponse|_ErrorResponse|null>> {
+): Promise<Ok<_QueryResponse>|Err<_QueryResponse|_ErrorResponse>> {
     const res = await executeBatch(config, [statement]);
     if (res.isOk) return Ok(res.val[0]);
-    else return Err(res.err[0]);
+    else return Err(res.err[0] as _QueryResponse|_ErrorResponse);
 }
 
 export function extractBatchQueryResultRows(ok_result: Ok<Array<_QueryResponse>>) {
