@@ -105,8 +105,8 @@ export function extractBatchQueryResultRows(result: Ok<Array<_QueryResponse>>|Er
     if (result.isOk) return result.val.map(e => e.results.rows);
     else return result.err.map(e => {
         if (
-            !!(e as _ErrorResponse).error ||
-            !e
+            !e ||
+            (e as _ErrorResponse|null)?.error
         ) return null;
         else return (e as _QueryResponse).results.rows;
     });
