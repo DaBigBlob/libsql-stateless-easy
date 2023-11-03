@@ -101,10 +101,18 @@ export async function execute(
     else return Err(res.err[0] as _QueryResponse|_ErrorResponse);
 }
 
-export function extractBatchQueryResultRows(ok_result: Ok<Array<_QueryResponse>>) {
-    return ok_result.val.map((e) => e.results.rows);
+export function extractBatchQueryResultRows(result: Ok<Array<_QueryResponse>>|Err<Array<_QueryResponse|_ErrorResponse|null>>): Array<Array<Array<sqlite_value>>|null> {
+    if (result.isOk) return result.val.map(e => e.results.rows);
+    else return result.err.map(e => {
+        if (
+            !!(e as _ErrorResponse).error ||
+            !e
+        ) return null;
+        else return (e as _QueryResponse).results.rows;
+    });
 }
 
-export function extractQueryResultRows(ok_result: Ok<_QueryResponse>) {
-    return ok_result.val.results.rows;
+export function extractQueryResultRows(result: Ok<_QueryResponse>|Err<_QueryResponse|_ErrorResponse>): Array<Array<sqlite_value>>|null {
+    if (result.isOk) return result.val.results.rows;
+    else return null;
 }
