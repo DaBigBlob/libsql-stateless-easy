@@ -1,4 +1,4 @@
-import { libsql_batch_statement_result, libsql_batch_statement_step, libsql_error, libsql_statement, libsql_value } from "./main";
+import { libsql_batch_statement_result, libsql_batch_statement_step, libsql_error, libsql_statement, libsql_statement_result } from "./main";
 
 export async function hranaFetch(s: {
     db_url: string,
@@ -81,20 +81,7 @@ type ExecuteStreamReq = {
 
 type ExecuteStreamResp = {
     "type": "execute",
-    "result": StmtResult,
-}
-
-//## Statement results
-export type StmtResult = {
-    "cols": Array<Col>,
-    "rows": Array<Array<libsql_value>>,
-    "affected_row_count": number, //uint32
-    "last_insert_rowid": string | null,
-}
-
-type Col = {
-    "name": string | null,
-    "decltype": string | null,
+    "result": libsql_statement_result,
 }
 
 //## Execute a batch

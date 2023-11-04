@@ -1,4 +1,4 @@
-import { StmtResult, StreamResultError, hranaCheck, hranaFetch } from "./hrana"
+import { StreamResultError, hranaCheck, hranaFetch } from "./hrana"
 import { Err, Ok, Result } from "./return_types";
 
 //## types
@@ -13,6 +13,10 @@ export type libsql_value =
     | { "type": "float", "value": number }
     | { "type": "text", "value": string }
     | { "type": "blob", "base64": string };
+export type libsql_column = {
+    "name": string | null,
+    "decltype": string | null,
+}
 export type libsql_statement = {
     "sql": string,
     "args"?: Array<libsql_value>,
@@ -22,7 +26,12 @@ export type libsql_statement = {
     }>,
     "want_rows"?: boolean,
 };
-export type libsql_statement_result = StmtResult;
+export type libsql_statement_result = {
+    "cols": Array<libsql_column>,
+    "rows": Array<Array<libsql_value>>,
+    "affected_row_count": number, //uint32
+    "last_insert_rowid": string | null,
+};
 export type libsql_error = {
     "message": string,
     "code"?: string | null,
