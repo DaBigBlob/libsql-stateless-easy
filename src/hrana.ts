@@ -1,3 +1,5 @@
+import { libsql_batch_statement_result, libsql_batch_statement_step, libsql_statement } from "./main";
+
 export async function hranaFetch(s: {
     db_url: string,
     authToken?: string,
@@ -79,25 +81,12 @@ type CloseStreamResp = {
 //## Execute a statement
 type ExecuteStreamReq = {
     "type": "execute",
-    "stmt": Stmt,
+    "stmt": libsql_statement,
 }
 
 type ExecuteStreamResp = {
     "type": "execute",
     "result": StmtResult,
-}
-
-//## Statements
-export type Stmt = {
-    "sql"?: string | null,
-    "args"?: Array<Value>,
-    "named_args"?: Array<NamedArg>,
-    "want_rows"?: boolean,
-}
-
-type NamedArg = {
-    "name": string,
-    "value": Value,
 }
 
 //## Statement results
@@ -121,23 +110,12 @@ type BatchStreamReq = {
 
 type BatchStreamResp = {
     "type": "batch",
-    "result": BatchResult,
+    "result": libsql_batch_statement_result,
 }
 
 //## Batches
 type Batch = {
-    "steps": Array<BatchStep>,
-}
-
-export type BatchStep = {
-    "condition"?: BatchCond | null,
-    "stmt": Stmt,
-}
-
-//## Batch results
-export type BatchResult = {
-    "step_results": Array<StmtResult | null>,
-    "step_errors": Array<Error_ | null>,
+    "steps": Array<libsql_batch_statement_step>,
 }
 
 //## Conditions

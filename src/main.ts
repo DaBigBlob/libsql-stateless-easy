@@ -1,4 +1,4 @@
-import { BatchCond, BatchResult, BatchStep, Error_, StmtResult, StreamResultError, Value, hranaFetch } from "./hrana"
+import { BatchCond, Error_, StmtResult, StreamResultError, Value, hranaFetch } from "./hrana"
 import { Err, Ok, Result } from "./return_types";
 
 //## types
@@ -23,6 +23,10 @@ export type libsql_batch_execution_condition = BatchCond;
 export type libsql_batch_statement_step = {
     "condition"?: libsql_batch_execution_condition | null,
     "stmt": libsql_statement,
+}
+export type libsql_batch_statement_result = {
+    "step_results": Array<libsql_statement_result | null>,
+    "step_errors": Array<libsql_error | null>,
 }
 
 //## functions
@@ -50,7 +54,7 @@ export async function execute(conf: libsqlConf, stmt: libsql_statement): Promise
     else return Err((res as StreamResultError).error);
 }
 
-export async function executeBatch(conf: libsqlConf, batch_steps: Array<BatchStep>): Promise<Result<BatchResult, libsql_error>> {
+export async function executeBatch(conf: libsqlConf, batch_steps: Array<libsql_batch_statement_step>): Promise<Result<libsql_batch_statement_result, libsql_error>> {
     const res = (await hranaFetch({
         ...conf,
         req_json: {
