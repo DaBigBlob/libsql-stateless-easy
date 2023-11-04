@@ -4,7 +4,7 @@
   "homepage": "https://github.com/DaBigBlob/libsql-http-stateless#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/DaBigBlob/libsql-http-stateless"
+    "url": "git+https://github.com/DaBigBlob/libsql-http-stateless.git"
   },
   "bugs": {
     "url": "https://github.com/DaBigBlob/libsql-http-stateless/issues",
