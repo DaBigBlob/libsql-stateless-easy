@@ -138,7 +138,7 @@ import { libsql_statement_result, libsql_error, libsql_column, libsql_value } fr
 ```ts
 import { execute } from "libsql-stateless";
 //or
-import { execute } = require("libsql-stateless"); //for cjs
+const { execute } = require("libsql-stateless"); //for cjs
 
 const res = await execute(conf, {sql: "SELECT * FROM mad_cats;"});
 //or
@@ -195,8 +195,6 @@ async function executeBatch(conf: libsqlConf, batch_steps: Array<libsql_batch_st
  1. `conf` of type `libsqlConf`
 ```ts
 import { libsqlConf } from "libsql-stateless";
-//or
-import { libsqlConf } = require("libsql-stateless"); //for cjs
 
 //sturucture of libsqlConf
 {
@@ -281,7 +279,7 @@ import { libsql_batch_statement_result, libsql_error, libsql_statement_result, l
 ```ts
 import { executeBatch } from "libsql-stateless";
 //or
-import { executeBatch } = require("libsql-stateless"); //for cjs
+const { executeBatch } = require("libsql-stateless"); //for cjs
 
 const res = await executeBatch(conf, [
     {stmt: {sql: "SELECT * FROM mad_cats;"}},
@@ -349,7 +347,7 @@ This function returns a `Promise<Result<undefined, undefined>>` therefore `await
 ```ts
 import { serverCompatCheck } from "libsql-stateless"; //for mjs
 //or
-import { serverCompatCheck } = require("libsql-stateless"); //for cjs
+const { serverCompatCheck } = require("libsql-stateless"); //for cjs
 
 const res = await serverCompatCheck(conf.db_url);
 ```
