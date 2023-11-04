@@ -5,6 +5,13 @@
 - **Extremely thin:** Has no dependency, only has a few functions that implement the `Hrana v3 HTTP` protocol from scratch, and has no classes.
 - **Is built for:** Quick stateless query execution. (Mainly for serverless and edge functions.)
 
+# Installation
+```sh
+$ npm i libsql-stateless
+# or
+$ bun add libsql-stateless
+```
+
 ## The Result Type
 Every function in this library returns a `Result<T, R>` type.
 
