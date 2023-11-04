@@ -29,7 +29,7 @@ or:
     err: R
 }
 ```
-For example, the function `await libsqlExecute(conf: libsqlConf, stmt: libsql_statement)` returns `Result<libsql_statement_result, libsql_error>`, which is either:
+For example, the function `await libsqlExecute(conf: libsql_conf, stmt: libsql_statement)` returns `Result<libsql_statement_result, libsql_error>`, which is either:
 ```ts
 {
     isOk: true,
@@ -67,15 +67,15 @@ if (res.isOk) {
 This function executes exactly one (1) SQL query.
 ### Type
 ```ts
-async function libsqlExecute(conf: libsqlConf, stmt: libsql_statement): Promise<Result<libsql_statement_result, libsql_error>>;
+async function libsqlExecute(conf: libsql_conf, stmt: libsql_statement): Promise<Result<libsql_statement_result, libsql_error>>;
 ```
 
 ### Parameters
- 1. `conf` of type `libsqlConf`
+ 1. `conf` of type `libsql_conf`
 ```ts
-import { libsqlConf } from "libsql-stateless";
+import { libsql_conf } from "libsql-stateless";
 
-//sturucture of libsqlConf
+//sturucture of libsql_conf
 {
     db_url: string,
     authToken?: string
@@ -143,13 +143,13 @@ import { libsql_statement_result, libsql_error, libsql_column, libsql_value } fr
 
 ### Example
 ```ts
-import { execute } from "libsql-stateless";
+import { libsqlExecute } from "libsql-stateless";
 //or
-const { execute } = require("libsql-stateless"); //for cjs
+const { libsqlExecute } = require("libsql-stateless"); //for cjs
 
-const res = await execute(conf, {sql: "SELECT * FROM mad_cats;"});
+const res = await libsqlExecute(conf, {sql: "SELECT * FROM mad_cats;"});
 //or
-const res = await execute(conf, {
+const res = await libsqlExecute(conf, {
     sql: "SELECT madness, power_level FROM mad_cats WHERE cat_id = ? AND owner_name = ?;",
     args: [
         {
@@ -163,7 +163,7 @@ const res = await execute(conf, {
     ]
 });
 //or
-const res = await execute(conf, {
+const res = await libsqlExecute(conf, {
     sql: "INSERT INTO mad_cats VALUES (:cat_name, :power_level, :madness);", //In SQLite, the names of arguments include the prefix sign (:, @ or $).
     named_args: [
         {
@@ -191,30 +191,30 @@ const res = await execute(conf, {
 });
 ```
 
-## The `executeBatch` Function
+## The `libsqlBatch` Function
 This function executes SQL queries in a batch.
 ### Type
 ```ts
-async function executeBatch(conf: libsqlConf, batch_steps: Array<libsql_batch_statement_step>): Promise<Result<libsql_batch_statement_result, libsql_error>>;
+async function libsqlBatch(conf: libsql_conf, batch_steps: Array<libsql_batch_step>): Promise<Result<libsql_batch_statement_result, libsql_error>>;
 ```
 
 ### Parameters
- 1. `conf` of type `libsqlConf`
+ 1. `conf` of type `libsql_conf`
 ```ts
-import { libsqlConf } from "libsql-stateless";
+import { libsql_conf } from "libsql-stateless";
 
-//sturucture of libsqlConf
+//sturucture of libsql_conf
 {
     db_url: string,
     authToken?: string
 }
 ```
 
-2. `batch_steps` of type `Array<libsql_batch_statement_step>`
+2. `batch_steps` of type `Array<libsql_batch_step>`
 ```ts
-import { libsql_batch_statement_step, libsql_batch_execution_condition, libsql_statement } from "libsql-stateless";
+import { libsql_batch_step, libsql_batch_execution_condition, libsql_statement } from "libsql-stateless";
 
-//sturucture of libsql_batch_statement_step
+//sturucture of libsql_batch_step
 {
     "condition"?: libsql_batch_execution_condition | null;
     "stmt": libsql_statement;
@@ -284,11 +284,11 @@ import { libsql_batch_statement_result, libsql_error, libsql_statement_result, l
 
 ### Example
 ```ts
-import { executeBatch } from "libsql-stateless";
+import { libsqlBatch } from "libsql-stateless";
 //or
-const { executeBatch } = require("libsql-stateless"); //for cjs
+const { libsqlBatch } = require("libsql-stateless"); //for cjs
 
-const res = await executeBatch(conf, [
+const res = await libsqlBatch(conf, [
     {stmt: {sql: "SELECT * FROM mad_cats;"}},
     {stmt: {
         sql: "SELECT madness, power_level FROM mad_cats WHERE cat_id = ? AND owner_name = ?;",
@@ -331,15 +331,15 @@ const res = await executeBatch(conf, [
     }}
 ]);
 //or
-const res = await executeBatch(conf, [
+const res = await libsqlBatch(conf, [
     {stmt: {sql: "SELECT * FROM mad_cats;"}, condition: { "type": "is_autocommit" }}
 ]);
 ```
-## The `serverCompatCheck` Function
+## The `libsqlServerCompatCheck` Function
 This function checks if the `db_url`'s server supports `Hrana HTTP API v3`.
 ### Type
 ```ts
-async function serverCompatCheck(db_url: string): Promise<Result<undefined, undefined>>;
+async function libsqlServerCompatCheck(db_url: string): Promise<Result<undefined, undefined>>;
 ```
 
 ### Parameters
@@ -352,11 +352,11 @@ This function returns a `Promise<Result<undefined, undefined>>` therefore `await
 
 ### Example
 ```ts
-import { serverCompatCheck } from "libsql-stateless"; //for mjs
+import { libsqlServerCompatCheck } from "libsql-stateless"; //for mjs
 //or
-const { serverCompatCheck } = require("libsql-stateless"); //for cjs
+const { libsqlServerCompatCheck } = require("libsql-stateless"); //for cjs
 
-const res = await serverCompatCheck(conf.db_url);
+const res = await libsqlServerCompatCheck(conf.db_url);
 ```
 
 # Special Thanks
