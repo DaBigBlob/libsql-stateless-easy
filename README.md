@@ -139,5 +139,54 @@ import { libsql_statement_result, libsql_error, libsql_column, libsql_value } fr
 { "type": "blob", "base64": string };
 ```
 
+### Example
+```ts
+import { execute } from "libsql-stateless"; //for mjs
+//or
+{ execute } = require("libsql-stateless"); //for cjs
+
+const res = await execute(conf, {sql: "SELECT * FROM mad_cats;"});
+//or
+const res = await execute(conf, {
+    sql: "SELECT madness, power_level FROM mad_cats where cat_id = ? and owner_name = ?;",
+    args: [
+        {
+            type: "integer",
+            value: "89342"
+        },
+        {
+            type: "text",
+            value: "John Smith"
+        }
+    ]
+});
+//or
+const res = await execute(conf, {
+    sql: "INSERT INTO mad_cats VALUES (:cat_name, :power_level, :madness);", //In SQLite, the names of arguments include the prefix sign (:, @ or $).
+    named_args: [
+        {
+            name: "cat_name",
+            value: {
+                type: "text",
+                value: "Bgorthe, The Destroyer of Worlds"
+            }
+        },
+        {
+            name: "power_level",
+            value: {
+                type: "integer",
+                value: "9105"
+            }
+        },
+        {
+            name: "madness",
+            value: {
+                type: "float",
+                value: "32.5"
+            }
+        }
+    ]
+});
+```
 
 # TODO
