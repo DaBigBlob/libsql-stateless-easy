@@ -1,10 +1,28 @@
+export async function hranaFetch(s: {
+    db_url: string,
+    authToken?: string,
+    req_json: PipelineReqBody
+}) {
+    return await (await fetch(
+        `${s.db_url}/v3/pipeline`,
+        {
+            method: 'POST',
+            headers: (s.authToken) ? {'Authorization': 'Bearer '+s.authToken} : undefined,
+            body: JSON.stringify(s.req_json)
+        }
+    )).json() as PipelineRespBody;
+}
+
+
+//### Hrana Types
+//url: https://github.com/tursodatabase/libsql/blob/main/libsql-server/docs/HRANA_3_SPEC.md#hrana-over-http
 //## Pipeline
-export type PipelineReqBody = {
+type PipelineReqBody = {
     "baton": string | null,
     "requests": Array<StreamRequest>,
 }
 
-export type PipelineRespBody = {
+type PipelineRespBody = {
     "baton": string | null,
     "base_url": string | null,
     "results": Array<StreamResult>
