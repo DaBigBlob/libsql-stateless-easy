@@ -1,12 +1,10 @@
-
-//### hrana types
 //## Pipeline
-type PipelineReqBody = {
+export type PipelineReqBody = {
     "baton": string | null,
     "requests": Array<StreamRequest>,
 }
 
-type PipelineRespBody = {
+export type PipelineRespBody = {
     "baton": string | null,
     "base_url": string | null,
     "results": Array<StreamResult>
