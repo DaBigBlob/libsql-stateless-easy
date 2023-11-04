@@ -1,4 +1,4 @@
-import { BatchCond, Error_, StmtResult, StreamResultError, Value, hranaFetch } from "./hrana"
+import { BatchCond, Error_, StmtResult, StreamResultError, Value, hranaCheck, hranaFetch } from "./hrana"
 import { Err, Ok, Result } from "./return_types";
 
 //## types
@@ -78,4 +78,9 @@ export async function executeBatch(conf: libsqlConf, batch_steps: Array<libsql_b
         res.response.type=="batch"
     ) return Ok(res.response.result);
     else return Err((res as StreamResultError).error);
+}
+
+export async function serverCompatCheck(db_url: string): Promise<Result<undefined, undefined>> {
+    if (await hranaCheck(db_url)) return Ok(undefined);
+    else return Err(undefined);
 }
