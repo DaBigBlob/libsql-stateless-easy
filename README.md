@@ -66,9 +66,7 @@ async function execute(conf: libsqlConf, stmt: libsql_statement): Promise<Result
 ### Parameters
  1. `conf` of type `libsqlConf`
 ```ts
-import { libsqlConf } from "libsql-stateless"; //for mjs
-//or
-import { libsqlConf } = require("libsql-stateless"); //for cjs
+import { libsqlConf } from "libsql-stateless";
 
 //sturucture of libsqlConf
 {
@@ -79,9 +77,7 @@ import { libsqlConf } = require("libsql-stateless"); //for cjs
 
 2. `stmt` of type `libsql_statement`
 ```ts
-import { libsql_statement, libsql_value } from "libsql-stateless"; //for mjs
-//or
-import { libsql_statement, libsql_value } = require("libsql-stateless"); //for cjs
+import { libsql_statement, libsql_value } from "libsql-stateless";
 
 //sturucture of libsql_statement
 {
@@ -108,9 +104,7 @@ This function returns a `Promise<Result<libsql_statement_result, libsql_error>>`
 `Result<T, R>` types have heen discussed above.
 
 ```ts
-import { libsql_statement_result, libsql_error, libsql_column, libsql_value } from "libsql-stateless"; //for mjs
-//or
-import { libsql_statement_result, libsql_error, libsql_column, libsql_value } = require("libsql-stateless"); //for cjs
+import { libsql_statement_result, libsql_error, libsql_column, libsql_value } from "libsql-stateless";
 
 //structure of libsql_error
 {
@@ -142,7 +136,7 @@ import { libsql_statement_result, libsql_error, libsql_column, libsql_value } = 
 
 ### Example
 ```ts
-import { execute } from "libsql-stateless"; //for mjs
+import { execute } from "libsql-stateless";
 //or
 import { execute } = require("libsql-stateless"); //for cjs
 
@@ -200,7 +194,7 @@ async function executeBatch(conf: libsqlConf, batch_steps: Array<libsql_batch_st
 ### Parameters
  1. `conf` of type `libsqlConf`
 ```ts
-import { libsqlConf } from "libsql-stateless"; //for mjs
+import { libsqlConf } from "libsql-stateless";
 //or
 import { libsqlConf } = require("libsql-stateless"); //for cjs
 
@@ -213,9 +207,7 @@ import { libsqlConf } = require("libsql-stateless"); //for cjs
 
 2. `batch_steps` of type `Array<libsql_batch_statement_step>`
 ```ts
-import { libsql_batch_statement_step, libsql_batch_execution_condition, libsql_statement } from "libsql-stateless"; //for mjs
-//or
-import {libsql_batch_statement_step } = require("libsql-stateless"); //for cjs
+import { libsql_batch_statement_step, libsql_batch_execution_condition, libsql_statement } from "libsql-stateless";
 
 //sturucture of libsql_batch_statement_step
 {
@@ -249,9 +241,7 @@ This function returns a `Promise<Result<libsql_batch_statement_result, libsql_er
 `Result<T, R>` types have heen discussed above.
 
 ```ts
-import { libsql_batch_statement_result, libsql_error, libsql_statement_result, libsql_column, libsql_value } from "libsql-stateless"; //for mjs
-//or
-import { libsql_batch_statement_result, libsql_error, libsql_statement_result, libsql_column, libsql_value } = require("libsql-stateless"); //for cjs
+import { libsql_batch_statement_result, libsql_error, libsql_statement_result, libsql_column, libsql_value } from "libsql-stateless";
 
 //structure of libsql_error
 {
@@ -289,7 +279,7 @@ import { libsql_batch_statement_result, libsql_error, libsql_statement_result, l
 
 ### Example
 ```ts
-import { executeBatch } from "libsql-stateless"; //for mjs
+import { executeBatch } from "libsql-stateless";
 //or
 import { executeBatch } = require("libsql-stateless"); //for cjs
 
