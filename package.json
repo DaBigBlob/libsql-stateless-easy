@@ -1,13 +1,13 @@
 {
   "name": "libsql-stateless",
-  "version": "2.1.0",
-  "homepage": "https://github.com/DaBigBlob/libsql-http-stateless#readme",
+  "version": "2.1.1",
+  "homepage": "https://github.com/DaBigBlob/libsql-stateless#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/DaBigBlob/libsql-http-stateless.git"
+    "url": "git+https://github.com/DaBigBlob/libsql-stateless.git"
   },
   "bugs": {
-    "url": "https://github.com/DaBigBlob/libsql-http-stateless/issues",
+    "url": "https://github.com/DaBigBlob/libsql-stateless/issues",
     "email": "localboxcrox@gmail.com"
   },
   "main": "lib-cjs/main.js",
