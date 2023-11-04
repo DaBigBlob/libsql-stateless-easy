@@ -29,7 +29,7 @@ or:
     err: R
 }
 ```
-For example, the function `await execute(conf: libsqlConf, stmt: libsql_statement)` returns `Result<libsql_statement_result, libsql_error>`, which is either:
+For example, the function `await libsqlExecute(conf: libsqlConf, stmt: libsql_statement)` returns `Result<libsql_statement_result, libsql_error>`, which is either:
 ```ts
 {
     isOk: true,
@@ -48,7 +48,7 @@ or:
 - Elegant error handling:
 ```ts
 //you can do something like
-const res = await execute(conf, {sql: "SELECT * FROM mad_cats;"});
+const res = await libsqlExecute(conf, {sql: "SELECT * FROM mad_cats;"});
 
 if (res.isOk) {
     //now res.val is guaranteed by typescript [js users, sorry]
@@ -63,11 +63,11 @@ if (res.isOk) {
 }
 ```
 
-## The `execute` Function
+## The `libsqlExecute` Function
 This function executes exactly one (1) SQL query.
 ### Type
 ```ts
-async function execute(conf: libsqlConf, stmt: libsql_statement): Promise<Result<libsql_statement_result, libsql_error>>;
+async function libsqlExecute(conf: libsqlConf, stmt: libsql_statement): Promise<Result<libsql_statement_result, libsql_error>>;
 ```
 
 ### Parameters

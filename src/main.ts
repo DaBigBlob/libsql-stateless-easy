@@ -2,7 +2,7 @@ import { PipelineRespErrorBody, StreamResultError, hranaCheck, hranaFetch } from
 import { Err, Ok, Result } from "./return_types";
 
 //## types
-export type libsqlConf = {
+export type libsql_conf = {
     db_url: string,
     authToken?: string
 }
@@ -53,7 +53,7 @@ export type libsql_batch_statement_result = {
 }
 
 //## functions
-export async function libsqlExecute(conf: libsqlConf, stmt: libsql_statement): Promise<Result<libsql_statement_result, libsql_error>> {
+export async function libsqlExecute(conf: libsql_conf, stmt: libsql_statement): Promise<Result<libsql_statement_result, libsql_error>> {
     const res = await hranaFetch({
         ...conf,
         req_json: {
@@ -81,7 +81,7 @@ export async function libsqlExecute(conf: libsqlConf, stmt: libsql_statement): P
     else return Err({message: (res.err as PipelineRespErrorBody).error});
 }
 
-export async function libsqlBatch(conf: libsqlConf, batch_steps: Array<libsql_batch_step>): Promise<Result<libsql_batch_statement_result, libsql_error>> {
+export async function libsqlBatch(conf: libsql_conf, batch_steps: Array<libsql_batch_step>): Promise<Result<libsql_batch_statement_result, libsql_error>> {
     const res = await hranaFetch({
         ...conf,
         req_json: {
