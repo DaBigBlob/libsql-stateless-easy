@@ -1,4 +1,4 @@
-# libsql-web-api-http-stateless-client
+# libsql-http-stateless
 
 > libSQL http driver for TypeScript and JavaScript running with Web API.
 
@@ -12,17 +12,17 @@
 ## Installation
 
 ```bash
-$ npm i libsql-web-api-http-stateless-client
+$ npm i libsql-http-stateless
 # OR
-$ bun add libsql-web-api-http-stateless-client
+$ bun add libsql-http-stateless
 ```
 
 ## Usage
 
 ```ts
-import {execute, executeBatch, checkServerCompat} from 'libsql-web-api-http-stateless-client'; //mjs
+import {execute, executeBatch, checkServerCompat} from 'libsql-http-stateless'; //mjs
 //or
-{execute, executeBatch, checkServerCompat} = require('libsql-web-api-http-stateless-client'); //for cjs
+{execute, executeBatch, checkServerCompat} = require('libsql-http-stateless'); //for cjs
 
 //remember to use the following in async functions only (because await)
 const res1 = await execute(
@@ -109,9 +109,9 @@ if (res.isOk) {
 ### Other Helper Functions
 
 ```ts
-import {extractBatchQueryResultRows, extractQueryResultRows, checkServerCompat} from 'libsql-web-api-http-stateless-client'; //mjs
+import {extractBatchQueryResultRows, extractQueryResultRows, checkServerCompat} from 'libsql-http-stateless'; //mjs
 //or
-{extractBatchQueryResultRows, extractQueryResultRows, checkServerCompat} = require('libsql-web-api-http-stateless-client'); //for cjs
+{extractBatchQueryResultRows, extractQueryResultRows, checkServerCompat} = require('libsql-http-stateless'); //for cjs
 
 //you might've noticed that res.val is often pretty cluttered with redundant stuff.
 //this is because of libsql's http api v0's schema, and executeBatch and execute doing exactly as much as fetching the data.
@@ -146,9 +146,9 @@ if (res2.isOk) {
 ### Checking Server Compatiblity
 
 ```ts
-import {checkServerCompat} from 'libsql-web-api-http-stateless-client'; //mjs
+import {checkServerCompat} from 'libsql-http-stateless'; //mjs
 //or
-{checkServerCompat} = require('libsql-web-api-http-stateless-client'); //for cjs
+{checkServerCompat} = require('libsql-http-stateless'); //for cjs
 
 //remember to use the following in async functions only (because await)
 const res = await checkServerCompat("https://the-pink-mad-man.turso.io");//DB url (http:// or https:// only)
@@ -171,9 +171,9 @@ if (res.isOk) {
 ### Other Goodies
 
 ```ts
-import {sqlite_text, sqlite_integer, sqlite_real, sqlite_blob, sqlite_null, sqlite_value, sqlite_query} from 'libsql-web-api-http-stateless-client'; //mjs
+import {sqlite_text, sqlite_integer, sqlite_real, sqlite_blob, sqlite_null, sqlite_value, sqlite_query} from 'libsql-http-stateless'; //mjs
 //or
-{sqlite_text, sqlite_integer, sqlite_real, sqlite_blob, sqlite_null, sqlite_value, sqlite_query} = require('libsql-web-api-http-stateless-client'); //for cjs
+{sqlite_text, sqlite_integer, sqlite_real, sqlite_blob, sqlite_null, sqlite_value, sqlite_query} = require('libsql-http-stateless'); //for cjs
 
 // sqlite_text, sqlite_integer, sqlite_real, sqlite_blob and sqlite_null are the 5 datatypes supported by sqlite
 // sqlite_value is the type union of the above datatypes
