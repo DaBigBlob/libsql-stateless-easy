@@ -340,5 +340,29 @@ const res = await executeBatch(conf, [
     {stmt: {sql: "SELECT * FROM mad_cats;"}, condition: { "type": "is_autocommit" }}
 ]);
 ```
+## The `serverCompatCheck` Function
+This function checks if the `db_url`'s server supports `Hrana HTTP API v3`.
+### Type
+```ts
+async function serverCompatCheck(db_url: string): Promise<Result<undefined, undefined>>;
+```
 
-# TODO
+### Parameters
+ 1. `db_url` of type `string`
+
+### Returns
+This function returns a `Promise<Result<undefined, undefined>>` therefore `await` is used before it to get `Result<undefined, undefined>`.
+
+`Result<T, R>` types have heen discussed above.
+
+### Example
+```ts
+import { serverCompatCheck } from "libsql-stateless"; //for mjs
+//or
+{ serverCompatCheck } = require("libsql-stateless"); //for cjs
+
+const res = await serverCompatCheck(conf.db_url);
+```
+
+# Special Thanks
+- The Voices in my Head
