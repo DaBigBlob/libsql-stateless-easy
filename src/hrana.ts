@@ -13,6 +13,15 @@ export async function hranaFetch(s: {
     )).json() as PipelineRespBody;
 }
 
+export async function hranaCheck(db_url: string) {
+    return (await fetch(
+        `${db_url}/v3`,
+        {
+            method: 'GET'
+        }
+    )).ok;
+}
+
 
 //### Hrana Types
 //url: https://github.com/tursodatabase/libsql/blob/main/libsql-server/docs/HRANA_3_SPEC.md#hrana-over-http
