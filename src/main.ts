@@ -78,7 +78,7 @@ export async function execute(conf: libsqlConf, stmt: libsql_statement): Promise
         ) return Ok(resu.response.result);
         else return Err((resu as StreamResultError).error);
     }
-    else return Err({message: (res.err as PipelineRespErrorBody).error, code: null});
+    else return Err({message: (res.err as PipelineRespErrorBody).error});
 }
 
 export async function executeBatch(conf: libsqlConf, batch_steps: Array<libsql_batch_statement_step>): Promise<Result<libsql_batch_statement_result, libsql_error>> {
@@ -108,7 +108,7 @@ export async function executeBatch(conf: libsqlConf, batch_steps: Array<libsql_b
         ) return Ok(resu.response.result);
         else return Err((resu as StreamResultError).error);
     }
-    else return Err({message: (res.err as PipelineRespErrorBody).error, code: null});
+    else return Err({message: (res.err as PipelineRespErrorBody).error});
 }
 
 export async function serverCompatCheck(db_url: string): Promise<Result<undefined, undefined>> {
