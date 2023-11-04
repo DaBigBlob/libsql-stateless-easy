@@ -129,15 +129,15 @@ type Batch = {
     "steps": Array<BatchStep>,
 }
 
-type BatchStep = {
+export type BatchStep = {
     "condition"?: BatchCond | null,
     "stmt": Stmt,
 }
 
 //## Batch results
-type BatchResult = {
+export type BatchResult = {
     "step_results": Array<StmtResult | null>,
-    "step_errors": Array<Error | null>,
+    "step_errors": Array<Error_ | null>,
 }
 
 //## Conditions
