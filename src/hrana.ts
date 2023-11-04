@@ -4,7 +4,7 @@ export async function hranaFetch(s: {
     req_json: PipelineReqBody
 }) {
     return await (await fetch(
-        `${s.db_url}/v3/pipeline`,
+        `${s.db_url}/v3/pipeline`, //https://github.com/tursodatabase/libsql/blob/main/libsql-server/docs/HRANA_3_SPEC.md#execute-a-pipeline-of-requests-json
         {
             method: 'POST',
             headers: (s.authToken) ? {'Authorization': 'Bearer '+s.authToken} : undefined,
