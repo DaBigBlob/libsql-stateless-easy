@@ -190,4 +190,155 @@ const res = await execute(conf, {
 });
 ```
 
+## The `executeBatch` Function
+This function executes SQL queries in a batch.
+### Type
+```ts
+async function executeBatch(conf: libsqlConf, batch_steps: Array<libsql_batch_statement_step>): Promise<Result<libsql_batch_statement_result, libsql_error>>;
+```
+
+### Parameters
+ 1. `conf` of type `libsqlConf`
+```ts
+import { libsqlConf } from "libsql-stateless"; //for mjs
+//or
+{ libsqlConf } = require("libsql-stateless"); //for cjs
+
+//sturucture of libsqlConf
+{
+    db_url: string,
+    authToken?: string
+}
+```
+
+2. `batch_steps` of type `Array<libsql_batch_statement_step>`
+```ts
+import { libsql_batch_statement_step, libsql_batch_execution_condition, libsql_statement } from "libsql-stateless"; //for mjs
+//or
+{libsql_batch_statement_step } = require("libsql-stateless"); //for cjs
+
+//sturucture of libsql_batch_statement_step
+{
+    "condition"?: libsql_batch_execution_condition | null;
+    "stmt": libsql_statement;
+}
+
+//structure of libsql_batch_execution_condition
+{ "type": "ok", "step": number } |//uint32
+{ "type": "error", "step": number }  |//uint32
+{ "type": "not", "cond": libsql_batch_execution_condition } |
+{ "type": "and", "conds": Array<libsql_batch_execution_condition> } |
+{ "type": "or", "conds": Array<libsql_batch_execution_condition> } |
+{ "type": "is_autocommit" };
+
+//sturucture of libsql_statement
+{
+    "sql": string,
+    "args"?: Array<libsql_value>,
+    "named_args"?: Array<{
+        "name": string,
+        "value": libsql_value,
+    }>,
+    "want_rows"?: boolean,
+}
+```
+
+### Returns
+This function returns a `Promise<Result<libsql_batch_statement_result, libsql_error>>` therefore `await` is used before it to get `Result<libsql_batch_statement_result, libsql_error>`.
+
+`Result<T, R>` types have heen discussed above.
+
+```ts
+import { libsql_batch_statement_result, libsql_error, libsql_statement_result, libsql_column, libsql_value } from "libsql-stateless"; //for mjs
+//or
+{ libsql_batch_statement_result, libsql_error, libsql_statement_result, libsql_column, libsql_value } = require("libsql-stateless"); //for cjs
+
+//structure of libsql_error
+{
+    "message": string;
+    "code"?: string | null;
+}
+
+//structure of libsql_batch_statement_result
+{
+    "step_results": Array<libsql_statement_result | null>;
+    "step_errors": Array<libsql_error | null>;
+}
+
+//structure of libsql_statement_result
+{
+    "cols": Array<libsql_column>,
+    "rows": Array<Array<libsql_value>>,
+    "affected_row_count": number, //uint32
+    "last_insert_rowid": string | null,
+}
+
+//structure of libsql_column
+{
+    "name": string | null,
+    "decltype": string | null,
+}
+
+//structure of libsql_value
+{ "type": "null" } |
+{ "type": "integer", "value": string } |
+{ "type": "float", "value": number } |
+{ "type": "text", "value": string } |
+{ "type": "blob", "base64": string };
+```
+
+### Example
+```ts
+import { executeBatch } from "libsql-stateless"; //for mjs
+//or
+{ executeBatch } = require("libsql-stateless"); //for cjs
+
+const res = await executeBatch(conf, [
+    {stmt: {sql: "SELECT * FROM mad_cats;"}},
+    {stmt: {
+        sql: "SELECT madness, power_level FROM mad_cats WHERE cat_id = ? AND owner_name = ?;",
+        args: [
+            {
+                type: "integer",
+                value: "89342"
+            },
+            {
+                type: "text",
+                value: "John Smith"
+            }
+        ]
+    }},
+    {stmt: {
+    sql: "INSERT INTO mad_cats VALUES (:cat_name, :power_level, :madness);", //In SQLite, the names of arguments include the prefix sign (:, @ or $).
+    named_args: [
+            {
+                name: "cat_name",
+                value: {
+                    type: "text",
+                    value: "Bgorthe, The Destroyer of Worlds"
+                }
+            },
+            {
+                name: "power_level",
+                value: {
+                    type: "integer",
+                    value: "9105"
+                }
+            },
+            {
+                name: "madness",
+                value: {
+                    type: "float",
+                    value: "32.5"
+                }
+            }
+        ]
+    }}
+]);
+//or
+const res = await executeBatch(conf, [
+    {stmt: {sql: "SELECT * FROM mad_cats;"}, condition: { "type": "is_autocommit" }}
+]);
+```
+
 # TODO
