@@ -6,7 +6,8 @@
 - **Is built for:** Quick stateless query execution. (Mainly for serverless and edge functions.)
 
 ## The Result Type
-Every function in this library returns a `Result<T, R>` type.\
+Every function in this library returns a `Result<T, R>` type.
+
 `Result<T, R>` is either:
 ```ts
 {
@@ -102,7 +103,7 @@ import { libsql_statement, libsql_value } from "libsql-stateless"; //for mjs
 ```
 
 ### Returns
-This function returns a `Promise<Result<libsql_statement_result, libsql_error>>` therefore `await` is used before it to get `Result<libsql_statement_result, libsql_error>`.\
+This function returns a `Promise<Result<libsql_statement_result, libsql_error>>` therefore `await` is used before it to get `Result<libsql_statement_result, libsql_error>`.
 
 `Result<T, R>` types have heen discussed above.
 
