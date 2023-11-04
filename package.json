@@ -1,5 +1,5 @@
 {
-  "name": "@libsql/http-stateless",
+  "name": "libsql-stateless",
   "version": "2.0.0",
   "homepage": "https://github.com/DaBigBlob/libsql-http-stateless#readme",
   "repository": {
