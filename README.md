@@ -107,15 +107,36 @@ This function returns a `Promise<Result<libsql_statement_result, libsql_error>>`
 `Result<T, R>` types have heen discussed above.
 
 ```ts
-import { libsql_statement_result, libsql_error } from "libsql-stateless"; //for mjs
+import { libsql_statement_result, libsql_error, libsql_column, libsql_value } from "libsql-stateless"; //for mjs
 //or
-{ libsql_statement_result, libsql_error } = require("libsql-stateless"); //for cjs
+{ libsql_statement_result, libsql_error, libsql_column, libsql_value } = require("libsql-stateless"); //for cjs
 
 //structure of libsql_error
 {
     "message": string;
     "code"?: string | null;
 }
+
+//structure of libsql_statement_result
+{
+    "cols": Array<libsql_column>,
+    "rows": Array<Array<libsql_value>>,
+    "affected_row_count": number, //uint32
+    "last_insert_rowid": string | null,
+}
+
+//structure of libsql_column
+{
+    "name": string | null,
+    "decltype": string | null,
+}
+
+//structure of libsql_value
+{ "type": "null" } |
+{ "type": "integer", "value": string } |
+{ "type": "float", "value": number } |
+{ "type": "text", "value": string } |
+{ "type": "blob", "base64": string };
 ```
 
 
