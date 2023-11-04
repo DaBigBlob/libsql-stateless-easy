@@ -149,7 +149,7 @@ import { execute } from "libsql-stateless"; //for mjs
 const res = await execute(conf, {sql: "SELECT * FROM mad_cats;"});
 //or
 const res = await execute(conf, {
-    sql: "SELECT madness, power_level FROM mad_cats where cat_id = ? and owner_name = ?;",
+    sql: "SELECT madness, power_level FROM mad_cats WHERE cat_id = ? AND owner_name = ?;",
     args: [
         {
             type: "integer",
