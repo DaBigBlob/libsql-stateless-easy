@@ -83,7 +83,7 @@ type ExecuteStreamResp = {
 }
 
 //## Statements
-type Stmt = {
+export type Stmt = {
     "sql"?: string | null,
     "args"?: Array<Value>,
     "named_args"?: Array<NamedArg>,
