@@ -141,7 +141,7 @@ export type BatchResult = {
 }
 
 //## Conditions
-type BatchCond =
+export type BatchCond =
     | { "type": "ok", "step": number } //uint32
     | { "type": "error", "step": number } //uint32
     | { "type": "not", "cond": BatchCond }
@@ -150,7 +150,7 @@ type BatchCond =
     | { "type": "is_autocommit" }
 
 //## Values
-type Value =
+export type Value =
     | { "type": "null" }
     | { "type": "integer", "value": string }
     | { "type": "float", "value": number }
