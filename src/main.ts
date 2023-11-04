@@ -9,7 +9,7 @@ export type libsqlConf = {
 
 export type libsql_value = Value;
 export type libsql_statement = {
-    "sql"?: string | null,
+    "sql": string,
     "args"?: Array<libsql_value>,
     "named_args"?: Array<{
         "name": string,
