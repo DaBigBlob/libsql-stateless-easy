@@ -1,4 +1,4 @@
-# libsql-http-stateless
+# libsql-stateless
 
 > libSQL http driver for TypeScript and JavaScript running with Web API.
 
