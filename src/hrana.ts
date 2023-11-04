@@ -46,9 +46,14 @@ type StreamResultOk = {
     "response": StreamResponse,
 }
 
-type StreamResultError = {
+export type StreamResultError = {
     "type": "error",
-    "error": Error,
+    "error": Error_,
+}
+
+export type Error_ = {
+    "message": string,
+    "code"?: string | null,
 }
 
 //## Requests
@@ -96,7 +101,7 @@ type NamedArg = {
 }
 
 //## Statement results
-type StmtResult = {
+export type StmtResult = {
     "cols": Array<Col>,
     "rows": Array<Array<Value>>,
     "affected_row_count": number, //uint32
