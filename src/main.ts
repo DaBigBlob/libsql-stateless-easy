@@ -1,4 +1,4 @@
-import { StreamResultError, hranaCheck, hranaFetch } from "./hrana"
+import { PipelineRespErrorBody, StreamResultError, hranaCheck, hranaFetch } from "./hrana"
 import { Err, Ok, Result } from "./return_types";
 
 //## types
@@ -54,7 +54,7 @@ export type libsql_batch_statement_result = {
 
 //## functions
 export async function execute(conf: libsqlConf, stmt: libsql_statement): Promise<Result<libsql_statement_result, libsql_error>> {
-    const res = (await hranaFetch({
+    const res = await hranaFetch({
         ...conf,
         req_json: {
             "baton": null,
@@ -68,17 +68,21 @@ export async function execute(conf: libsqlConf, stmt: libsql_statement): Promise
                 }
             ],
         }
-    })).results[0]; //this because [0] is where we executed the statement
+    });
 
-    if (
-        res.type=="ok" &&
-        res.response.type=="execute"
-    ) return Ok(res.response.result);
-    else return Err((res as StreamResultError).error);
+    if (res.isOk) {
+        const resu = res.val.results[0]; //this because [0] is where we executed the statement
+        if (
+            resu.type=="ok" &&
+            resu.response.type=="execute"
+        ) return Ok(resu.response.result);
+        else return Err((resu as StreamResultError).error);
+    }
+    else return Err({message: (res.err as PipelineRespErrorBody).error, code: null});
 }
 
 export async function executeBatch(conf: libsqlConf, batch_steps: Array<libsql_batch_statement_step>): Promise<Result<libsql_batch_statement_result, libsql_error>> {
-    const res = (await hranaFetch({
+    const res = await hranaFetch({
         ...conf,
         req_json: {
             "baton": null,
@@ -94,13 +98,17 @@ export async function executeBatch(conf: libsqlConf, batch_steps: Array<libsql_b
                 }
             ]
         }
-    })).results[0]; //this because [0] is where we executed the statement
+    });
 
-    if (
-        res.type=="ok" &&
-        res.response.type=="batch"
-    ) return Ok(res.response.result);
-    else return Err((res as StreamResultError).error);
+    if (res.isOk) {
+        const resu = res.val.results[0]; //this because [0] is where we executed the statement
+        if (
+            resu.type=="ok" &&
+            resu.response.type=="batch"
+        ) return Ok(resu.response.result);
+        else return Err((resu as StreamResultError).error);
+    }
+    else return Err({message: (res.err as PipelineRespErrorBody).error, code: null});
 }
 
 export async function serverCompatCheck(db_url: string): Promise<Result<undefined, undefined>> {
