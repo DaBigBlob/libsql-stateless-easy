@@ -1,14 +1,14 @@
 {
-  "name": "libsql-web-api-http-stateless-client",
+  "name": "@libsql/http-stateless",
   "version": "1.4.0",
-  "homepage": "https://github.com/DaBigBlob/libsql-web-api-http-stateless-client#readme",
+  "homepage": "https://github.com/DaBigBlob/TODO#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/DaBigBlob/libsql-web-api-http-stateless-client.git"
+    "url": "git+https://github.com/TODO"
   },
   "bugs": {
-    "url": "https://github.com/DaBigBlob/libsql-web-api-http-stateless-client/issues",
-    "email": "project@hostname.com"
+    "url": "https://github.com/DaBigBlob/TODO",
+    "email": "localboxcrox@gmail.com"
   },
   "main": "lib-cjs/main.js",
   "devDependencies": {
@@ -24,7 +24,7 @@
   "authors": [
     "DaBigBlob <localboxcrox@gmail.com>"
   ],
-  "description": "libSQL stateless http driver for TypeScript and JavaScript running with Web API",
+  "description": "libSQL stateless http driver for TypeScript and JavaScript",
   "files": [
     "lib-cjs/**",
     "lib-esm/**"
