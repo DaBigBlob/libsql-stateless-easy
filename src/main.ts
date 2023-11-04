@@ -1,4 +1,4 @@
-import { BatchCond, Error_, StmtResult, StreamResultError, Value, hranaCheck, hranaFetch } from "./hrana"
+import { StmtResult, StreamResultError, hranaCheck, hranaFetch } from "./hrana"
 import { Err, Ok, Result } from "./return_types";
 
 //## types
@@ -7,19 +7,33 @@ export type libsqlConf = {
     authToken?: string
 }
 
-export type libsql_value = Value;
+export type libsql_value = 
+    | { "type": "null" }
+    | { "type": "integer", "value": string }
+    | { "type": "float", "value": number }
+    | { "type": "text", "value": string }
+    | { "type": "blob", "base64": string };
 export type libsql_statement = {
     "sql": string,
     "args"?: Array<libsql_value>,
     "named_args"?: Array<{
         "name": string,
-        "value": Value,
+        "value": libsql_value,
     }>,
     "want_rows"?: boolean,
 };
 export type libsql_statement_result = StmtResult;
-export type libsql_error = Error_;
-export type libsql_batch_execution_condition = BatchCond;
+export type libsql_error = {
+    "message": string,
+    "code"?: string | null,
+};
+export type libsql_batch_execution_condition = 
+    | { "type": "ok", "step": number } //uint32
+    | { "type": "error", "step": number } //uint32
+    | { "type": "not", "cond": libsql_batch_execution_condition }
+    | { "type": "and", "conds": Array<libsql_batch_execution_condition> }
+    | { "type": "or", "conds": Array<libsql_batch_execution_condition> }
+    | { "type": "is_autocommit" };
 export type libsql_batch_statement_step = {
     "condition"?: libsql_batch_execution_condition | null,
     "stmt": libsql_statement,

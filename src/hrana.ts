@@ -1,4 +1,4 @@
-import { libsql_batch_statement_result, libsql_batch_statement_step, libsql_statement } from "./main";
+import { libsql_batch_statement_result, libsql_batch_statement_step, libsql_error, libsql_statement, libsql_value } from "./main";
 
 export async function hranaFetch(s: {
     db_url: string,
@@ -50,12 +50,7 @@ type StreamResultOk = {
 
 export type StreamResultError = {
     "type": "error",
-    "error": Error_,
-}
-
-export type Error_ = {
-    "message": string,
-    "code"?: string | null,
+    "error": libsql_error,
 }
 
 //## Requests
@@ -92,7 +87,7 @@ type ExecuteStreamResp = {
 //## Statement results
 export type StmtResult = {
     "cols": Array<Col>,
-    "rows": Array<Array<Value>>,
+    "rows": Array<Array<libsql_value>>,
     "affected_row_count": number, //uint32
     "last_insert_rowid": string | null,
 }
@@ -117,20 +112,3 @@ type BatchStreamResp = {
 type Batch = {
     "steps": Array<libsql_batch_statement_step>,
 }
-
-//## Conditions
-export type BatchCond =
-    | { "type": "ok", "step": number } //uint32
-    | { "type": "error", "step": number } //uint32
-    | { "type": "not", "cond": BatchCond }
-    | { "type": "and", "conds": Array<BatchCond> }
-    | { "type": "or", "conds": Array<BatchCond> }
-    | { "type": "is_autocommit" }
-
-//## Values
-export type Value =
-    | { "type": "null" }
-    | { "type": "integer", "value": string }
-    | { "type": "float", "value": number }
-    | { "type": "text", "value": string }
-    | { "type": "blob", "base64": string }
