@@ -43,7 +43,7 @@ export type libsql_batch_execution_condition =
     | { "type": "and", "conds": Array<libsql_batch_execution_condition> }
     | { "type": "or", "conds": Array<libsql_batch_execution_condition> }
     | { "type": "is_autocommit" };
-export type libsql_batch_statement_step = {
+export type libsql_batch_step = {
     "condition"?: libsql_batch_execution_condition | null,
     "stmt": libsql_statement,
 }
@@ -53,7 +53,7 @@ export type libsql_batch_statement_result = {
 }
 
 //## functions
-export async function execute(conf: libsqlConf, stmt: libsql_statement): Promise<Result<libsql_statement_result, libsql_error>> {
+export async function libsqlExecute(conf: libsqlConf, stmt: libsql_statement): Promise<Result<libsql_statement_result, libsql_error>> {
     const res = await hranaFetch({
         ...conf,
         req_json: {
@@ -81,7 +81,7 @@ export async function execute(conf: libsqlConf, stmt: libsql_statement): Promise
     else return Err({message: (res.err as PipelineRespErrorBody).error});
 }
 
-export async function executeBatch(conf: libsqlConf, batch_steps: Array<libsql_batch_statement_step>): Promise<Result<libsql_batch_statement_result, libsql_error>> {
+export async function libsqlBatch(conf: libsqlConf, batch_steps: Array<libsql_batch_step>): Promise<Result<libsql_batch_statement_result, libsql_error>> {
     const res = await hranaFetch({
         ...conf,
         req_json: {
@@ -111,7 +111,7 @@ export async function executeBatch(conf: libsqlConf, batch_steps: Array<libsql_b
     else return Err({message: (res.err as PipelineRespErrorBody).error});
 }
 
-export async function serverCompatCheck(db_url: string): Promise<Result<undefined, undefined>> {
+export async function libsqlServerCompatCheck(db_url: string): Promise<Result<undefined, undefined>> {
     if (await hranaCheck(db_url)) return Ok(undefined);
     else return Err(undefined);
 }

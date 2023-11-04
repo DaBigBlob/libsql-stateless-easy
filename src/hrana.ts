@@ -1,4 +1,4 @@
-import { libsql_batch_statement_result, libsql_batch_statement_step, libsql_error, libsql_statement, libsql_statement_result } from "./main";
+import { libsql_batch_statement_result, libsql_batch_step, libsql_error, libsql_statement, libsql_statement_result } from "./main";
 import { Err, Ok } from "./return_types";
 
 export async function hranaFetch(s: {
@@ -103,5 +103,5 @@ type BatchStreamResp = {
 
 //## Batches
 type Batch = {
-    "steps": Array<libsql_batch_statement_step>,
+    "steps": Array<libsql_batch_step>,
 }
