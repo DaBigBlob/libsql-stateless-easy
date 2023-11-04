@@ -24,7 +24,7 @@
   "authors": [
     "DaBigBlob <localboxcrox@gmail.com>"
   ],
-  "description": "libSQL stateless http driver for TypeScript and JavaScript",
+  "description": "thin libSQL stateless http driver for TypeScript and JavaScript",
   "files": [
     "lib-cjs/**",
     "lib-esm/**"
