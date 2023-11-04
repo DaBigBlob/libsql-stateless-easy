@@ -35,7 +35,7 @@ or:
     err: libsql_error
 }
 ```
-### Benifits of Result Type
+### Benefits of Result Type
 - No need of ugly try { } catch { }.
 - Elegant error handling:
 ```ts
