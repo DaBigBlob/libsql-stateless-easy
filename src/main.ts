@@ -33,6 +33,13 @@ type _ErrorResponse = {
     error: string
 }
 
+type _LibError = {
+    server_status_code: number,
+    server_status_text: string,
+    error: string,
+    server_response: any
+}
+
 
 
 //### function ###
@@ -51,17 +58,29 @@ export async function executeBatch(
         authToken?: string
     },
     statements: Array<sqlite_query>
-): Promise<Ok<Array<_QueryResponse>>|Err<Array<_QueryResponse|_ErrorResponse|null>>> {
-    const res = await (await fetch(config.url, {
+): Promise<Ok<Array<_QueryResponse|_ErrorResponse|null>>|Err<_LibError>> {
+    const res = await fetch(config.url, {
         method: 'POST',
         headers: (!config.authToken)?undefined:{'Authorization': 'Bearer '+config.authToken},
         body: JSON.stringify({statements})
-    })).json() as Array<_QueryResponse|_ErrorResponse|null>;
-    if (!res.find(qr => (
-        !qr || 
-        !!(qr as _ErrorResponse).error
-    ))) return Ok(res as Array<_QueryResponse>);
-    else return Err(res as Array<_QueryResponse|_ErrorResponse|null>);
+    });
+    if (res.ok) return Ok(await res.json() as Array<_QueryResponse|_ErrorResponse|null>);
+    else return Err({
+        server_status_code: res.status,
+        server_status_text: res.statusText,
+        error: "Bad response.",
+        server_response: res.body
+    });
+}
+
+export function extractBatchQueryResultRows(ok_result: Ok<Array<_QueryResponse|_ErrorResponse|null>>): Array<Array<Array<sqlite_value>>|null> {
+    return ok_result.val.map(e => {
+        if (
+            !e ||
+            (e as _ErrorResponse|null)?.error
+        ) return null;
+        else return (e as _QueryResponse).results.rows;
+    });
 }
 
 /** Execute an SQL statements. */
@@ -78,26 +97,18 @@ export async function execute(
         authToken?: string
     },
     statement: sqlite_query
-): Promise<Ok<_QueryResponse>|Err<_QueryResponse|_ErrorResponse>> {
+): Promise<Ok<_QueryResponse|_ErrorResponse|null>|Err<_LibError>> {
     const res = await executeBatch(config, [statement]);
     if (res.isOk) return Ok(res.val[0]);
-    else return Err(res.err[0] as _QueryResponse|_ErrorResponse);
+    else return Err(res.err);
 }
 
-export function extractBatchQueryResultRows(result: Ok<Array<_QueryResponse>>|Err<Array<_QueryResponse|_ErrorResponse|null>>): Array<Array<Array<sqlite_value>>|null> {
-    if (result.isOk) return result.val.map(e => e.results.rows);
-    else return result.err.map(e => {
-        if (
-            !e ||
-            (e as _ErrorResponse|null)?.error
-        ) return null;
-        else return (e as _QueryResponse).results.rows;
-    });
-}
-
-export function extractQueryResultRows(result: Ok<_QueryResponse>|Err<_QueryResponse|_ErrorResponse>): Array<Array<sqlite_value>>|null {
-    if (result.isOk) return result.val.results.rows;
-    else return null;
+export function extractQueryResultRows(ok_result: Ok<_QueryResponse|_ErrorResponse|null>): Array<Array<sqlite_value>>|null {
+    if (
+        !ok_result.val ||
+        (ok_result.val as _ErrorResponse|null)?.error
+    ) return null;
+    else return (ok_result.val as _QueryResponse).results.rows;
 }
 
 
@@ -113,6 +124,10 @@ export async function checkServerCompat(config: {
     /** Authentication token for the database. */
     authToken?: string
 }): Promise<Ok<undefined>|Err<undefined>> {
-    if ((await executeBatch(config, [""])).isOk) return Ok(undefined);
+    const res = await execute(config, "");
+    if (
+        res.isOk &&
+        extractQueryResultRows(res)===null
+    ) return Ok(undefined);
     else return Err(undefined);
 }
