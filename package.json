@@ -44,7 +44,7 @@
     "cloudflare-pages",
     "edge"
   ],
-  "license": "MIT",
+  "license": "LGPL-2.1-only",
   "scripts": {
     "prepublishOnly": "npm run build",
     "prebuild": "rm -rf ./lib-cjs ./lib-esm",
