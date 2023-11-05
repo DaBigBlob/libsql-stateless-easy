@@ -342,14 +342,14 @@ const res = await libsqlBatch(conf, [
 This function checks if the `db_url`'s server supports `Hrana HTTP API v3`.
 ### Type
 ```ts
-async function libsqlServerCompatCheck(db_url: string): Promise<Result<undefined, undefined>>;
+async function libsqlServerCompatCheck(db_url: string): Promise<Result<null, null>>;
 ```
 
 ### Parameters
  1. `db_url` of type `string`
 
 ### Returns
-This function returns a `Promise<Result<undefined, undefined>>` therefore `await` is used before it to get `Result<undefined, undefined>`.
+This function returns a `Promise<Result<null, null>>` therefore `await` is used before it to get `Result<null, null>`.
 
 `Result<T, R>` types have heen discussed above.
 
