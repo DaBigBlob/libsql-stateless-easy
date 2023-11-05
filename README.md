@@ -1,9 +1,12 @@
 # libsql-stateless
 
 > Thin libSQL stateless HTTP driver for TypeScript and JavaScript.
-- **Supported runtime environments:** Web API (browser, serverless), Bun, Node.js (>=18)
-- **Extremely thin:** Has no dependency, only has a few functions that implement the `Hrana v3 HTTP` protocol from scratch, and has no classes.
-- **Is built for:** Quick stateless query execution. (Mainly for serverless and edge functions.)
+- ✅ **Supported runtime environments:** Web API (browser, serverless), Bun, Node.js (>=18)
+- ✅ **Extremely thin:** Has no dependency, only has a few functions that implement the [`Hrana v3 HTTP`](https://github.com/tursodatabase/libsql/blob/main/libsql-server/docs/HRANA_3_SPEC.md) protocol from scratch, and has no classes (tend to hog memory).
+- ✅ **Does no extra computation.**
+- ✅ **Has no premature optimizations.**
+- ✅ **Is built for:** Quick stateless query execution. (Mainly for serverless and edge functions.)
+- ⚠️ **Supports everything in @libsql/client** except `transactions`.
 
 # Installation
 ```sh
@@ -358,6 +361,10 @@ const { libsqlServerCompatCheck } = require("libsql-stateless"); //for cjs
 
 const res = await libsqlServerCompatCheck(conf.db_url);
 ```
+
+# TODO
+- Add JS/TS Docs along with example snippets.
+- Finding the purpose of my existence.
 
 # Special Thanks
 - The Voices in my Head
