@@ -1,5 +1,4 @@
-import { PipelineRespErrorBody, StreamResultError, hranaCheck, hranaFetch } from "./hrana"
-import { Err, Ok, Result } from "./return_types";
+import { PipelineRespErrorBody, Result, StreamResultError, hranaFetch } from "./hrana"
 
 //## types
 export type libsql_conf = {
@@ -75,10 +74,10 @@ export async function libsqlExecute(conf: libsql_conf, stmt: libsql_statement): 
         if (
             resu.type=="ok" &&
             resu.response.type=="execute"
-        ) return Ok(resu.response.result);
-        else return Err((resu as StreamResultError).error);
+        ) return {isOk: true, val: resu.response.result};
+        else return {isOk: false, err: (resu as StreamResultError).error};
     }
-    else return Err({message: (res.err as PipelineRespErrorBody).error});
+    else return {isOk: false, err: {message: (res.err as PipelineRespErrorBody).error}};
 }
 
 export async function libsqlBatch(conf: libsql_conf, batch_steps: Array<libsql_batch_step>): Promise<Result<libsql_batch_statement_result, libsql_error>> {
@@ -105,13 +104,18 @@ export async function libsqlBatch(conf: libsql_conf, batch_steps: Array<libsql_b
         if (
             resu.type=="ok" &&
             resu.response.type=="batch"
-        ) return Ok(resu.response.result);
-        else return Err((resu as StreamResultError).error);
+        ) return {isOk: true, val: (resu.response.result)};
+        else return {isOk: false, err: (resu as StreamResultError).error};
     }
-    else return Err({message: (res.err as PipelineRespErrorBody).error});
+    else return {isOk: false, err: {message: (res.err as PipelineRespErrorBody).error}};
 }
 
-export async function libsqlServerCompatCheck(db_url: string): Promise<Result<undefined, undefined>> {
-    if (await hranaCheck(db_url)) return Ok(undefined);
-    else return Err(undefined);
+export async function libsqlServerCompatCheck(db_url: string): Promise<Result<null, null>> {
+    if ((await fetch(
+        `${db_url}/v3`,
+        {
+            method: 'GET'
+        }
+    )).ok) return {isOk: true, val: null};
+    else return {isOk: false, err: null};
 }

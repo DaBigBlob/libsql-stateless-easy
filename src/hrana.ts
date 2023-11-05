@@ -1,11 +1,14 @@
+//### Rsult Type
+export type Result<T, E> = { isOk: true, val: T}|{ isOk: false, err: E}
+
+//### Hrana Functions
 import { libsql_batch_statement_result, libsql_batch_step, libsql_error, libsql_statement, libsql_statement_result } from "./main";
-import { Err, Ok } from "./return_types";
 
 export async function hranaFetch(s: {
     db_url: string,
     authToken?: string,
     req_json: PipelineReqBody
-}) {
+}): Promise<Result<PipelineRespBody, PipelineRespErrorBody>> {
     const res = await fetch(
         `${s.db_url}/v3/pipeline`, //https://github.com/tursodatabase/libsql/blob/main/libsql-server/docs/HRANA_3_SPEC.md#execute-a-pipeline-of-requests-json
         {
@@ -14,17 +17,8 @@ export async function hranaFetch(s: {
             body: JSON.stringify(s.req_json)
         }
     );
-    if (res.ok) return Ok(await res.json() as PipelineRespBody);
-    else return Err(await res.json() as PipelineRespErrorBody);
-}
-
-export async function hranaCheck(db_url: string) {
-    return (await fetch(
-        `${db_url}/v3`,
-        {
-            method: 'GET'
-        }
-    )).ok;
+    if (res.ok) return {isOk: true, val: (await res.json() as PipelineRespBody)};
+    else return {isOk: false, err: (await res.json() as PipelineRespErrorBody)};
 }
 
 
