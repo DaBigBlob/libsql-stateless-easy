@@ -364,6 +364,7 @@ const res = await libsqlServerCompatCheck(conf.db_url);
 
 # TODO
 - Add JS/TS Docs along with example snippets.
+- Add Drizzle ORM support?
 - Finding the purpose of my existence.
 
 # Special Thanks

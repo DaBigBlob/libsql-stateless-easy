@@ -1,4 +1,4 @@
-import { PipelineRespErrorBody, Result, StreamResultError, hranaFetch } from "./hrana"
+import { Result, StreamResultError, hranaFetch } from "./hrana"
 
 //## types
 export type libsql_conf = {
@@ -77,7 +77,7 @@ export async function libsqlExecute(conf: libsql_conf, stmt: libsql_statement): 
         ) return {isOk: true, val: resu.response.result};
         else return {isOk: false, err: (resu as StreamResultError).error};
     }
-    else return {isOk: false, err: {message: (res.err as PipelineRespErrorBody).error}};
+    else return {isOk: false, err: {message: res.err.error}};
 }
 
 export async function libsqlBatch(conf: libsql_conf, batch_steps: Array<libsql_batch_step>): Promise<Result<libsql_batch_statement_result, libsql_error>> {
@@ -107,7 +107,7 @@ export async function libsqlBatch(conf: libsql_conf, batch_steps: Array<libsql_b
         ) return {isOk: true, val: (resu.response.result)};
         else return {isOk: false, err: (resu as StreamResultError).error};
     }
-    else return {isOk: false, err: {message: (res.err as PipelineRespErrorBody).error}};
+    else return {isOk: false, err: {message: res.err.error}};
 }
 
 export async function libsqlServerCompatCheck(db_url: string): Promise<Result<null, null>> {
