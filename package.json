@@ -1,6 +1,6 @@
 {
   "name": "libsql-stateless",
-  "version": "2.4.1",
+  "version": "2.4.2",
   "homepage": "https://github.com/DaBigBlob/libsql-stateless#readme",
   "repository": {
     "type": "git",
@@ -44,7 +44,7 @@
     "cloudflare-pages",
     "edge"
   ],
-  "license": "LGPL-2.1-only",
+  "license": "GPL-2.0-only",
   "scripts": {
     "prepublishOnly": "npm run build",
     "prebuild": "rm -rf ./lib-cjs ./lib-esm",
