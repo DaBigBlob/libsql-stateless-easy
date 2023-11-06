@@ -1,4 +1,4 @@
-import { Result, StreamResultError, hranaFetch } from "./hrana"
+import { Result, StreamResultError, hranaFetch } from "./hrana.js"
 
 //## types
 export type libsql_conf = {
