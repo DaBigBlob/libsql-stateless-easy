@@ -44,7 +44,7 @@ type StreamResOk<StreamResOkKind=CloseStreamResOk|ExecuteStreamResOk|BatchStream
     type: "ok",
     response:  StreamResOkKind
 }
-type StreamResErr = {
+export type StreamResErr = {
     type: "error",
     error: StreamResErrData
 }
@@ -61,7 +61,7 @@ type SQLStatement = {
 }
 
 //## BatchReqSteps =================================================================
-type BatchReqSteps = {
+export type BatchReqSteps = {
     condition?: BatchReqStepExecCond | null,
     stmt: SQLValues,
 }
@@ -112,7 +112,7 @@ type StatementResOkData = {
 }
 
 //## BatchStreamResOkData =================================================================
-type BatchStreamResOkData = {
+export type BatchStreamResOkData = {
     step_results: Array<StatementResOkData | null>,
     step_errors: Array<StreamResErrData | null>
 }
