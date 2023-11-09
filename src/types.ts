@@ -63,7 +63,7 @@ export type SQLStatement = {
 //## BatchReqSteps =================================================================
 export type BatchReqStep = {
     condition?: BatchReqStepExecCond | null,
-    stmt: SQLValues,
+    stmt: SQLStatement,
 }
 
 //## Stream Res Ok Kinds =================================================================
