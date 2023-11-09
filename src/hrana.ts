@@ -9,7 +9,6 @@ type PipelineReq = {
     baton: string | null,
     requests: Array<CloseStreamReq|ExecuteStreamReq|BatchStreamReq> //other types are not dealt with in this lib
 }
-    //## Stream Req Kinds ============================================================
     type CloseStreamReq = {
         type: "close",
     }
@@ -17,23 +16,27 @@ type PipelineReq = {
         type: "execute",
         stmt: SQLStatement
     }
-        //## SQLStatement =================================================================
         type SQLStatement = {
             sql: string,
-            args?: Array<libsql_value>,
+            args?: Array<SQLValues>,
             named_args?: Array<{
                 name: string,
-                value: libsql_value,
+                value: SQLValues,
             }>,
             want_rows?: boolean,
         }
+            type SQLValues = 
+                { type: "null" } |
+                { type: "integer", value: string } |
+                { type: "float", value: number } |
+                { type: "text", value: string } |
+                { type: "blob", base64: string };
     type BatchStreamReq = {
         type: "batch",
         batch: {
             steps: Array<BatchReqSteps>,
         }
     }
-        //## SQLBatchSteps ===================================================================
         type BatchReqSteps = {
             condition?: libsql_batch_execution_condition | null,
             stmt: libsql_statement,
