@@ -1,41 +1,22 @@
-import { libsqlType } from "libsql-stateless/.";
+import { Base64 } from 'js-base64';
+import { libsqlType } from 'libsql-stateless';
 
 type rawValues = null|bigint|number|string|Uint8Array;
 
 
-export const libsqlBuilder = { SQLStatement: SQLStatementB };
-// function Value(w: e.ObjectWriter, msg: proto.Value): void {
-//     if (msg === null) {
-//         w.stringRaw("type", "null");
-//     } else if (typeof msg === "bigint") {
-//         w.stringRaw("type", "integer");
-//         w.stringRaw("value", ""+msg);
-//     } else if (typeof msg === "number") {
-//         w.stringRaw("type", "float");
-//         w.number("value", msg);
-//     } else if (typeof msg === "string") {
-//         w.stringRaw("type", "text");
-//         w.string("value", msg);
-//     } else if (msg instanceof Uint8Array) {
-//         w.stringRaw("type", "blob");
-//         w.stringRaw("base64", Base64.fromUint8Array(msg));
-//     } else if (msg === undefined) {
-//         // do nothing
-//     } else {
-//         throw impossible(msg, "Impossible type of Value");
-//     }
-// }
+export const libsqlBuilder = {
+    SQLStatement: SQLStatementB,
+    SQLValue: SQLValueB
+};
+
 function SQLValueB(value: rawValues): libsqlType.SQLValue {
     if (value===null) return {type: "null"};
 
     if (typeof(value)==="bigint") return {type: "integer", value: ""+value};
     if (typeof(value)==="number") return {type: "float", value: value};
     if (typeof(value)==="string") return {type: "text", value: value};
-    if (value instanceof Uint8Array) {
-        const a = new FileReader
-    }
-    if (typeof(value)==="number") return {type: "float", value: value};
-    //last case
+    if (value instanceof Uint8Array) return {type: "blob", base64: Base64.fromUint8Array(value)};
+    throw new Error("Invalid Type.");
 }
 
 function SQLStatementB(
@@ -43,26 +24,38 @@ function SQLStatementB(
     args: Array<rawValues> | Record<string, rawValues> | null = null,
     want_rows: boolean = true
 ): libsqlType.SQLStatement {
-    let _args: Array<libsqlType.SQLValue>|undefined;
-    let _named_args: Array<{
-        name: string,
-        value: libsqlType.SQLValue,
-    }>|undefined;
+    
 
     if (args)
     if (Object.prototype.toString.call(args) === '[object Array]') {
-        const __args = args as Array<rawValues>;
-        for (let i=0;i<__args.length;i++) {
-            //if (typeof(__args[i]) === "null")
-        }
-    } else {
+        let p_args: Array<libsqlType.SQLValue>=[];
+        const _args = args as Array<rawValues>;
 
+        for (let i=0;i<_args.length;i++) p_args.push(SQLValueB(_args[i]));
+
+        return {
+            sql,
+            args: p_args,
+            want_rows
+        };
+    } else {
+        let p_named_args: Array<{
+            name: string,
+            value: libsqlType.SQLValue,
+        }>=[];
+        const _args = args as Record<string, rawValues>;
+
+        for (const key in _args) p_named_args.push({name: key, value: SQLValueB(_args[key])});
+
+        return {
+            sql,
+            named_args: p_named_args,
+            want_rows
+        };
     }
 
     return {
         sql,
-        args: _args,
-        named_args: _named_args,
         want_rows
     };
 }

@@ -66,6 +66,7 @@
     }
   },
   "dependencies": {
+    "js-base64": "^3.7.5",
     "libsql-stateless": "^2.5.0"
   }
 }
