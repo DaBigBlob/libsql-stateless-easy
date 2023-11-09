@@ -1,4 +1,4 @@
-import { BatchReqSteps, BatchStreamResOkData, Config, PipelineReq, PipelineResErr, PipelineResOk, Result, StreamResErr, StreamResErrData } from "./types";
+import { BatchReqSteps, BatchStreamResOkData, Config, PipelineReq, PipelineResErr, PipelineResOk, Result, SQLStatement, StatementResOkData, StreamResErr, StreamResErrData } from "./types";
 
 async function hranaFetch(s: {
     conf: Config,
@@ -16,22 +16,19 @@ async function hranaFetch(s: {
     else return {isOk: false, err: (await res.json() as PipelineResErr)};
 }
 
-export async function execute(conf: Config, stmt: libsql_statement): Promise<Result<libsql_statement_result, libsql_error>> {
-    const res = await hranaFetch({
-        ...conf,
-        req_json: {
-            "baton": null,
-            "requests": [
-                {
-                    "type": "execute",
-                    "stmt": stmt,
-                },
-                {
-                    "type": "close",
-                }
-            ],
-        }
-    });
+export async function execute(conf: Config, stmt: SQLStatement): Promise<Result<StatementResOkData, StreamResErrData>> {
+    const res = await hranaFetch({conf, req_json: {
+        baton: null,
+        requests: [
+            {
+                type: "execute",
+                stmt: stmt,
+            },
+            {
+                type: "close",
+            }
+        ]
+    }});
 
     if (res.isOk) {
         const resu = res.val.results[0]; //this because [0] is where we executed the statement
@@ -39,23 +36,23 @@ export async function execute(conf: Config, stmt: libsql_statement): Promise<Res
             resu.type=="ok" &&
             resu.response.type=="execute"
         ) return {isOk: true, val: resu.response.result};
-        else return {isOk: false, err: (resu as StreamResultError).error};
+        else return {isOk: false, err: (resu as StreamResErr).error}; //has to be StreamResErr
     }
-    else return {isOk: false, err: {message: res.err.error}};
+    else return {isOk: false, err: {message: res.err.error}};  //convert PipelineResErr to StreamResErrData
 }
 
 export async function batch(conf: Config, batch_steps: Array<BatchReqSteps>): Promise<Result<BatchStreamResOkData, StreamResErrData>> {
     const res = await hranaFetch({conf, req_json: {
-            baton: null,
-            requests: [
-                {
-                    type: "batch",
-                    batch: { steps: batch_steps }
-                },
-                {
-                    type: "close"
-                }
-            ]
+        baton: null,
+        requests: [
+            {
+                type: "batch",
+                batch: { steps: batch_steps }
+            },
+            {
+                type: "close"
+            }
+        ]
     }});
 
     if (res.isOk) {
@@ -64,7 +61,7 @@ export async function batch(conf: Config, batch_steps: Array<BatchReqSteps>): Pr
             resu.type=="ok" &&
             resu.response.type=="batch"
         ) return {isOk: true, val: (resu.response.result)};
-        else return {isOk: false, err: (resu as StreamResErr).error};
+        else return {isOk: false, err: (resu as StreamResErr).error}; //has to be StreamResErr
     }
-    else return {isOk: false, err: {message: res.err.error}};
+    else return {isOk: false, err: {message: res.err.error}}; //convert PipelineResErr to StreamResErrData
 }
