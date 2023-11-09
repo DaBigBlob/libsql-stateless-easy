@@ -24,14 +24,14 @@ export type PipelineResErr = {
 }
 
 //## StreamReqKind =============================================================
-type CloseStreamReq = {
+export type CloseStreamReq = {
     type: "close",
 }
-type ExecuteStreamReq = {
+export type ExecuteStreamReq = {
     type: "execute",
     stmt: SQLStatement
 }
-type BatchStreamReq = {
+export type BatchStreamReq = {
     type: "batch",
     batch: {
         steps: Array<BatchReqSteps>,
@@ -40,7 +40,7 @@ type BatchStreamReq = {
 //other types are not dealt with in this lib
 
 //## StreamResKind =============================================================
-type StreamResOk<StreamResOkKind=CloseStreamResOk|ExecuteStreamResOk|BatchStreamResOk> = {
+export type StreamResOk<StreamResOkKind=CloseStreamResOk|ExecuteStreamResOk|BatchStreamResOk> = {
     type: "ok",
     response:  StreamResOkKind
 }
@@ -50,7 +50,7 @@ export type StreamResErr = {
 }
 
 //## SQLStatement =================================================================
-type SQLStatement = {
+export type SQLStatement = {
     sql: string,
     args?: Array<SQLValues>,
     named_args?: Array<{
@@ -67,27 +67,27 @@ export type BatchReqSteps = {
 }
 
 //## Stream Res Ok Kinds =================================================================
-type CloseStreamResOk = {
+export type CloseStreamResOk = {
     type: "close",
 }
-type ExecuteStreamResOk = {
+export type ExecuteStreamResOk = {
     type: "execute",
     result: StatementResOkData
 }
-type BatchStreamResOk = {
+export type BatchStreamResOk = {
     type: "batch",
     result: BatchStreamResOkData,
 }
 //other types are not dealt with in this lib
 
 //## StreamResErrData =================================================================
-type StreamResErrData = {
+export type StreamResErrData = {
     message: string,
     code?: string | null
 }
 
 //## SQLValues =================================================================
-type SQLValues = 
+export type SQLValues = 
     { type: "null" } |
     { type: "integer", value: string } |
     { type: "float", value: number } |
@@ -95,7 +95,7 @@ type SQLValues =
     { type: "blob", base64: string };
 
 //## BatchReqStepExecCond =================================================================
-type BatchReqStepExecCond = 
+export type BatchReqStepExecCond = 
     { type: "ok", step: number } | //uint32: 0-based index in the steps array
     { type: "error", step: number } | //uint32: 0-based index in the steps array
     { type: "not", cond: BatchReqStepExecCond } |
@@ -104,7 +104,7 @@ type BatchReqStepExecCond =
     { type: "is_autocommit" };
 
 //## StatementResOkData =================================================================
-type StatementResOkData = {
+export type StatementResOkData = {
     cols: Array<SQLColumn>,
     rows: Array<Array<SQLValues>>,
     affected_row_count: number, //uint32
@@ -118,7 +118,7 @@ export type BatchStreamResOkData = {
 }
 
 //## SQLColumn =================================================================
-type SQLColumn = {
+export type SQLColumn = {
     name: string | null,
     decltype: string | null
 }

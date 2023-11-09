@@ -1,4 +1,4 @@
-import { BatchReqSteps, BatchStreamResOkData, Config, PipelineReq, PipelineResErr, PipelineResOk, Result, StreamResErr } from "./types";
+import { BatchReqSteps, BatchStreamResOkData, Config, PipelineReq, PipelineResErr, PipelineResOk, Result, StreamResErr, StreamResErrData } from "./types";
 
 async function hranaFetch(s: {
     conf: Config,
@@ -16,7 +16,7 @@ async function hranaFetch(s: {
     else return {isOk: false, err: (await res.json() as PipelineResErr)};
 }
 
-export async function batch(conf: Config, batch_steps: Array<BatchReqSteps>): Promise<Result<BatchStreamResOkData, StreamResErr>> {
+export async function batch(conf: Config, batch_steps: Array<BatchReqSteps>): Promise<Result<BatchStreamResOkData, StreamResErrData>> {
     const res = await hranaFetch({conf, req_json: {
             baton: null,
             requests: [
@@ -36,7 +36,7 @@ export async function batch(conf: Config, batch_steps: Array<BatchReqSteps>): Pr
             resu.type=="ok" &&
             resu.response.type=="batch"
         ) return {isOk: true, val: (resu.response.result)};
-        else return {isOk: false, err: (resu as StreamResultError).error};
+        else return {isOk: false, err: (resu as StreamResErr).error};
     }
     else return {isOk: false, err: {message: res.err.error}};
 }
