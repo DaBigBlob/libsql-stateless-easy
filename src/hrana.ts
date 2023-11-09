@@ -17,17 +17,34 @@ type PipelineReq = {
         type: "execute",
         stmt: SQLStatement
     }
+        //## SQLStatement =================================================================
+        type SQLStatement = {
+            sql: string,
+            args?: Array<libsql_value>,
+            named_args?: Array<{
+                name: string,
+                value: libsql_value,
+            }>,
+            want_rows?: boolean,
+        }
     type BatchStreamReq = {
         type: "batch",
         batch: {
             steps: Array<BatchReqSteps>,
         }
     }
+        //## SQLBatchSteps ===================================================================
+        type BatchReqSteps = {
+            condition?: libsql_batch_execution_condition | null,
+            stmt: libsql_statement,
+        }
+
 type PipelineResOk = {
     baton: string | null,
     base_url: string | null,
     results: Array<StreamResOk|StreamResErr>
 }
+
 type PipelineResErr = {
     error: string
 }
@@ -71,19 +88,5 @@ type BatchStreamResOk = {
         "step_errors": Array<libsql_error | null>,
     }
 
-//## SQLStatement =================================================================
-type SQLStatement = {
-    sql: string,
-    args?: Array<libsql_value>,
-    named_args?: Array<{
-        name: string,
-        value: libsql_value,
-    }>,
-    want_rows?: boolean,
-}
 
-//## SQLBatchSteps ===================================================================
-type BatchReqSteps = {
-    condition?: libsql_batch_execution_condition | null,
-    stmt: libsql_statement,
-}
+
