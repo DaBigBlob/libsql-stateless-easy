@@ -3,19 +3,18 @@ export type Result<T, E> = { isOk: true, val: T}|{ isOk: false, err: E}
 
 //### Hrana Types
 //url: https://github.com/tursodatabase/libsql/blob/main/libsql-server/docs/HRANA_3_SPEC.md#hrana-over-http
-export type a = PipelineReq|PipelineResOk|PipelineResErr;
 
 //## Pipeline Intractions =============================================================
-type PipelineReq<StreamReqKind=CloseStreamReq|ExecuteStreamReq|BatchStreamReq> = {
+export type PipelineReq<StreamReqKind=CloseStreamReq|ExecuteStreamReq|BatchStreamReq> = {
     baton: string | null,
     requests: Array<StreamReqKind>
 }
-type PipelineResOk<StreamResKind=StreamResOk|StreamResErr> = {
+export type PipelineResOk<StreamResKind=StreamResOk|StreamResErr> = {
     baton: string | null,
     base_url: string | null,
     results: Array<StreamResKind>
 }
-type PipelineResErr = {
+export type PipelineResErr = {
     error: string
 }
 
