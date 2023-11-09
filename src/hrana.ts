@@ -43,8 +43,8 @@ type StreamResErr = {
     error: StreamResErrData
 }
 type StreamResErrData = {
-    "message": string,
-    "code"?: string | null,
+    message: string,
+    code?: string | null
 }
 
 //## Stream Res Ok Kinds ============================================================
@@ -62,17 +62,17 @@ type BatchStreamResOk = {
 
 //## SQLStatement =================================================================
 type SQLStatement = {
-    "sql": string,
-    "args"?: Array<libsql_value>,
-    "named_args"?: Array<{
-        "name": string,
-        "value": libsql_value,
+    sql: string,
+    args?: Array<libsql_value>,
+    named_args?: Array<{
+        name: string,
+        value: libsql_value,
     }>,
-    "want_rows"?: boolean,
+    want_rows?: boolean,
 }
 
 //## SQLBatchSteps ===================================================================
 type BatchReqSteps = {
-    "condition"?: libsql_batch_execution_condition | null,
-    "stmt": libsql_statement,
+    condition?: libsql_batch_execution_condition | null,
+    stmt: libsql_statement,
 }
