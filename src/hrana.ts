@@ -9,6 +9,20 @@ type PipelineReq = {
     baton: string | null,
     requests: Array<CloseStreamReq|ExecuteStreamReq|BatchStreamReq> //other types are not dealt with in this lib
 }
+    //## Stream Req Kinds ============================================================
+    type CloseStreamReq = {
+        type: "close",
+    }
+    type ExecuteStreamReq = {
+        type: "execute",
+        stmt: SQLStatement
+    }
+    type BatchStreamReq = {
+        type: "batch",
+        batch: {
+            steps: Array<BatchReqSteps>,
+        }
+    }
 type PipelineResOk = {
     baton: string | null,
     base_url: string | null,
@@ -18,20 +32,7 @@ type PipelineResErr = {
     error: string
 }
 
-//## Stream Req Kinds ============================================================
-type CloseStreamReq = {
-    type: "close",
-}
-type ExecuteStreamReq = {
-    type: "execute",
-    stmt: SQLStatement
-}
-type BatchStreamReq = {
-    type: "batch",
-    batch: {
-        steps: Array<BatchReqSteps>,
-    }
-}
+
 
 //## Stream Res Kinds =======================================================
 type StreamResOk = {
