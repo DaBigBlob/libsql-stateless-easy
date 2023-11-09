@@ -24,7 +24,7 @@
   "authors": [
     "DaBigBlob <localboxcrox@gmail.com>"
   ],
-  "description": "thin libSQL stateless http driver for TypeScript and JavaScript",
+  "description": "helper for libsql-stateless",
   "files": [
     "lib-cjs/**",
     "lib-esm/**"
@@ -64,5 +64,8 @@
         "./lib-esm/main.d.ts"
       ]
     }
+  },
+  "dependencies": {
+    "libsql-stateless": "^2.5.0"
   }
 }
