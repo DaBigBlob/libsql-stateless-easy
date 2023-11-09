@@ -1,9 +1,14 @@
 //### Result Type
 export type Result<T, E> = { isOk: true, val: T}|{ isOk: false, err: E}
 
+//### Config Type
+export type Config = {
+    db_url: string,
+    authToken?: string
+}
+
 //### Hrana Types
 //url: https://github.com/tursodatabase/libsql/blob/main/libsql-server/docs/HRANA_3_SPEC.md#hrana-over-http
-
 //## Pipeline Intractions =============================================================
 export type PipelineReq<StreamReqKind=CloseStreamReq|ExecuteStreamReq|BatchStreamReq> = {
     baton: string | null,

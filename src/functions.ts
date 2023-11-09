@@ -1,11 +1,6 @@
-import { PipelineReq, PipelineResErr, PipelineResOk, Result } from "./types";
+import { Config, PipelineReq, PipelineResErr, PipelineResOk, Result } from "./types";
 
-
-async function hranaFetch(s: {
-    db_url: string,
-    authToken?: string,
-    req_json: PipelineReq
-}): Promise<Result<PipelineResOk, PipelineResErr>> {
+async function hranaFetch(s: Config & {req_json: PipelineReq}): Promise<Result<PipelineResOk, PipelineResErr>> {
     const res = await fetch(
         `${s.db_url}/v3/pipeline`, //https://github.com/tursodatabase/libsql/blob/main/libsql-server/docs/HRANA_3_SPEC.md#execute-a-pipeline-of-requests-json
         {
