@@ -9,7 +9,7 @@ export type Config = {
 
 //### Hrana Types
 //url: https://github.com/tursodatabase/libsql/blob/main/libsql-server/docs/HRANA_3_SPEC.md#hrana-over-http
-//## Pipeline Intractions =============================================================
+//## Pipeline Intractions ======================================================
 export type PipelineReq = {
     baton: string | null,
     requests: Array<CloseStreamReq|ExecuteStreamReq|BatchStreamReq>
