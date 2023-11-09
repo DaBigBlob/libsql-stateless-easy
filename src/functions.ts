@@ -79,3 +79,19 @@ export async function libsqlBatch(conf: Config, batch_steps: Array<BatchReqSteps
     }
     else return {isOk: false, err: {message: res.err.error}}; //convert PipelineResErr to StreamResErrData
 }
+
+/**
+ * @async
+ * @description Check if the server supports this library
+ * @param {Config} conf libsql's config for DB connection
+ * @returns {Promise<Result<null, null>>}
+ */
+export async function libsqlServerCompatCheck(conf: Config): Promise<Result<null, null>> {
+    if ((await fetch(
+        `${conf.db_url}/v3`,
+        {
+            method: 'GET'
+        }
+    )).ok) return {isOk: true, val: null};
+    else return {isOk: false, err: null};
+}
