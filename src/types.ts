@@ -49,10 +49,10 @@ export type StreamResErr = {
 //## SQLStatement ==============================================================
 export type SQLStatement = {
     sql: string,
-    args?: Array<SQLValues>,
+    args?: Array<SQLValue>,
     named_args?: Array<{
         name: string,
-        value: SQLValues,
+        value: SQLValue,
     }>,
     want_rows?: boolean,
 }
@@ -84,7 +84,7 @@ export type StreamResErrData = {
 }
 
 //## SQLValues =================================================================
-export type SQLValues = 
+export type SQLValue = 
     { type: "null" } |
     { type: "integer", value: string } |
     { type: "float", value: number } |
@@ -103,7 +103,7 @@ export type BatchReqStepExecCond =
 //## StatementResOkData ========================================================
 export type StatementResOkData = {
     cols: Array<SQLColumn>,
-    rows: Array<Array<SQLValues>>,
+    rows: Array<Array<SQLValue>>,
     affected_row_count: number, //uint32
     last_insert_rowid: string | null
 }
