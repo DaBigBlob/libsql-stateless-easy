@@ -42,10 +42,10 @@ type StreamResErr = {
     type: "error",
     error: StreamResErrData
 }
-type StreamResErrData = {
-    message: string,
-    code?: string | null
-}
+    type StreamResErrData = {
+        message: string,
+        code?: string | null
+    }
 
 //## Stream Res Ok Kinds ============================================================
 type CloseStreamResOk = {
@@ -53,12 +53,22 @@ type CloseStreamResOk = {
 }
 type ExecuteStreamResOk = {
     type: "execute",
-    result: libsql_statement_result,
+    result: ExecuteStreamResOkData
 }
+    type ExecuteStreamResOkData = {
+        "cols": Array<libsql_column>,
+        "rows": Array<Array<libsql_value>>,
+        "affected_row_count": number, //uint32
+        "last_insert_rowid": string | null,
+    }
 type BatchStreamResOk = {
     type: "batch",
-    result: libsql_batch_statement_result,
+    result: BatchStreamResOkData,
 }
+    type BatchStreamResOkData = {
+        "step_results": Array<libsql_statement_result | null>,
+        "step_errors": Array<libsql_error | null>,
+    }
 
 //## SQLStatement =================================================================
 type SQLStatement = {
