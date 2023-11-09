@@ -1,4 +1,7 @@
-import { BatchReqStep, BatchStreamResOkData, Config, Result, PipelineReq, PipelineResErr, PipelineResOk, SQLStatement, StatementResOkData, StreamResErr, StreamResErrData } from "./types";
+import { BatchReqStep, BatchStreamResOkData, Config, PipelineReq, PipelineResErr, PipelineResOk, SQLStatement, StatementResOkData, StreamResErr, StreamResErrData } from "./types";
+
+//inner begin
+type Result<T, E> = { isOk: true, val: T}|{ isOk: false, err: E}
 
 async function hranaFetch(s: {
     conf: Config,
@@ -15,6 +18,7 @@ async function hranaFetch(s: {
     if (res.ok) return {isOk: true, val: (await res.json() as PipelineResOk)};
     else return {isOk: false, err: (await res.json() as PipelineResErr)};
 }
+//inner end
 
 /**
  * @async
