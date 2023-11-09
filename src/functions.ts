@@ -17,7 +17,8 @@ async function hranaFetch(s: {
 }
 
 /**
- * 
+ * @async
+ * @description Executes exactly one (1) SQL statements.
  * @param {Config} conf libsql's config for DB connection
  * @param {SQLStatement} stmt libsql's raw API sql statement
  * @returns {Promise<Result<StatementResOkData, StreamResErrData>>}
@@ -48,7 +49,8 @@ export async function libsqlExecute(conf: Config, stmt: SQLStatement): Promise<R
 }
 
 /**
- * 
+ * @async
+ * @description Executes many SQL statements. Can be used to perform implicit transactions.
  * @param {Config} conf libsql's config for DB connection
  * @param {Array<BatchReqSteps>} batch_steps libsql's raw API sql batch steps
  * @returns {Promise<Result<BatchStreamResOkData, StreamResErrData>>}
