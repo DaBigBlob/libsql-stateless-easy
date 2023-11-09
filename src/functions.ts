@@ -1,5 +1,6 @@
 import { BatchReqStep, BatchStreamResOkData, LibsqlConfig, PipelineReq, PipelineResErr, PipelineResOk, SQLStatement, StatementResOkData, StreamResErr, StreamResErrData } from "./types";
 
+//begin inner
 type Result<T, E> = { isOk: true, val: T}|{ isOk: false, err: E}
 
 async function hranaFetch(s: {
@@ -17,6 +18,7 @@ async function hranaFetch(s: {
     if (res.ok) return {isOk: true, val: (await res.json() as PipelineResOk)};
     else return {isOk: false, err: (await res.json() as PipelineResErr)};
 }
+//end inner
 
 /**
  * @async
