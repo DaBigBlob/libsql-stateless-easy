@@ -22,7 +22,7 @@ async function hranaFetch(s: {
  * @param {SQLStatement} stmt libsql's raw API sql statement
  * @returns {Promise<Result<StatementResOkData, StreamResErrData>>}
  */
-export async function execute(conf: Config, stmt: SQLStatement): Promise<Result<StatementResOkData, StreamResErrData>> {
+export async function libsqlExecute(conf: Config, stmt: SQLStatement): Promise<Result<StatementResOkData, StreamResErrData>> {
     const res = await hranaFetch({conf, req_json: {
         baton: null,
         requests: [
@@ -53,7 +53,7 @@ export async function execute(conf: Config, stmt: SQLStatement): Promise<Result<
  * @param {Array<BatchReqSteps>} batch_steps libsql's raw API sql batch steps
  * @returns {Promise<Result<BatchStreamResOkData, StreamResErrData>>}
  */
-export async function batch(conf: Config, batch_steps: Array<BatchReqSteps>): Promise<Result<BatchStreamResOkData, StreamResErrData>> {
+export async function libsqlBatch(conf: Config, batch_steps: Array<BatchReqSteps>): Promise<Result<BatchStreamResOkData, StreamResErrData>> {
     const res = await hranaFetch({conf, req_json: {
         baton: null,
         requests: [
