@@ -6,20 +6,20 @@ export type Result<T, E> = { isOk: true, val: T}|{ isOk: false, err: E}
 export type a = PipelineReq|PipelineResOk|PipelineResErr;
 
 //## Pipeline Intractions =============================================================
-type PipelineReq = {
+type PipelineReq<StreamReqKind=CloseStreamReq|ExecuteStreamReq|BatchStreamReq> = {
     baton: string | null,
-    requests: Array<CloseStreamReq|ExecuteStreamReq|BatchStreamReq> //other types are not dealt with in this lib
+    requests: Array<StreamReqKind>
 }
-type PipelineResOk = {
+type PipelineResOk<StreamResKind=StreamResOk|StreamResErr> = {
     baton: string | null,
     base_url: string | null,
-    results: Array<StreamResOk|StreamResErr>
+    results: Array<StreamResKind>
 }
 type PipelineResErr = {
     error: string
 }
 
-//## Stream Req Kinds =============================================================
+//## StreamReqKind =============================================================
 type CloseStreamReq = {
     type: "close",
 }
@@ -33,11 +33,12 @@ type BatchStreamReq = {
         steps: Array<BatchReqSteps>,
     }
 }
+//other types are not dealt with in this lib
 
-//## Stream Res Kinds =============================================================
-type StreamResOk = {
+//## StreamResKind =============================================================
+type StreamResOk<StreamResOkKind=CloseStreamResOk|ExecuteStreamResOk|BatchStreamResOk> = {
     type: "ok",
-    response: CloseStreamResOk|ExecuteStreamResOk|BatchStreamResOk //other types are not dealt with in this lib
+    response:  StreamResOkKind
 }
 type StreamResErr = {
     type: "error",
@@ -73,6 +74,7 @@ type BatchStreamResOk = {
     type: "batch",
     result: BatchStreamResOkData,
 }
+//other types are not dealt with in this lib
 
 //## StreamResErrData =================================================================
 type StreamResErrData = {
