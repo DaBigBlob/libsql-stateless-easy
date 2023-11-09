@@ -1,3 +1,3 @@
 export * from './functions';
-export * from "./types";
+export * as libsqlType from "./types";
 

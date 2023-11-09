@@ -1,5 +1,8 @@
+//### Result Type
+export type Result<T, E> = { isOk: true, val: T}|{ isOk: false, err: E}
+
 //### Config Type
-export type LibsqlConfig = {
+export type Config = {
     db_url: string,
     authToken?: string
 }
