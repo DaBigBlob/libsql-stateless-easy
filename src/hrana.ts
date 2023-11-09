@@ -38,15 +38,34 @@ type PipelineReq = {
         }
     }
         type BatchReqSteps = {
-            condition?: libsql_batch_execution_condition | null,
-            stmt: libsql_statement,
+            condition?: BatchReqStepExecCond | null,
+            stmt: SQLValues,
         }
+            type BatchReqStepExecCond = 
+                { type: "ok", step: number } | //uint32: 0-based index in the steps array
+                { type: "error", step: number } | //uint32: 0-based index in the steps array
+                { type: "not", cond: BatchReqStepExecCond } |
+                { type: "and", conds: Array<BatchReqStepExecCond> } |
+                { type: "or", conds: Array<BatchReqStepExecCond> } |
+                { type: "is_autocommit" };
 
 type PipelineResOk = {
     baton: string | null,
     base_url: string | null,
     results: Array<StreamResOk|StreamResErr>
 }
+    type StreamResOk = {
+        type: "ok",
+        response: CloseStreamResOk|ExecuteStreamResOk|BatchStreamResOk //other types are not dealt with in this lib
+    }
+    type StreamResErr = {
+        type: "error",
+        error: StreamResErrData
+    }
+        type StreamResErrData = {
+            message: string,
+            code?: string | null
+        }
 
 type PipelineResErr = {
     error: string
@@ -55,18 +74,7 @@ type PipelineResErr = {
 
 
 //## Stream Res Kinds =======================================================
-type StreamResOk = {
-    type: "ok",
-    response: CloseStreamResOk|ExecuteStreamResOk|BatchStreamResOk //other types are not dealt with in this lib
-}
-type StreamResErr = {
-    type: "error",
-    error: StreamResErrData
-}
-    type StreamResErrData = {
-        message: string,
-        code?: string | null
-    }
+
 
 //## Stream Res Ok Kinds ============================================================
 type CloseStreamResOk = {
