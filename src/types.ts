@@ -49,7 +49,7 @@ export type StreamResErr = {
     error: StreamResErrData
 }
 
-//## SQLStatement =================================================================
+//## SQLStatement ==============================================================
 export type SQLStatement = {
     sql: string,
     args?: Array<SQLValues>,
@@ -60,13 +60,13 @@ export type SQLStatement = {
     want_rows?: boolean,
 }
 
-//## BatchReqSteps =================================================================
+//## BatchReqSteps =============================================================
 export type BatchReqStep = {
     condition?: BatchReqStepExecCond | null,
     stmt: SQLStatement,
 }
 
-//## Stream Res Ok Kinds =================================================================
+//## Stream Res Ok Kinds =======================================================
 export type CloseStreamResOk = {
     type: "close",
 }
@@ -80,7 +80,7 @@ export type BatchStreamResOk = {
 }
 //other types are not dealt with in this lib
 
-//## StreamResErrData =================================================================
+//## StreamResErrData ==========================================================
 export type StreamResErrData = {
     message: string,
     code?: string | null
@@ -94,7 +94,7 @@ export type SQLValues =
     { type: "text", value: string } |
     { type: "blob", base64: string };
 
-//## BatchReqStepExecCond =================================================================
+//## BatchReqStepExecCond ======================================================
 export type BatchReqStepExecCond = 
     { type: "ok", step: number } | //uint32: 0-based index in the steps array
     { type: "error", step: number } | //uint32: 0-based index in the steps array
@@ -103,7 +103,7 @@ export type BatchReqStepExecCond =
     { type: "or", conds: Array<BatchReqStepExecCond> } |
     { type: "is_autocommit" };
 
-//## StatementResOkData =================================================================
+//## StatementResOkData ========================================================
 export type StatementResOkData = {
     cols: Array<SQLColumn>,
     rows: Array<Array<SQLValues>>,
@@ -111,7 +111,7 @@ export type StatementResOkData = {
     last_insert_rowid: string | null
 }
 
-//## BatchStreamResOkData =================================================================
+//## BatchStreamResOkData ======================================================
 export type BatchStreamResOkData = {
     step_results: Array<StatementResOkData | null>,
     step_errors: Array<StreamResErrData | null>
