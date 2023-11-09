@@ -24,11 +24,11 @@ type CloseStreamReq = {
 }
 type ExecuteStreamReq = {
     type: "execute",
-    stmt: libsql_statement,
+    stmt: libsql_statement
 }
 type BatchStreamReq = {
     type: "batch",
-    batch: Batch,
+    batch: Batch
 }
 
 //## Stream Res Kinds =======================================================
@@ -38,7 +38,11 @@ type StreamResOk = {
 }
 type StreamResErr = {
     type: "error",
-    error: libsql_error,
+    error: StreamResErrData
+}
+type StreamResErrData = {
+    "message": string,
+    "code"?: string | null,
 }
 
 //## Stream Res Ok Kinds ============================================================
