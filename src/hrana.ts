@@ -99,20 +99,20 @@ type BatchReqStepExecCond =
 
 //## StatementResOkData =================================================================
 type StatementResOkData = {
-    "cols": Array<SQLColumn>,
-    "rows": Array<Array<SQLValues>>,
-    "affected_row_count": number, //uint32
-    "last_insert_rowid": string | null,
+    cols: Array<SQLColumn>,
+    rows: Array<Array<SQLValues>>,
+    affected_row_count: number, //uint32
+    last_insert_rowid: string | null
 }
 
 //## BatchStreamResOkData =================================================================
 type BatchStreamResOkData = {
-    "step_results": Array<StatementResOkData | null>,
-    "step_errors": Array<StreamResErrData | null>,
+    step_results: Array<StatementResOkData | null>,
+    step_errors: Array<StreamResErrData | null>
 }
 
 //## SQLColumn =================================================================
 type SQLColumn = {
-    "name": string | null,
-    "decltype": string | null,
+    name: string | null,
+    decltype: string | null
 }
