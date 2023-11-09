@@ -1,7 +1,9 @@
-import { BatchReqStep, BatchStreamResOkData, Config, PipelineReq, PipelineResErr, PipelineResOk, Result, SQLStatement, StatementResOkData, StreamResErr, StreamResErrData } from "./hrana_types";
+import { BatchReqStep, BatchStreamResOkData, LibsqlConfig, PipelineReq, PipelineResErr, PipelineResOk, SQLStatement, StatementResOkData, StreamResErr, StreamResErrData } from "./types";
+
+type Result<T, E> = { isOk: true, val: T}|{ isOk: false, err: E}
 
 async function hranaFetch(s: {
-    conf: Config,
+    conf: LibsqlConfig,
     req_json: PipelineReq
 }): Promise<Result<PipelineResOk, PipelineResErr>> {
     const res = await fetch(
@@ -23,7 +25,7 @@ async function hranaFetch(s: {
  * @param {SQLStatement} stmt libsql's raw API sql statement
  * @returns {Promise<Result<StatementResOkData, StreamResErrData>>}
  */
-export async function libsqlExecute(conf: Config, stmt: SQLStatement): Promise<Result<StatementResOkData, StreamResErrData>> {
+export async function libsqlExecute(conf: LibsqlConfig, stmt: SQLStatement): Promise<Result<StatementResOkData, StreamResErrData>> {
     const res = await hranaFetch({conf, req_json: {
         baton: null,
         requests: [
@@ -55,7 +57,7 @@ export async function libsqlExecute(conf: Config, stmt: SQLStatement): Promise<R
  * @param {Array<BatchReqSteps>} batch_steps libsql's raw API sql batch steps
  * @returns {Promise<Result<BatchStreamResOkData, StreamResErrData>>}
  */
-export async function libsqlBatch(conf: Config, batch_steps: Array<BatchReqStep>): Promise<Result<BatchStreamResOkData, StreamResErrData>> {
+export async function libsqlBatch(conf: LibsqlConfig, batch_steps: Array<BatchReqStep>): Promise<Result<BatchStreamResOkData, StreamResErrData>> {
     const res = await hranaFetch({conf, req_json: {
         baton: null,
         requests: [
@@ -86,7 +88,7 @@ export async function libsqlBatch(conf: Config, batch_steps: Array<BatchReqStep>
  * @param {Config} conf libsql's config for DB connection
  * @returns {Promise<Result<null, null>>}
  */
-export async function libsqlServerCompatCheck(conf: Config): Promise<Result<null, null>> {
+export async function libsqlServerCompatCheck(conf: LibsqlConfig): Promise<Result<null, null>> {
     if ((await fetch(
         `${conf.db_url}/v3`,
         {
