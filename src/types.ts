@@ -10,14 +10,14 @@ export type Config = {
 //### Hrana Types
 //url: https://github.com/tursodatabase/libsql/blob/main/libsql-server/docs/HRANA_3_SPEC.md#hrana-over-http
 //## Pipeline Intractions =============================================================
-export type PipelineReq<StreamReqKind=CloseStreamReq|ExecuteStreamReq|BatchStreamReq> = {
+export type PipelineReq = {
     baton: string | null,
-    requests: Array<StreamReqKind>
+    requests: Array<CloseStreamReq|ExecuteStreamReq|BatchStreamReq>
 }
-export type PipelineResOk<StreamResKind=StreamResOk|StreamResErr> = {
+export type PipelineResOk = {
     baton: string | null,
     base_url: string | null,
-    results: Array<StreamResKind>
+    results: Array<StreamResOk|StreamResErr>
 }
 export type PipelineResErr = {
     error: string
@@ -40,9 +40,9 @@ export type BatchStreamReq = {
 //other types are not dealt with in this lib
 
 //## StreamResKind =============================================================
-export type StreamResOk<StreamResOkKind=CloseStreamResOk|ExecuteStreamResOk|BatchStreamResOk> = {
+export type StreamResOk = {
     type: "ok",
-    response:  StreamResOkKind
+    response:  CloseStreamResOk|ExecuteStreamResOk|BatchStreamResOk
 }
 export type StreamResErr = {
     type: "error",
