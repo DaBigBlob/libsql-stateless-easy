@@ -1,4 +1,4 @@
-import { BatchReqStep, BatchStreamResOkData, Config, PipelineReq, PipelineResErr, PipelineResOk, Result, SQLStatement, StatementResOkData, StreamResErr, StreamResErrData } from "./types";
+import { BatchReqStep, BatchStreamResOkData, Config, PipelineReq, PipelineResErr, PipelineResOk, Result, SQLStatement, StatementResOkData, StreamResErr, StreamResErrData } from "./hrana_types";
 
 async function hranaFetch(s: {
     conf: Config,
