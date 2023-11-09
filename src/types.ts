@@ -34,7 +34,7 @@ export type ExecuteStreamReq = {
 export type BatchStreamReq = {
     type: "batch",
     batch: {
-        steps: Array<BatchReqSteps>,
+        steps: Array<BatchReqStep>,
     }
 }
 //other types are not dealt with in this lib
@@ -61,7 +61,7 @@ export type SQLStatement = {
 }
 
 //## BatchReqSteps =================================================================
-export type BatchReqSteps = {
+export type BatchReqStep = {
     condition?: BatchReqStepExecCond | null,
     stmt: SQLValues,
 }
