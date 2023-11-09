@@ -16,6 +16,12 @@ async function hranaFetch(s: {
     else return {isOk: false, err: (await res.json() as PipelineResErr)};
 }
 
+/**
+ * 
+ * @param {Config} conf libsql's config for DB connection
+ * @param {SQLStatement} stmt libsql's raw API sql statement
+ * @returns {Promise<Result<StatementResOkData, StreamResErrData>>}
+ */
 export async function execute(conf: Config, stmt: SQLStatement): Promise<Result<StatementResOkData, StreamResErrData>> {
     const res = await hranaFetch({conf, req_json: {
         baton: null,
@@ -41,6 +47,12 @@ export async function execute(conf: Config, stmt: SQLStatement): Promise<Result<
     else return {isOk: false, err: {message: res.err.error}};  //convert PipelineResErr to StreamResErrData
 }
 
+/**
+ * 
+ * @param {Config} conf libsql's config for DB connection
+ * @param {Array<BatchReqSteps>} batch_steps libsql's raw API sql batch steps
+ * @returns {Promise<Result<BatchStreamResOkData, StreamResErrData>>}
+ */
 export async function batch(conf: Config, batch_steps: Array<BatchReqSteps>): Promise<Result<BatchStreamResOkData, StreamResErrData>> {
     const res = await hranaFetch({conf, req_json: {
         baton: null,
