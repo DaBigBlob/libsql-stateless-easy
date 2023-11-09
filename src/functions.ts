@@ -1,7 +1,7 @@
 import { PipelineReq, PipelineResErr, PipelineResOk, Result } from "./types";
 
 
-export async function hranaFetch(s: {
+async function hranaFetch(s: {
     db_url: string,
     authToken?: string,
     req_json: PipelineReq
