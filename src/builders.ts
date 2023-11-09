@@ -22,8 +22,6 @@ function SQLStatementB(
     args: Array<rawValues> | Record<string, rawValues> | null = null,
     want_rows: boolean = true
 ): libsqlType.SQLStatement {
-    
-
     if (args)
     if (Object.prototype.toString.call(args) === '[object Array]') {
         let p_args: Array<libsqlType.SQLValue>=[];
