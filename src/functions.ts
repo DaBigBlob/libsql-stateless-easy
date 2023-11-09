@@ -16,6 +16,34 @@ async function hranaFetch(s: {
     else return {isOk: false, err: (await res.json() as PipelineResErr)};
 }
 
+export async function execute(conf: Config, stmt: libsql_statement): Promise<Result<libsql_statement_result, libsql_error>> {
+    const res = await hranaFetch({
+        ...conf,
+        req_json: {
+            "baton": null,
+            "requests": [
+                {
+                    "type": "execute",
+                    "stmt": stmt,
+                },
+                {
+                    "type": "close",
+                }
+            ],
+        }
+    });
+
+    if (res.isOk) {
+        const resu = res.val.results[0]; //this because [0] is where we executed the statement
+        if (
+            resu.type=="ok" &&
+            resu.response.type=="execute"
+        ) return {isOk: true, val: resu.response.result};
+        else return {isOk: false, err: (resu as StreamResultError).error};
+    }
+    else return {isOk: false, err: {message: res.err.error}};
+}
+
 export async function batch(conf: Config, batch_steps: Array<BatchReqSteps>): Promise<Result<BatchStreamResOkData, StreamResErrData>> {
     const res = await hranaFetch({conf, req_json: {
             baton: null,
