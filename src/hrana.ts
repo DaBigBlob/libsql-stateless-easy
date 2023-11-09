@@ -24,11 +24,13 @@ type CloseStreamReq = {
 }
 type ExecuteStreamReq = {
     type: "execute",
-    stmt: libsql_statement
+    stmt: SQLStatement
 }
 type BatchStreamReq = {
     type: "batch",
-    batch: Batch
+    batch: {
+        steps: Array<BatchReqSteps>,
+    }
 }
 
 //## Stream Res Kinds =======================================================
@@ -56,4 +58,21 @@ type ExecuteStreamResOk = {
 type BatchStreamResOk = {
     type: "batch",
     result: libsql_batch_statement_result,
+}
+
+//## SQLStatement =================================================================
+type SQLStatement = {
+    "sql": string,
+    "args"?: Array<libsql_value>,
+    "named_args"?: Array<{
+        "name": string,
+        "value": libsql_value,
+    }>,
+    "want_rows"?: boolean,
+}
+
+//## SQLBatchSteps ===================================================================
+type BatchReqSteps = {
+    "condition"?: libsql_batch_execution_condition | null,
+    "stmt": libsql_statement,
 }
