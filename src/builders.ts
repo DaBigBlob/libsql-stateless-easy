@@ -53,7 +53,7 @@ export function SQLStatementBuilder(s: string|{
 }
 
 //===========================================================
-export function BatchReqStepsBuilder (batch_queries: Array<string|{
+export function BatchReqStepsBuilder(batch_queries: Array<string|{
     sql: string,
     args: Array<rawValues> | Record<string, rawValues>,
     want_rows?: boolean
@@ -61,4 +61,30 @@ export function BatchReqStepsBuilder (batch_queries: Array<string|{
     let p_stmts: Array<libsqlType.BatchReqStep> = [];
     for (let i=0;i<batch_queries.length;i++) p_stmts.push({stmt: SQLStatementBuilder(batch_queries[i])});
     return p_stmts;
+}
+
+//===========================================================
+export function BatchReqStepExecCondBuilder(c: 
+    {
+        type: "ok";
+        step: number; //uint32: 0-based index in the steps array
+    } | 
+    {
+        type: "error";
+        step: number; //uint32: 0-based index in the steps array
+    } | 
+    {
+        type: "not";
+        cond: libsqlType.BatchReqStepExecCond;
+    } | {
+        type: "and";
+        conds: Array<libsqlType.BatchReqStepExecCond>;
+    } | {
+        type: "or";
+        conds: Array<libsqlType.BatchReqStepExecCond>;
+    } | {
+        type: "is_autocommit";
+    }
+): libsqlType.BatchReqStepExecCond {
+    return c;
 }
