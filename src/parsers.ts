@@ -8,7 +8,8 @@ export function SQLValueParser(value: libsqlSQLValue): rawValue {
     if (value.type==="null") return null;
     if (value.type==="integer") return BigInt(value.value);
     if (value.type==="float") return Number(value.value);
-    if (value.type==="text") return Base64.toUint8Array(value.value);
+    if (value.type==="text") return value.value;
+    if (value.type==="blob") return Base64.toUint8Array(value.base64);
     throw new Error("Invalid Type from Server.");
 }
 
