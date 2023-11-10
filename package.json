@@ -1,13 +1,13 @@
 {
   "name": "libsql-stateless-helper",
-  "version": "1.0.0",
-  "homepage": "https://github.com/DaBigBlob/libsql-stateless#readme",
+  "version": "1.0.1",
+  "homepage": "https://github.com/DaBigBlob/libsql-stateless-helper#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/DaBigBlob/libsql-stateless.git"
+    "url": "git+https://github.com/DaBigBlob/libsql-stateless-helper.git"
   },
   "bugs": {
-    "url": "https://github.com/DaBigBlob/libsql-stateless/issues",
+    "url": "https://github.com/DaBigBlob/libsql-stateless-helper/issues",
     "email": "localboxcrox@gmail.com"
   },
   "main": "lib-cjs/main.js",
