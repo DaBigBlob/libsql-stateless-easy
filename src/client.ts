@@ -1,9 +1,9 @@
-import { libsqlType } from "libsql-stateless";
+import { libsqlConfig } from "libsql-stateless";
 
 export class libsqlClient {
-    public readonly conf: libsqlType.Config;
+    public readonly conf: libsqlConfig;
 
-    constructor(conf: libsqlType.Config) {
+    constructor(conf: libsqlConfig) {
         this.conf = conf;
     }
 
