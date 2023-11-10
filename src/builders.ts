@@ -2,13 +2,8 @@ import { Base64 } from 'js-base64';
 import { libsqlType } from 'libsql-stateless';
 import { rawValues } from './types';
 
-export const libsqlBuilder = {
-    SQLStatement: SQLStatementB,
-    SQLValue: SQLValueB,
-    BatchReqSteps: BatchReqStepsB
-};
 //========================================================
-function SQLValueB(value: rawValues): libsqlType.SQLValue {
+export function SQLValueBuilder(value: rawValues): libsqlType.SQLValue {
     if (value===null) return {type: "null"};
 
     if (typeof(value)==="bigint") return {type: "integer", value: ""+value};
@@ -19,7 +14,7 @@ function SQLValueB(value: rawValues): libsqlType.SQLValue {
 }
 
 //========================================================
-function SQLStatementB(s: string|{
+export function SQLStatementBuilder(s: string|{
     sql: string,
     args: Array<rawValues> | Record<string, rawValues>,
     want_rows?: boolean
@@ -29,7 +24,7 @@ function SQLStatementB(s: string|{
         let p_args: Array<libsqlType.SQLValue>=[];
         const _args = s.args as Array<rawValues>;
 
-        for (let i=0;i<_args.length;i++) p_args.push(SQLValueB(_args[i]));
+        for (let i=0;i<_args.length;i++) p_args.push(SQLValueBuilder(_args[i]));
 
         return {
             sql: s.sql,
@@ -43,7 +38,7 @@ function SQLStatementB(s: string|{
         }>=[];
         const _args = s.args as Record<string, rawValues>;
 
-        for (const key in _args) p_named_args.push({name: key, value: SQLValueB(_args[key])});
+        for (const key in _args) p_named_args.push({name: key, value: SQLValueBuilder(_args[key])});
 
         return {
             sql: s.sql,
@@ -58,7 +53,7 @@ function SQLStatementB(s: string|{
 }
 
 //===========================================================
-function BatchReqStepsB (batch_queries: Array<{
+export function BatchReqStepsBuilder (batch_queries: Array<{
     sql: string,
     args?: Array<rawValues> | Record<string, rawValues>,
     want_rows?: boolean
