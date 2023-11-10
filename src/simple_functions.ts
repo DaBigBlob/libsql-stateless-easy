@@ -1,4 +1,10 @@
-import { libsqlExecute as LIBlibsqlExecute, libsqlBatch as LIBlibsqlBatch, libsqlConfig, libsqlBatchReqStep } from "libsql-stateless";
+import {
+    libsqlExecute as LIBlibsqlExecute,
+    libsqlBatch as LIBlibsqlBatch,
+    libsqlServerCompatCheck as LIBlibsqlServerCompatCheck,
+    libsqlConfig,
+    libsqlBatchReqStep
+} from "libsql-stateless";
 import { ResultSet, rawSQLStatement } from "./types";
 import { SQLStatementBuilder } from "./builders";
 import { libsqlBatchStreamResParser, libsqlStatementResParser } from "./parsers";
@@ -18,4 +24,7 @@ export async function libsqlBatch(conf: libsqlConfig, steps: Array<rawSQLStateme
     else throw Error(JSON.stringify(res.err));
 }
 
-export { libsqlServerCompatCheck } from 'libsql-stateless'
+export async function libsqlServerCompatCheck(conf: libsqlConfig) {
+    const res = await LIBlibsqlServerCompatCheck(conf);
+    return (res.isOk) ? true : false;
+}
