@@ -17,3 +17,5 @@ export async function libsqlBatch(conf: libsqlConfig, steps: Array<rawSQLStateme
     if (res.isOk) return libsqlBatchStreamResParser(res.val);
     else throw Error(JSON.stringify(res.err));
 }
+
+export { libsqlServerCompatCheck } from 'libsql-stateless'
