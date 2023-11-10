@@ -1,9 +1,9 @@
 import { Base64 } from 'js-base64';
-import { libsqlType } from 'libsql-stateless';
 import { rawValues } from './types';
+import { libsqlBatchReqStep, libsqlBatchReqStepExecCond, libsqlSQLStatement, libsqlSQLValue } from 'libsql-stateless';
 
 //========================================================
-export function SQLValueBuilder(value: rawValues): libsqlType.SQLValue {
+export function SQLValueBuilder(value: rawValues): libsqlSQLValue {
     if (value===null) return {type: "null"};
 
     if (typeof(value)==="bigint") return {type: "integer", value: ""+value};
@@ -18,10 +18,10 @@ export function SQLStatementBuilder(s: string|{
     sql: string,
     args: Array<rawValues> | Record<string, rawValues>,
     want_rows?: boolean
-}): libsqlType.SQLStatement {
+}): libsqlSQLStatement {
     if (typeof(s)!=="string")
     if (Object.prototype.toString.call(s.args) === '[object Array]') {
-        let p_args: Array<libsqlType.SQLValue>=[];
+        let p_args: Array<libsqlSQLValue>=[];
         const _args = s.args as Array<rawValues>;
 
         for (let i=0;i<_args.length;i++) p_args.push(SQLValueBuilder(_args[i]));
@@ -34,7 +34,7 @@ export function SQLStatementBuilder(s: string|{
     } else {
         let p_named_args: Array<{
             name: string,
-            value: libsqlType.SQLValue,
+            value: libsqlSQLValue,
         }>=[];
         const _args = s.args as Record<string, rawValues>;
 
@@ -57,8 +57,8 @@ export function BatchReqStepsBuilder(batch_queries: Array<string|{
     sql: string,
     args: Array<rawValues> | Record<string, rawValues>,
     want_rows?: boolean
-}>): Array<libsqlType.BatchReqStep> {
-    let p_stmts: Array<libsqlType.BatchReqStep> = [];
+}>): Array<libsqlBatchReqStep> {
+    let p_stmts: Array<libsqlBatchReqStep> = [];
     for (let i=0;i<batch_queries.length;i++) p_stmts.push({stmt: SQLStatementBuilder(batch_queries[i])});
     return p_stmts;
 }
@@ -75,16 +75,16 @@ export function BatchReqStepExecCondBuilder(c:
     } | 
     {
         type: "not";
-        cond: libsqlType.BatchReqStepExecCond;
+        cond: libsqlBatchReqStepExecCond;
     } | {
         type: "and";
-        conds: Array<libsqlType.BatchReqStepExecCond>;
+        conds: Array<libsqlBatchReqStepExecCond>;
     } | {
         type: "or";
-        conds: Array<libsqlType.BatchReqStepExecCond>;
+        conds: Array<libsqlBatchReqStepExecCond>;
     } | {
         type: "is_autocommit";
     }
-): libsqlType.BatchReqStepExecCond {
+): libsqlBatchReqStepExecCond {
     return c;
 }
