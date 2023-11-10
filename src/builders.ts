@@ -4,9 +4,10 @@ import { rawValues } from './types';
 
 export const libsqlBuilder = {
     SQLStatement: SQLStatementB,
-    SQLValue: SQLValueB
+    SQLValue: SQLValueB,
+    BatchReqSteps: BatchReqStepsB
 };
-
+//========================================================
 function SQLValueB(value: rawValues): libsqlType.SQLValue {
     if (value===null) return {type: "null"};
 
@@ -17,41 +18,50 @@ function SQLValueB(value: rawValues): libsqlType.SQLValue {
     throw new Error("Invalid Type.");
 }
 
-function SQLStatementB(
+//========================================================
+function SQLStatementB(s: string|{
     sql: string,
-    args: Array<rawValues> | Record<string, rawValues> | null = null,
-    want_rows: boolean = true
-): libsqlType.SQLStatement {
-    if (args)
-    if (Object.prototype.toString.call(args) === '[object Array]') {
+    args: Array<rawValues> | Record<string, rawValues>,
+    want_rows?: boolean
+}): libsqlType.SQLStatement {
+    if (typeof(s)!=="string")
+    if (Object.prototype.toString.call(s.args) === '[object Array]') {
         let p_args: Array<libsqlType.SQLValue>=[];
-        const _args = args as Array<rawValues>;
+        const _args = s.args as Array<rawValues>;
 
         for (let i=0;i<_args.length;i++) p_args.push(SQLValueB(_args[i]));
 
         return {
-            sql,
+            sql: s.sql,
             args: p_args,
-            want_rows
+            want_rows: s.want_rows
         };
     } else {
         let p_named_args: Array<{
             name: string,
             value: libsqlType.SQLValue,
         }>=[];
-        const _args = args as Record<string, rawValues>;
+        const _args = s.args as Record<string, rawValues>;
 
         for (const key in _args) p_named_args.push({name: key, value: SQLValueB(_args[key])});
 
         return {
-            sql,
+            sql: s.sql,
             named_args: p_named_args,
-            want_rows
+            want_rows: s.want_rows
         };
     }
 
     return {
-        sql,
-        want_rows
+        sql: s
     };
+}
+
+//===========================================================
+function BatchReqStepsB (batch_queries: Array<{
+    sql: string,
+    args?: Array<rawValues> | Record<string, rawValues>,
+    want_rows?: boolean
+}>) {
+    return batch_queries;
 }
