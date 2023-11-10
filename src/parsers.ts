@@ -1,4 +1,4 @@
-import { libsqlSQLValue, libsqlStatementResOkData } from "libsql-stateless";
+import { libsqlBatchStreamResOkData, libsqlSQLValue, libsqlStatementResOkData } from "libsql-stateless";
 import { ResultSet, Row, rawValue } from "./types";
 import { Base64 } from "js-base64";
 
@@ -62,4 +62,15 @@ export function libsqlStatementResParser(
         rowsAffected: res.affected_row_count,
         lastInsertRowid: (res.last_insert_rowid) ? BigInt(res.last_insert_rowid) : undefined
     }
+}
+
+export function libsqlBatchStreamResParser(
+    res: libsqlBatchStreamResOkData
+): Array<ResultSet> {
+    let batchResults: Array<ResultSet> = [];
+    for (let j=0;j<res.step_results.length;j++) {
+        if (res.step_results[j]) batchResults.push(libsqlStatementResParser(res.step_results[j]!));
+        else throw Error("Batch didn't execute successfully.");
+    }
+    return batchResults;
 }
