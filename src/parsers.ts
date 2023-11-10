@@ -64,6 +64,7 @@ export function libsqlStatementResParser(
     }
 }
 
+//========================================================
 export function libsqlBatchStreamResParser(
     res: libsqlBatchStreamResOkData
 ): Array<ResultSet> {
