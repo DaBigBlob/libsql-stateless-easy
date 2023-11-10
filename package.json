@@ -1,13 +1,13 @@
 {
-  "name": "libsql-stateless-helper",
+  "name": "libsql-stateless-easy",
   "version": "1.0.2",
-  "homepage": "https://github.com/DaBigBlob/libsql-stateless-helper#readme",
+  "homepage": "https://github.com/DaBigBlob/libsql-stateless-easy#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/DaBigBlob/libsql-stateless-helper.git"
+    "url": "git+https://github.com/DaBigBlob/libsql-stateless-easy.git"
   },
   "bugs": {
-    "url": "https://github.com/DaBigBlob/libsql-stateless-helper/issues",
+    "url": "https://github.com/DaBigBlob/libsql-stateless-easy/issues",
     "email": "localboxcrox@gmail.com"
   },
   "main": "lib-cjs/main.js",
@@ -24,7 +24,7 @@
   "authors": [
     "DaBigBlob <localboxcrox@gmail.com>"
   ],
-  "description": "helper for libsql-stateless",
+  "description": "this makes using libsql-stateless easy",
   "files": [
     "lib-cjs/**",
     "lib-esm/**"
@@ -54,6 +54,7 @@
     "postbuild": "cp package-cjs.json ./lib-cjs/package.json",
     "typecheck": "tsc --noEmit",
     "test": "bun run _tests/test2.ts",
+    "test2": "bun run _tests/test3.ts",
     "clean": "npm run prebuild",
     "prod": "npm publish && npm run clean"
   },
