@@ -1,5 +1,5 @@
 import { Base64 } from 'js-base64';
-import { rawValue } from './types';
+import { rawSQLStatement, rawValue } from './types';
 import { libsqlBatchReqStep, libsqlBatchReqStepExecCond, libsqlSQLStatement, libsqlSQLValue } from 'libsql-stateless';
 
 //========================================================
@@ -14,11 +14,7 @@ export function SQLValueBuilder(value: rawValue): libsqlSQLValue {
 }
 
 //========================================================
-export function SQLStatementBuilder(s: string|{
-    sql: string,
-    args: Array<rawValue> | Record<string, rawValue>,
-    want_rows?: boolean
-}): libsqlSQLStatement {
+export function SQLStatementBuilder(s: rawSQLStatement): libsqlSQLStatement {
     if (typeof(s)!=="string")
     if (Object.prototype.toString.call(s.args) === '[object Array]') {
         let p_args: Array<libsqlSQLValue>=[];
@@ -53,11 +49,7 @@ export function SQLStatementBuilder(s: string|{
 }
 
 //===========================================================
-export function BatchReqStepsBuilder(batch_queries: Array<string|{
-    sql: string,
-    args: Array<rawValue> | Record<string, rawValue>,
-    want_rows?: boolean
-}>): Array<libsqlBatchReqStep> {
+export function BatchReqStepsBuilder(batch_queries: Array<rawSQLStatement>): Array<libsqlBatchReqStep> {
     let p_stmts: Array<libsqlBatchReqStep> = [];
     for (let i=0;i<batch_queries.length;i++) p_stmts.push({stmt: SQLStatementBuilder(batch_queries[i])});
     return p_stmts;
