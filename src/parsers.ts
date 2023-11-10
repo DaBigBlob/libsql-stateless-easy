@@ -1,8 +1,6 @@
-import { libsqlPipelineResErr, libsqlResult, libsqlSQLValue, libsqlStatementResOkData, libsqlStreamResErrData } from "libsql-stateless";
+import { libsqlSQLValue, libsqlStatementResOkData } from "libsql-stateless";
 import { ResultSet, Row, rawValue } from "./types";
 import { Base64 } from "js-base64";
-import { SQLValueBuilder } from "./builders";
-
 
 
 //========================================================
@@ -16,36 +14,51 @@ export function SQLValueParser(value: libsqlSQLValue): rawValue {
 
 //========================================================
 //from hrana-client-ts/src/result.ts
-function rowFromProto(
-    colNames: Array<string | undefined>,
-    values: Array<rawValue>
-): Row {
-    const row = {};
-    // make sure that the "length" property is not enumerable
-    Object.defineProperty(row, "length", { value: values.length });
-    for (let i = 0; i < values.length; ++i) {
-        const value = SQLValueBuilder(values[i]);
-        Object.defineProperty(row, i, { value });
+// function rowFromRawValue(
+//     colNames: Array<string | undefined>,
+//     values: Array<rawValue>
+// ): Row {
+//     const row = {};
+//     // make sure that the "length" property is not enumerable
+//     Object.defineProperty(row, "length", { value: values.length });
+//     for (let i = 0; i < values.length; ++i) {
+//         const value = values[i];
+//         Object.defineProperty(row, i, { value });
 
-        const colName = colNames[i];
-        if (colName !== undefined && !Object.hasOwn(row, colName)) {
-            Object.defineProperty(row, colName, { value, enumerable: true });
-        }
-    }
-    return row as Row;
-}
+//         const colName = colNames[i];
+//         if (colName !== undefined && !Object.hasOwn(row, colName)) {
+//             Object.defineProperty(row, colName, { value, enumerable: true });
+//         }
+//     }
+//     return row as Row;
+// }
 
 //========================================================
-export function libsqlExecuteResParser(
-    res: libsqlResult<libsqlStatementResOkData, libsqlStreamResErrData|libsqlPipelineResErr>
+export function libsqlStatementResParser(
+    res: libsqlStatementResOkData
 ): ResultSet {
-    if (res.isOk) {
+    let Rows: Array<Row> = [];
 
-        return {
-            rows: [],
-            columns: [],
-            rowsAffected: 0,
-            lastInsertRowid: BigInt(1)
+    for (let i=0;i<res.rows.length;i++) {
+        const row = {};
+
+        Object.defineProperty(row, "length", { value: res.rows[i].length });
+        for (let j=0;j<res.rows[i].length;j++) {
+            const value = SQLValueParser(res.rows[i][j]);
+            Object.defineProperty(row, j, { value });
+
+            const colName = res.cols[j].name!;
+            if (colName !== undefined && !Object.hasOwn(row, colName)) {
+                Object.defineProperty(row, colName, { value, enumerable: true });
+            }
         }
-    } else throw Error("Data not Ok: "+res.err);
+        Rows.push(row as Row);
+    }
+
+    return {
+        rows: Rows,
+        columns: res.cols.map(c => c.name!),
+        rowsAffected: res.affected_row_count,
+        lastInsertRowid: (res.last_insert_rowid) ? BigInt(res.last_insert_rowid) : undefined
+    }
 }
