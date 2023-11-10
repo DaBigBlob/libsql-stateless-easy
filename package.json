@@ -54,7 +54,7 @@
     "postbuild": "cp package-cjs.json ./lib-cjs/package.json",
     "typecheck": "tsc --noEmit",
     "test": "bun run _tests/test2.ts",
-    "test2": "bun run _tests/test3.ts",
+    "test4": "bun run _tests/test4.ts",
     "clean": "npm run prebuild",
     "prod": "npm publish && npm run clean"
   },
