@@ -1,3 +1,3 @@
-# libsql-stateless-helper
+# libsql-stateless-easy
 
 ## under works
