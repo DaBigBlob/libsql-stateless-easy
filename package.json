@@ -54,17 +54,11 @@
     "postbuild": "cp package-cjs.json ./lib-cjs/package.json",
     "typecheck": "tsc --noEmit",
     "test": "bun run _tests/test2.ts",
-    "clean": "npm run prebuild"
+    "clean": "npm run prebuild",
+    "prod": "npm publish && npm run clean"
   },
   "type": "module",
   "types": "lib-esm/main.d.ts",
-  "typesVersions": {
-    "*": {
-      ".": [
-        "./lib-esm/main.d.ts"
-      ]
-    }
-  },
   "dependencies": {
     "js-base64": "^3.7.5",
     "libsql-stateless": "^2.5.2"
