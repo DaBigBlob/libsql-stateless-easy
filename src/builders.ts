@@ -1,9 +1,9 @@
 import { Base64 } from 'js-base64';
-import { rawValues } from './types';
+import { rawValue } from './types';
 import { libsqlBatchReqStep, libsqlBatchReqStepExecCond, libsqlSQLStatement, libsqlSQLValue } from 'libsql-stateless';
 
 //========================================================
-export function SQLValueBuilder(value: rawValues): libsqlSQLValue {
+export function SQLValueBuilder(value: rawValue): libsqlSQLValue {
     if (value===null) return {type: "null"};
 
     if (typeof(value)==="bigint") return {type: "integer", value: ""+value};
@@ -16,13 +16,13 @@ export function SQLValueBuilder(value: rawValues): libsqlSQLValue {
 //========================================================
 export function SQLStatementBuilder(s: string|{
     sql: string,
-    args: Array<rawValues> | Record<string, rawValues>,
+    args: Array<rawValue> | Record<string, rawValue>,
     want_rows?: boolean
 }): libsqlSQLStatement {
     if (typeof(s)!=="string")
     if (Object.prototype.toString.call(s.args) === '[object Array]') {
         let p_args: Array<libsqlSQLValue>=[];
-        const _args = s.args as Array<rawValues>;
+        const _args = s.args as Array<rawValue>;
 
         for (let i=0;i<_args.length;i++) p_args.push(SQLValueBuilder(_args[i]));
 
@@ -36,7 +36,7 @@ export function SQLStatementBuilder(s: string|{
             name: string,
             value: libsqlSQLValue,
         }>=[];
-        const _args = s.args as Record<string, rawValues>;
+        const _args = s.args as Record<string, rawValue>;
 
         for (const key in _args) p_named_args.push({name: key, value: SQLValueBuilder(_args[key])});
 
@@ -55,7 +55,7 @@ export function SQLStatementBuilder(s: string|{
 //===========================================================
 export function BatchReqStepsBuilder(batch_queries: Array<string|{
     sql: string,
-    args: Array<rawValues> | Record<string, rawValues>,
+    args: Array<rawValue> | Record<string, rawValue>,
     want_rows?: boolean
 }>): Array<libsqlBatchReqStep> {
     let p_stmts: Array<libsqlBatchReqStep> = [];
