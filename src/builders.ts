@@ -53,10 +53,12 @@ export function SQLStatementBuilder(s: string|{
 }
 
 //===========================================================
-export function BatchReqStepsBuilder (batch_queries: Array<{
+export function BatchReqStepsBuilder (batch_queries: Array<string|{
     sql: string,
-    args?: Array<rawValues> | Record<string, rawValues>,
+    args: Array<rawValues> | Record<string, rawValues>,
     want_rows?: boolean
-}>) {
-    return batch_queries;
+}>): Array<libsqlType.BatchReqStep> {
+    let p_stmts: Array<libsqlType.BatchReqStep> = [];
+    for (let i=0;i<batch_queries.length;i++) p_stmts.push({stmt: SQLStatementBuilder(batch_queries[i])});
+    return p_stmts;
 }
