@@ -56,6 +56,7 @@
     "typecheck": "tsc --noEmit",
     "test": "bun run _tests/test2.ts",
     "test4": "bun run _tests/test4.ts",
+    "perf": "bun run _tests/perf.ts",
     "clean": "npm run prebuild",
     "prod": "npm publish && npm run clean"
   },
