@@ -63,8 +63,8 @@ I'll complete it when I have more time.
 Feel free to explore them (or even contribute to the documentation!)
 ```ts
 import {
-    SQLValueBuilder, SQLStatementBuilder, BatchReqStepsBuilder,
-    BatchReqStepExecCondBuilder, SQLValueParser, libsqlStatementResParser,
+    libsqlValueBuilder, libsqlStatementBuilder, libsqlBatchReqStepsBuilder,
+    libsqlBatchReqStepExecCondBuilder, libsqlValueParser, libsqlStatementResParser,
     libsqlBatchStreamResParser,
     libsqlExecute, //has easier API than `libsql-stateless`'s function of the same name
     libsqlBatch, //has easier API than `libsql-stateless`'s function of the same name
