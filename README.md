@@ -19,7 +19,7 @@ $ bun add libsql-stateless-easy
 ```
 
 # Client Usage
-`libsql-stateless-client`'s `client` has the *same* semantics as [`@libsql/client/web`](https://docs.turso.tech/libsql/client-access/javascript-typescript-sdk#create-a-database-client-object-for-local-and-remote-access)
+`libsql-stateless-easy`'s `client` has the *same* semantics as [`@libsql/client/web`](https://docs.turso.tech/libsql/client-access/javascript-typescript-sdk#create-a-database-client-object-for-local-and-remote-access)
 ```ts
     import { createClient } from "libsql-stateless-easy";
     //or
