@@ -1,6 +1,6 @@
 {
   "name": "libsql-stateless-easy",
-  "version": "1.0.3",
+  "version": "1.2.0",
   "homepage": "https://github.com/DaBigBlob/libsql-stateless-easy#readme",
   "repository": {
     "type": "git",
@@ -21,9 +21,10 @@
       "require": "./lib-cjs/main.js"
     }
   },
-  "authors": [
-    "DaBigBlob <localboxcrox@gmail.com>"
-  ],
+  "author": {
+    "name": "LocalBox Crox",
+    "email": "localboxcrox@gmail.com"
+  },
   "description": "this makes using libsql-stateless easy",
   "files": [
     "lib-cjs/**",
