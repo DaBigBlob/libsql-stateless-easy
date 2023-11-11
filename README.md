@@ -21,6 +21,10 @@ $ bun add libsql-stateless-easy
 # Client Usage
 `libsql-stateless-client`'s `client` has the *same* semantics as [`@libsql/client/web`](https://docs.turso.tech/libsql/client-access/javascript-typescript-sdk#create-a-database-client-object-for-local-and-remote-access)
 ```ts
+    import { createClient } from "libsql-stateless-easy";
+    //or
+    const { createClient } = require("libsql-stateless-easy");
+
     const client = createClient({
         db_url: "https://da-fish-mandible.turso.io",
         authToken: "fksdgfgksdgfksdg.javsdKDGKSBkgsdfg289374dg"
@@ -52,6 +56,21 @@ $ bun add libsql-stateless-easy
     const res3 = await client.serverOk();
     if (res3) console.log("Server Compat Check OK");
     else console.error("Server Compat Check NOT OK");
+```
+# This Documentation is incomplete
+I'll complete it when I have more time.
+### List of other stuff in this library
+Feel free to explore them (or even contribute to the documentation!)
+```ts
+import {
+    SQLValueBuilder, SQLStatementBuilder, BatchReqStepsBuilder,
+    BatchReqStepExecCondBuilder, SQLValueParser, libsqlStatementResParser,
+    libsqlBatchStreamResParser,
+    libsqlExecute, //has easier API than `libsql-stateless`'s function of the same name
+    libsqlBatch, //has easier API than `libsql-stateless`'s function of the same name
+    libsqlServerCompatCheck, //has easier API than `libsql-stateless`'s function of the same name
+    createClient //used above
+} from "libsql-stateless-easy";
 ```
 
 # TODO (roadmap)

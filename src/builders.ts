@@ -3,7 +3,7 @@ import { rawSQLStatement, rawValue } from './types';
 import { libsqlBatchReqStep, libsqlBatchReqStepExecCond, libsqlSQLStatement, libsqlSQLValue } from 'libsql-stateless';
 
 //========================================================
-export function SQLValueBuilder(value: rawValue): libsqlSQLValue {
+export function libsqlValueBuilder(value: rawValue): libsqlSQLValue {
     if (value===null) return {type: "null"};
 
     if (typeof(value)==="bigint") return {type: "integer", value: ""+value};
@@ -14,13 +14,13 @@ export function SQLValueBuilder(value: rawValue): libsqlSQLValue {
 }
 
 //========================================================
-export function SQLStatementBuilder(s: rawSQLStatement): libsqlSQLStatement {
+export function libsqlStatementBuilder(s: rawSQLStatement): libsqlSQLStatement {
     if (typeof(s)!=="string")
     if (Object.prototype.toString.call(s.args) === '[object Array]') {
         let p_args: Array<libsqlSQLValue>=[];
         const _args = s.args as Array<rawValue>;
 
-        for (let i=0;i<_args.length;i++) p_args.push(SQLValueBuilder(_args[i]));
+        for (let i=0;i<_args.length;i++) p_args.push(libsqlValueBuilder(_args[i]));
 
         return {
             sql: s.sql,
@@ -34,7 +34,7 @@ export function SQLStatementBuilder(s: rawSQLStatement): libsqlSQLStatement {
         }>=[];
         const _args = s.args as Record<string, rawValue>;
 
-        for (const key in _args) p_named_args.push({name: key, value: SQLValueBuilder(_args[key])});
+        for (const key in _args) p_named_args.push({name: key, value: libsqlValueBuilder(_args[key])});
 
         return {
             sql: s.sql,
@@ -49,14 +49,14 @@ export function SQLStatementBuilder(s: rawSQLStatement): libsqlSQLStatement {
 }
 
 //===========================================================
-export function BatchReqStepsBuilder(batch_queries: Array<rawSQLStatement>): Array<libsqlBatchReqStep> {
+export function libsqlBatchReqStepsBuilder(batch_queries: Array<rawSQLStatement>): Array<libsqlBatchReqStep> {
     let p_stmts: Array<libsqlBatchReqStep> = [];
-    for (let i=0;i<batch_queries.length;i++) p_stmts.push({stmt: SQLStatementBuilder(batch_queries[i])});
+    for (let i=0;i<batch_queries.length;i++) p_stmts.push({stmt: libsqlStatementBuilder(batch_queries[i])});
     return p_stmts;
 }
 
 //===========================================================
-export function BatchReqStepExecCondBuilder(c: 
+export function libsqlBatchReqStepExecCondBuilder(c: 
     {
         type: "ok";
         step: number; //uint32: 0-based index in the steps array

@@ -4,7 +4,7 @@ import { Base64 } from "js-base64";
 
 
 //========================================================
-export function SQLValueParser(value: libsqlSQLValue): rawValue {
+export function libsqlValueParser(value: libsqlSQLValue): rawValue {
     if (value.type==="null") return null;
     if (value.type==="integer") return BigInt(value.value);
     if (value.type==="float") return Number(value.value);
@@ -45,7 +45,7 @@ export function libsqlStatementResParser(
 
         Object.defineProperty(row, "length", { value: res.rows[i].length });
         for (let j=0;j<res.rows[i].length;j++) {
-            const value = SQLValueParser(res.rows[i][j]);
+            const value = libsqlValueParser(res.rows[i][j]);
             Object.defineProperty(row, j, { value });
 
             const colName = res.cols[j].name!;
