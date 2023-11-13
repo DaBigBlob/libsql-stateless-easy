@@ -66,7 +66,7 @@ export class MisuseError extends ClientError {
 
 
 /** Error thrown by the client. */
-class LibsqlError extends Error {
+export class LibsqlError extends Error {
     /** Machine-readable error code. */
     code: string;
     /** Raw numeric error code */
