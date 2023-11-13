@@ -16,7 +16,7 @@ export async function libsqlExecute(conf: libsqlConfig, stmt: rawSQLStatement): 
         if (res.isOk) return libsqlStatementResParser(res.val);
         else {
             if (res.err.kind==="LIBSQL_SERVER_ERROR") throw new HttpServerError(res.err.error_data.server_message, res.err.error_data.http_status_code);
-            else throw new ResponseError("SQL statement failed.", res.err.error_data);
+            else throw new ResponseError(res.err.error_data.message, res.err.error_data);
         }
     } catch (e) {
         throw mapHranaError(e);
@@ -32,7 +32,7 @@ export async function libsqlBatch(conf: libsqlConfig, steps: Array<rawSQLStateme
         if (res.isOk) return libsqlBatchStreamResParser(res.val);
         else {
             if (res.err.kind==="LIBSQL_SERVER_ERROR") throw new HttpServerError(res.err.error_data.server_message, res.err.error_data.http_status_code);
-            else throw new ResponseError("SQL batch failed.", res.err.error_data);
+            else throw new ResponseError(res.err.error_data.message, res.err.error_data);
         }
     } catch (e) {
         throw mapHranaError(e);
