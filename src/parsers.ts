@@ -1,6 +1,7 @@
 import { libsqlBatchStreamResOkData, libsqlSQLValue, libsqlStatementResOkData } from "libsql-stateless";
 import { ResultSet, Row, rawValue } from "./types";
 import { Base64 } from "js-base64";
+import { ProtoError, ResponseError } from "./errors";
 
 
 //========================================================
@@ -10,7 +11,7 @@ export function libsqlValueParser(value: libsqlSQLValue): rawValue {
     if (value.type==="float") return Number(value.value);
     if (value.type==="text") return value.value;
     if (value.type==="blob") return Base64.toUint8Array(value.base64);
-    throw new Error("Invalid Type from Server.");
+    throw new ProtoError("Invalid data type from server. Cannot parse.");
 }
 
 //========================================================
@@ -71,7 +72,7 @@ export function libsqlBatchStreamResParser(
     let batchResults: Array<ResultSet> = [];
     for (let j=0;j<res.step_results.length;j++) {
         if (res.step_results[j]) batchResults.push(libsqlStatementResParser(res.step_results[j]!));
-        else throw Error("Entire batch didn't execute successfully.");
+        else throw new ResponseError("One or more failed SQL statements in batch.", res.step_errors[j]!);
     }
     return batchResults;
 }

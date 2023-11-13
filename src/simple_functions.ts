@@ -8,11 +8,15 @@ import {
 import { ResultSet, rawSQLStatement } from "./types";
 import { libsqlStatementBuilder } from "./builders";
 import { libsqlBatchStreamResParser, libsqlStatementResParser } from "./parsers";
+import { HttpServerError, ResponseError } from "./errors";
 
 export async function libsqlExecute(conf: libsqlConfig, stmt: rawSQLStatement): Promise<ResultSet> {
     const res = await LIBlibsqlExecute(conf, libsqlStatementBuilder(stmt));
     if (res.isOk) return libsqlStatementResParser(res.val);
-    else throw Error(JSON.stringify(res.err));
+    else {
+        if (res.err.kind==="LIBSQL_SERVER_ERROR") throw new HttpServerError(res.err.error_data.server_message, res.err.error_data.http_status_code);
+        else throw new ResponseError("SQL statement failed.", res.err.error_data);
+    }
 }
 
 export async function libsqlBatch(conf: libsqlConfig, steps: Array<rawSQLStatement>): Promise<Array<ResultSet>> {
@@ -21,7 +25,10 @@ export async function libsqlBatch(conf: libsqlConfig, steps: Array<rawSQLStateme
 
     const res = await LIBlibsqlBatch(conf, _steps);
     if (res.isOk) return libsqlBatchStreamResParser(res.val);
-    else throw Error(JSON.stringify(res.err));
+    else {
+        if (res.err.kind==="LIBSQL_SERVER_ERROR") throw new HttpServerError(res.err.error_data.server_message, res.err.error_data.http_status_code);
+        else throw new ResponseError("SQL batch failed.", res.err.error_data);
+    }
 }
 
 export async function libsqlServerCompatCheck(conf: libsqlConfig) {
