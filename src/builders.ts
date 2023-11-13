@@ -1,7 +1,7 @@
 import { Base64 } from 'js-base64';
-import { rawSQLStatement, rawValue } from './types';
+import { rawSQLStatement, rawValue } from './types.js';
 import { libsqlBatchReqStep, libsqlBatchReqStepExecCond, libsqlSQLStatement, libsqlSQLValue } from 'libsql-stateless';
-import { InternalError } from './errors';
+import { InternalError } from './errors.js';
 
 //========================================================
 export function libsqlValueBuilder(value: rawValue): libsqlSQLValue {

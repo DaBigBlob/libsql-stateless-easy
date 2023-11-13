@@ -1,6 +1,6 @@
 
-export * from './builders';
-export * from './parsers';
-export * from './functions';
-export * from './client';
-export * from './drizzle';
+export * from './builders.js';
+export * from './parsers.js';
+export * from './functions.js';
+export * from './client.js';
+export * from './drizzle.js';

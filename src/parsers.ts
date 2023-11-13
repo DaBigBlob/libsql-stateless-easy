@@ -1,7 +1,7 @@
 import { libsqlBatchStreamResOkData, libsqlSQLValue, libsqlStatementResOkData } from "libsql-stateless";
-import { ResultSet, Row, rawValue } from "./types";
+import { ResultSet, Row, rawValue } from "./types.js";
 import { Base64 } from "js-base64";
-import { ProtoError, ResponseError } from "./errors";
+import { ProtoError, ResponseError } from "./errors.js";
 
 
 //========================================================

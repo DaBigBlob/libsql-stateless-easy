@@ -1,5 +1,5 @@
 import { libsqlConfig } from "libsql-stateless";
-import { rawSQLStatement } from "./types";
+import { rawSQLStatement } from "./types.js";
 import { libsqlBatch, libsqlExecute, libsqlServerCompatCheck } from "./functions";
 
 class libsqlClient {

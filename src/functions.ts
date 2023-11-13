@@ -5,10 +5,10 @@ import {
     libsqlConfig,
     libsqlBatchReqStep
 } from "libsql-stateless";
-import { ResultSet, rawSQLStatement } from "./types";
-import { libsqlStatementBuilder } from "./builders";
-import { libsqlBatchStreamResParser, libsqlStatementResParser } from "./parsers";
-import { HttpServerError, ResponseError, mapHranaError } from "./errors";
+import { ResultSet, rawSQLStatement } from "./types.js";
+import { libsqlStatementBuilder } from "./builders.js";
+import { libsqlBatchStreamResParser, libsqlStatementResParser } from "./parsers.js";
+import { HttpServerError, ResponseError, mapHranaError } from "./errors.js";
 
 export async function libsqlExecute(conf: libsqlConfig, stmt: rawSQLStatement): Promise<ResultSet> {
     try {
