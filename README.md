@@ -58,7 +58,7 @@ $ bun add libsql-stateless-easy
     else console.error("Server Compat Check NOT OK");
 ```
 
-# This library has the exact `LibsqlError` api as `@libsql/client`
+- This library has the exact `LibsqlError` api as `@libsql/client`
 
 # This Documentation is incomplete
 I'll complete it when I have more time.
