@@ -19,7 +19,7 @@ $ bun add libsql-stateless-easy
 ```
 
 # Client Usage
-`libsql-stateless-easy`'s `client` has the *same* semantics as [`@libsql/client/web`](https://docs.turso.tech/libsql/client-access/javascript-typescript-sdk#create-a-database-client-object-for-local-and-remote-access)
+`libsql-stateless-easy`'s `client` has the exact same API as [`@libsql/client/web`](https://docs.turso.tech/libsql/client-access/javascript-typescript-sdk#create-a-database-client-object-for-local-and-remote-access)'s `client`'s `batch` and `execute`.
 ```ts
     import { createClient } from "libsql-stateless-easy";
     //or
@@ -58,7 +58,7 @@ $ bun add libsql-stateless-easy
     else console.error("Server Compat Check NOT OK");
 ```
 
-- This library has the exact `LibsqlError` api as `@libsql/client`
+- This library has the exact `LibsqlError` API as `@libsql/client`
 
 # This Documentation is incomplete
 I'll complete it when I have more time.
