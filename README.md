@@ -19,7 +19,7 @@ $ bun add libsql-stateless-easy
 ```
 
 # Client Usage
-`libsql-stateless-easy`'s `client` has the exact same API as [`@libsql/client/web`](https://docs.turso.tech/libsql/client-access/javascript-typescript-sdk#create-a-database-client-object-for-local-and-remote-access)'s `client`'s `batch` and `execute`.
+`libsql-stateless-easy`'s `client`'s `batch` and `execute` have the exact same API as [`@libsql/client/web`](https://docs.turso.tech/libsql/client-access/javascript-typescript-sdk#create-a-database-client-object-for-local-and-remote-access)'s `client`'s `batch` and `execute`.
 ```ts
     import { createClient } from "libsql-stateless-easy";
     //or
