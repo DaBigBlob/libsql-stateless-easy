@@ -72,7 +72,7 @@ export function libsqlBatchStreamResParser(
     let batchResults: Array<ResultSet> = [];
     for (let j=0;j<res.step_results.length;j++) {
         if (res.step_results[j]) batchResults.push(libsqlStatementResParser(res.step_results[j]!));
-        else throw new ResponseError("An SQL statements in batch.", res.step_errors[j]!);
+        else throw new ResponseError(res.step_errors[j]?.message!, res.step_errors[j]!);
     }
     return batchResults;
 }

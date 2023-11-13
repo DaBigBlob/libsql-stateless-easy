@@ -15,8 +15,8 @@ export async function libsqlExecute(conf: libsqlConfig, stmt: rawSQLStatement): 
         const res = await LIBlibsqlExecute(conf, libsqlStatementBuilder(stmt));
         if (res.isOk) return libsqlStatementResParser(res.val);
         else {
-            if (res.err.kind==="LIBSQL_SERVER_ERROR") throw new HttpServerError(res.err.error_data.server_message, res.err.error_data.http_status_code);
-            else throw new ResponseError(res.err.error_data.message, res.err.error_data);
+            if (res.err.kind==="LIBSQL_SERVER_ERROR") throw new HttpServerError(res.err.server_message||"Server encountered error.", res.err.http_status_code);
+            else throw new ResponseError(res.err.data.message, res.err.data);
         }
     } catch (e) {
         throw mapHranaError(e);
@@ -31,8 +31,8 @@ export async function libsqlBatch(conf: libsqlConfig, steps: Array<rawSQLStateme
         const res = await LIBlibsqlBatch(conf, _steps);
         if (res.isOk) return libsqlBatchStreamResParser(res.val);
         else {
-            if (res.err.kind==="LIBSQL_SERVER_ERROR") throw new HttpServerError(res.err.error_data.server_message, res.err.error_data.http_status_code);
-            else throw new ResponseError(res.err.error_data.message, res.err.error_data);
+            if (res.err.kind==="LIBSQL_SERVER_ERROR") throw new HttpServerError(res.err.server_message||"Server encountered error.", res.err.http_status_code);
+            else throw new ResponseError(res.err.data.message, res.err.data);
         }
     } catch (e) {
         throw mapHranaError(e);

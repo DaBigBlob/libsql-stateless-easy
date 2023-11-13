@@ -1,6 +1,6 @@
 {
   "name": "libsql-stateless-easy",
-  "version": "1.3.5",
+  "version": "1.3.6",
   "homepage": "https://github.com/DaBigBlob/libsql-stateless-easy#readme",
   "repository": {
     "type": "git",
@@ -64,6 +64,6 @@
   "types": "lib-esm/main.d.ts",
   "dependencies": {
     "js-base64": "^3.7.5",
-    "libsql-stateless": "^2.6.0"
+    "libsql-stateless": "^2.7.0"
   }
 }
