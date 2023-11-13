@@ -1,6 +1,6 @@
 import { libsqlConfig } from "libsql-stateless";
 import { rawSQLStatement } from "./types";
-import { libsqlBatch, libsqlExecute, libsqlServerCompatCheck } from "./simple_functions";
+import { libsqlBatch, libsqlExecute, libsqlServerCompatCheck } from "./functions";
 
 class libsqlClient {
     private readonly conf: libsqlConfig;

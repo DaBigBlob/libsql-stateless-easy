@@ -63,3 +63,44 @@ export class MisuseError extends ClientError {
         this.name = "MisuseError";
     }
 }
+
+
+/** Error thrown by the client. */
+class LibsqlError extends Error {
+    /** Machine-readable error code. */
+    code: string;
+    /** Raw numeric error code */
+    rawCode?: number;
+    
+    constructor(message: string, code: string, rawCode?: number, cause?: Error) {
+        if (code !== undefined) {
+            message = `${code}: ${message}`;
+        }
+        super(message, { cause });
+        this.code = code;
+        this.rawCode = rawCode
+        this.name = "LibsqlError";
+    }
+}
+
+function mapHranaErrorCode(e: ClientError): string {
+    if (e instanceof ResponseError && e.code !== undefined) {
+        return e.code;
+    } else if (e instanceof ProtoError) {
+        return "HRANA_PROTO_ERROR";
+    } else if (e instanceof HttpServerError) {
+        return "SERVER_ERROR";
+    } else if (e instanceof InternalError) {
+        return "INTERNAL_ERROR";
+    } else {
+        return "UNKNOWN";
+    }
+}
+
+export function mapHranaError(e: unknown): unknown {
+    if (e instanceof ClientError) {
+        const code = mapHranaErrorCode(e);
+        return new LibsqlError(e.message, code, undefined, e);
+    }
+    return e;
+}
