@@ -57,6 +57,9 @@ $ bun add libsql-stateless-easy
     if (res3) console.log("Server Compat Check OK");
     else console.error("Server Compat Check NOT OK");
 ```
+
+# This library has the exact `LibsqlError` api as `@libsql/client`
+
 # This Documentation is incomplete
 I'll complete it when I have more time.
 ### List of other stuff in this library
