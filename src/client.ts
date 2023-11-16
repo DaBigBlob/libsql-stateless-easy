@@ -91,6 +91,26 @@ class libsqlClient {
         throw new InternalError("'libsql-stateless' is stateless and does not support interactive transactions. Use this.batch() instead.");
     }
 
+    /** Execute a sequence of SQL statements separated by semicolons.
+     *
+     * The statements are executed sequentially on a new logical database connection. If a statement fails,
+     * further statements are not executed and this method throws an error. All results from the statements
+     * are ignored.
+     *
+     * We do not wrap the statements in a transaction, but the SQL can contain explicit transaction-control
+     * statements such as `BEGIN` and `COMMIT`.
+     *
+     * This method is intended to be used with existing SQL scripts, such as migrations or small database
+     * dumps. If you want to execute a sequence of statements programmatically, please use {@link batch}
+     * instead.
+     *
+     * ```javascript
+     * await client.executeMultiple(`
+     *     CREATE TABLE books (id INTEGER PRIMARY KEY, title TEXT NOT NULL, author_id INTEGER NOT NULL);
+     *     CREATE TABLE authors (id INTEGER PRIMARY KEY, name TEXT NOT NULL);
+     * `);
+     * ```
+     */
     public async executeMultiple(sql: string) {
         return await libsqlExecuteMultiple(this.conf, sql);
     }
@@ -99,6 +119,12 @@ class libsqlClient {
         throw new LibsqlError("sync not supported in http mode", "SYNC_NOT_SUPPORTED");
     }
 
+    /** Which protocol does the client use?
+     *
+     * - `"http"` if the client connects over HTTP
+     * - `"ws"` if the client connects over WebSockets
+     * - `"file"` if the client works with a local file
+     */
     public close() {
         throw new InternalError("'libsql-stateless' is stateless therefore no connection to close.");
     }
