@@ -8,7 +8,7 @@ type InValue =
     | Uint8Array
     | Date
 
-export interface __Transaction {
+export interface ____Transaction {
     execute(stmt: InStatement): Promise<ResultSet>;
     batch(stmts: Array<InStatement>): Promise<Array<ResultSet>>;
     executeMultiple(sql: string): Promise<void>;

@@ -2,7 +2,7 @@ import { libsqlBatchReqStepExecCond, libsqlConfig } from "libsql-stateless";
 import { TransactionMode, rawSQLStatement } from "./types.js";
 import { libsqlBatch, libsqlBatchTransaction, libsqlExecute, libsqlExecuteMultiple, libsqlServerCompatCheck } from "./functions";
 import { InternalError, LibsqlError } from "./errors.js";
-import { __Transaction } from "./types-extra.js";
+import { ____Transaction } from "./extras.js";
 
 class libsqlClient {
     private readonly conf: libsqlConfig;
@@ -87,7 +87,7 @@ class libsqlClient {
         return await libsqlBatch(this.conf, steps, step_conditions);
     }
 
-    public async transaction(mode?: TransactionMode): Promise<__Transaction> {
+    public async transaction(mode?: TransactionMode): Promise<____Transaction> {
         if (mode) {}
         throw new InternalError("'libsql-stateless' is stateless and does not support interactive transactions. Use this.batch() instead.");
     }
