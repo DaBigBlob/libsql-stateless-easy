@@ -71,28 +71,6 @@ export function libsqlStatementBuilder(s: rawSQLStatement): libsqlSQLStatement {
 }
 
 //===========================================================
-export function libsqlBatchReqStepsBuilder(
-    batch_queries: Array<rawSQLStatement>,
-    batch_conditions?: Array<libsqlBatchReqStepExecCond|undefined|null>
-): Array<libsqlBatchReqStep> {
-    let p_stmts: Array<libsqlBatchReqStep> = [];
-    for (let i=0;i<batch_queries.length;i++) p_stmts.push({
-        stmt: libsqlStatementBuilder(batch_queries[i]),
-        condition: (batch_conditions) ? (batch_conditions[i]||undefined) : undefined
-    });
-    return p_stmts;
-}
-
-//===========================================================
-export function libsqlTransactionBatchReqStepsBuilder(
-    queries: Array<rawSQLStatement>,
-    mode: TransactionMode
-): Array<libsqlBatchReqStep> {
-    const main_steps = libsqlBatchReqStepsBuilder(queries);
-    return [libsqlTransactionBeginStatement(mode)].concat(main_steps).concat(libsqlTransactionEndStatements(main_steps.length));
-}
-
-//===========================================================
 export const libsqlBatchReqStepExecCondBuilder = {
     ok: (step: number): libsqlBatchReqStepExecCond => {
         return {
@@ -129,4 +107,26 @@ export const libsqlBatchReqStepExecCondBuilder = {
             type: "is_autocommit"
         }
     }
+}
+
+//===========================================================
+export function libsqlBatchReqStepsBuilder(
+    batch_queries: Array<rawSQLStatement>,
+    batch_conditions?: Array<libsqlBatchReqStepExecCond|undefined|null>
+): Array<libsqlBatchReqStep> {
+    let p_stmts: Array<libsqlBatchReqStep> = [];
+    for (let i=0;i<batch_queries.length;i++) p_stmts.push({
+        stmt: libsqlStatementBuilder(batch_queries[i]),
+        condition: (batch_conditions) ? (batch_conditions[i]||undefined) : undefined
+    });
+    return p_stmts;
+}
+
+//===========================================================
+export function libsqlTransactionBatchReqStepsBuilder(
+    queries: Array<rawSQLStatement>,
+    mode: TransactionMode
+): Array<libsqlBatchReqStep> {
+    const main_steps = libsqlBatchReqStepsBuilder(queries);
+    return [libsqlTransactionBeginStatement(mode)].concat(main_steps).concat(libsqlTransactionEndStatements(main_steps.length));
 }
