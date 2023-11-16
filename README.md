@@ -19,14 +19,14 @@ $ bun add libsql-stateless-easy
 ```
 
 # Client Usage
-`libsql-stateless-easy`'s `client`'s `batch` and `execute` have the exact same API as [`@libsql/client/web`](https://docs.turso.tech/libsql/client-access/javascript-typescript-sdk#create-a-database-client-object-for-local-and-remote-access)'s `client`'s `batch` and `execute`.
+`libsql-stateless-easy`'s `client` has the exact same API as [`@libsql/client/web`](https://docs.turso.tech/libsql/client-access/javascript-typescript-sdk#create-a-database-client-object-for-local-and-remote-access)'s `client`.
 ```ts
     import { createClient } from "libsql-stateless-easy";
     //or
     const { createClient } = require("libsql-stateless-easy");
 
     const client = createClient({
-        db_url: "https://da-fish-mandible.turso.io",
+        url: "https://da-fish-mandible.turso.io",
         authToken: "fksdgfgksdgfksdg.javsdKDGKSBkgsdfg289374dg"
     });
     
@@ -58,7 +58,26 @@ $ bun add libsql-stateless-easy
     else console.error("Server Compat Check NOT OK");
 ```
 
-- This library has the exact `LibsqlError` API as `@libsql/client`
+# Drizzle
+**`libsql-stateless-easy`'s `client` works with drizzle out-of-the-box.**
+```ts
+import { createClient } from "libsql-stateless-easy";
+import { drizzle } from 'drizzle-orm/libsql';
+
+(async () => {
+    const client = createClient({
+        url: "https://da-fish-mandible.turso.io",
+        authToken: "fksdgfgksdgfksdg.javsdKDGKSBkgsdfg289374dg"
+    });
+
+    const db = drizzle(client);
+ 
+    const result = await db.select().from(table_name).all();
+    console.log(result);
+})();
+```
+
+- **This library has the exact `LibsqlError` API as `@libsql/client`**
 
 # This Documentation is incomplete
 I'll complete it when I have more time.
@@ -66,15 +85,12 @@ I'll complete it when I have more time.
 Feel free to explore them (or even contribute to the documentation!)
 ```ts
 import {
-    libsqlValueBuilder, libsqlStatementBuilder, libsqlBatchReqStepsBuilder,
-    libsqlBatchReqStepExecCondBuilder, libsqlValueParser, libsqlStatementResParser,
-    libsqlBatchStreamResParser,
+    libsqlValueBuilder, libsqlStatementBuilder, libsqlBatchReqStepsBuilder, libsqlBatchReqStepExecCondBuilder, libsqlTransactionBeginStatement,
+    libsqlValueParser, libsqlStatementResParser, libsqlBatchStreamResParser, libsqlTransactionBatchStreamResParser,
     libsqlExecute, //has easier API than `libsql-stateless`'s function of the same name
     libsqlBatch, //has easier API than `libsql-stateless`'s function of the same name
-    libsqlServerCompatCheck, //has easier API than `libsql-stateless`'s function of the same name
+    libsqlServerCompatCheck, //has easier API than `libsql-stateless`'s function of the same name,
+    libsqlBatchTransaction, libsqlExecuteMultiple
     createClient //used above
 } from "libsql-stateless-easy";
 ```
-
-# TODO (roadmap)
-- Add drizzle ORM support
