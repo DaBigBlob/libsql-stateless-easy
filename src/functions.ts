@@ -8,7 +8,7 @@ import {
 } from "libsql-stateless";
 import { ResultSet, TransactionMode, rawSQLStatement } from "./types.js";
 import { libsqlBatchReqStepExecCondBuilder, libsqlBatchReqStepsBuilder, libsqlStatementBuilder, libsqlTransactionBatchReqStepsBuilder } from "./builders.js";
-import { libsqlBatchStreamResParser, libsqlStatementResParser } from "./parsers.js";
+import { libsqlBatchStreamResParser, libsqlStatementResParser, libsqlTransactionBatchStreamResParser } from "./parsers.js";
 import { HttpServerError, LibsqlError, ResponseError } from "./errors.js";
 
 function CheckHttpUrl(url: string) {
@@ -42,7 +42,11 @@ export async function libsqlExecute(conf: libsqlConfig, stmt: rawSQLStatement): 
     }
 }
 
-export async function libsqlBatch(conf: libsqlConfig, steps: Array<rawSQLStatement>, step_conditions?: Array<libsqlBatchReqStepExecCond|null|undefined>): Promise<Array<ResultSet>> {
+export async function libsqlBatch(
+    conf: libsqlConfig,
+    steps: Array<rawSQLStatement>,
+    step_conditions?: Array<libsqlBatchReqStepExecCond|null|undefined>
+): Promise<Array<ResultSet>> {
     CheckHttpUrl(conf.db_url);
 
     const res = await LIBlibsqlBatch(conf, libsqlBatchReqStepsBuilder(steps, step_conditions));
@@ -61,12 +65,16 @@ export async function libsqlServerCompatCheck(conf: libsqlConfig) {
     return (res.isOk) ? true : false;
 }
 
-export async function libsqlBatchTransaction(conf: libsqlConfig, steps: Array<rawSQLStatement>, mode: TransactionMode="deferred"): Promise<Array<ResultSet>> {
+export async function libsqlBatchTransaction(
+    conf: libsqlConfig,
+    steps: Array<rawSQLStatement>,
+    mode: TransactionMode="deferred"
+): Promise<Array<ResultSet>> {
     CheckHttpUrl(conf.db_url);
 
     const res = await LIBlibsqlBatch(conf, libsqlTransactionBatchReqStepsBuilder(steps, mode));
 
-    if (res.isOk) return libsqlBatchStreamResParser(res.val);
+    if (res.isOk) return libsqlTransactionBatchStreamResParser(res.val);
     else {
         if (res.err.kind==="LIBSQL_SERVER_ERROR") throw new HttpServerError(res.err.server_message||"Server encountered error.", res.err.http_status_code);
         else throw new ResponseError(res.err.data.message, res.err.data);
