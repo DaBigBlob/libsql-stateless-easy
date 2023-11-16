@@ -1,5 +1,5 @@
 import { Base64 } from 'js-base64';
-import { rawSQLStatement, rawValue } from './types.js';
+import { TransactionMode, rawSQLStatement, rawValue } from './types.js';
 import { libsqlBatchReqStep, libsqlBatchReqStepExecCond, libsqlSQLStatement, libsqlSQLValue } from 'libsql-stateless';
 import { InternalError } from './errors.js';
 
@@ -12,6 +12,27 @@ export function libsqlValueBuilder(value: rawValue): libsqlSQLValue {
     if (typeof(value)==="string") return {type: "text", value: value};
     if (value instanceof Uint8Array) return {type: "blob", base64: Base64.fromUint8Array(value)};
     throw new InternalError("Invalid type of input. Cannot build request to server.");
+}
+
+//========================================================
+export function libsqlTransactionBeginStatement(mode: TransactionMode): libsqlBatchReqStep {
+    if (mode === "write") {
+        return {stmt: {sql: "BEGIN IMMEDIATE"}};
+    } else if (mode === "read") {
+        return {stmt: {sql: "BEGIN TRANSACTION READONLY"}};
+    } else if (mode === "deferred") {
+        return {stmt: {sql: "BEGIN DEFERRED"}};
+    } else {
+        throw RangeError('Unknown transaction mode, supported values are "write", "read" and "deferred"');
+    }
+}
+
+//========================================================
+export function libsqlTransactionEndStatements(last_step_before_this: number): Array<libsqlBatchReqStep> {
+    return [
+        {stmt: {sql: "COMMIT"}},
+        {stmt: {sql: "ROLLBACK"}, condition: {type: "not", cond: {type: "ok", step: last_step_before_this+1}}}
+    ]
 }
 
 //========================================================
