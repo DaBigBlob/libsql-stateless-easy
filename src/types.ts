@@ -1,4 +1,4 @@
-export type rawValue = null|bigint|number|string|Uint8Array;
+export type rawValue = null|bigint|number|string|ArrayBuffer;
 
 export type rawSQLStatement = string|{
     sql: string,
