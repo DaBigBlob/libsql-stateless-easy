@@ -1,7 +1,7 @@
 import { libsqlConfig } from "libsql-stateless";
 import { rawSQLStatement } from "./types.js";
 import { libsqlBatch, libsqlExecute, libsqlServerCompatCheck } from "./functions";
-import { LibsqlError } from "./errors.js";
+import { InternalError, LibsqlError } from "./errors.js";
 
 class libsqlClient {
     private readonly conf: libsqlConfig;
@@ -19,11 +19,11 @@ class libsqlClient {
     }
 
     public async transaction() {
-        throw new LibsqlError("", "");
+        throw new InternalError("'libsql-stateless' is stateless and does not support interactive transactions.");
     }
 
     public async sync() {
-        throw new LibsqlError("", "");
+        throw new LibsqlError("sync not supported in http mode", "SYNC_NOT_SUPPORTED");
     }
 
     public async serverOk() {
