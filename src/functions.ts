@@ -84,7 +84,7 @@ export async function libsqlBatchTransaction(
 export async function libsqlExecuteMultiple(conf: libsqlConfig, sql: string): Promise<void> {
     CheckHttpUrl(conf.db_url);
 
-    const sqlArr: Array<libsqlBatchReqStep> = sql.split(";").filter(s => s!=="").map(s => {return {stmt: {sql: s}, condition: libsqlBatchReqStepExecCondBuilder.ok(0)}});
+    const sqlArr: Array<libsqlBatchReqStep> = sql.split(";").filter(s => s.trim()!=="").map(s => {return {stmt: {sql: s}, condition: libsqlBatchReqStepExecCondBuilder.ok(0)}});
     for (let i=1;i<sqlArr.length;i++) sqlArr[i].condition = libsqlBatchReqStepExecCondBuilder.ok(i-1);
 
     sqlArr[0].condition = undefined;
