@@ -18,7 +18,8 @@ class libsqlClient {
         return await libsqlBatch(this.conf, steps);
     }
 
-    public async transaction() {
+    public async transaction(mode?: "write" | "read" | "deferred") {
+        if (mode) {}
         throw new InternalError("'libsql-stateless' is stateless and does not support interactive transactions.");
     }
 
