@@ -1,6 +1,6 @@
 import { libsqlBatchReqStepExecCond, libsqlConfig } from "libsql-stateless";
 import { rawSQLStatement } from "./types.js";
-import { libsqlBatch, libsqlExecute, libsqlServerCompatCheck } from "./functions";
+import { libsqlBatch, libsqlBatchTransaction, libsqlExecute, libsqlServerCompatCheck } from "./functions";
 import { InternalError, LibsqlError } from "./errors.js";
 
 class libsqlClient {
@@ -20,10 +20,15 @@ class libsqlClient {
 
     public async batch(
         steps: Array<rawSQLStatement>,
-        step_conditions?: Array<libsqlBatchReqStepExecCond|null|undefined>,
         mode?: "write" | "read" | "deferred"
     ) {
-        if (mode) {}
+        return await libsqlBatchTransaction(this.conf, steps, mode);
+    }
+
+    public async batchPrimitive(
+        steps: Array<rawSQLStatement>,
+        step_conditions?: Array<libsqlBatchReqStepExecCond|null|undefined>
+    ) {
         return await libsqlBatch(this.conf, steps, step_conditions);
     }
 
