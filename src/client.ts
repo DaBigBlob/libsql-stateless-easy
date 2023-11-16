@@ -134,6 +134,12 @@ class libsqlClient {
     }
 }
 
-export function createClient(conf: libsqlConfig) {
-    return new libsqlClient(conf);
+export function createClient(conf: {
+    url: string;
+    authToken?: string;
+}) {
+    return new libsqlClient({
+        db_url: conf.url,
+        authToken: conf.authToken
+    });
 }
