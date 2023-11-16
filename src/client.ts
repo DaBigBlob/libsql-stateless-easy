@@ -1,6 +1,7 @@
 import { libsqlConfig } from "libsql-stateless";
 import { rawSQLStatement } from "./types.js";
 import { libsqlBatch, libsqlExecute, libsqlServerCompatCheck } from "./functions";
+import { LibsqlError } from "./errors.js";
 
 class libsqlClient {
     private readonly conf: libsqlConfig;
@@ -15,6 +16,14 @@ class libsqlClient {
 
     public async batch(steps: Array<rawSQLStatement>) {
         return await libsqlBatch(this.conf, steps);
+    }
+
+    public async transaction() {
+        throw new LibsqlError("", "");
+    }
+
+    public async sync() {
+        throw new LibsqlError("", "");
     }
 
     public async serverOk() {

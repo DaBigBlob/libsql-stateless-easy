@@ -50,9 +50,15 @@ export function libsqlStatementBuilder(s: rawSQLStatement): libsqlSQLStatement {
 }
 
 //===========================================================
-export function libsqlBatchReqStepsBuilder(batch_queries: Array<rawSQLStatement>): Array<libsqlBatchReqStep> {
+export function libsqlBatchReqStepsBuilder(
+    batch_queries: Array<rawSQLStatement>,
+    batch_conditions?: Array<libsqlBatchReqStepExecCond|undefined|null>
+): Array<libsqlBatchReqStep> {
     let p_stmts: Array<libsqlBatchReqStep> = [];
-    for (let i=0;i<batch_queries.length;i++) p_stmts.push({stmt: libsqlStatementBuilder(batch_queries[i])});
+    for (let i=0;i<batch_queries.length;i++) p_stmts.push({
+        stmt: libsqlStatementBuilder(batch_queries[i]),
+        condition: (batch_conditions) ? (batch_conditions[i]||undefined) : undefined
+    });
     return p_stmts;
 }
 
