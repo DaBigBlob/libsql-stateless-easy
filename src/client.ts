@@ -14,10 +14,64 @@ class libsqlClient {
         this.protocol = "http";
     }
 
+    /** Execute a single SQL statement.
+     *
+     * Every statement executed with this method is executed in its own logical database connection. If you
+     * want to execute a group of statements in a transaction, use the {@link batch} method.
+     *
+     * ```javascript
+     * // execute a statement without arguments
+     * const rs = await client.execute("SELECT * FROM books");
+     *
+     * // execute a statement with positional arguments
+     * const rs = await client.execute({
+     *     sql: "SELECT * FROM books WHERE author = ?",
+     *     args: ["Jane Austen"],
+     * });
+     *
+     * // execute a statement with named arguments
+     * const rs = await client.execute({
+     *     sql: "SELECT * FROM books WHERE published_at > $year",
+     *     args: {year: 1719},
+     * });
+     * ```
+     */
     public async execute(stmt: rawSQLStatement) {
         return await libsqlExecute(this.conf, stmt);
     }
 
+    /** Execute a batch of SQL statements in a transaction.
+     *
+     * The batch is executed in its own logical database connection and the statements are wrapped in a
+     * transaction. This ensures that the batch is applied atomically: either all or no changes are applied.
+     *
+     * The `mode` parameter selects the transaction mode for the batch; please see {@link TransactionMode} for
+     * details. The default transaction mode is `"deferred"`.
+     * 
+     * If any of the statements in the batch fails with an error, the batch is aborted, the transaction is
+     * rolled back and the returned promise is rejected.
+     *
+     * This method provides non-interactive transactions.
+     *
+     * ```javascript
+     * const rss = await client.batch([
+     *     // batch statement without arguments
+     *     "DELETE FROM books WHERE name LIKE '%Crusoe'",
+     *
+     *     // batch statement with positional arguments
+     *     {
+     *         sql: "INSERT INTO books (name, author, published_at) VALUES (?, ?, ?)",
+     *         args: ["First Impressions", "Jane Austen", 1813],
+     *     },
+     *
+     *     // batch statement with named arguments
+     *     {
+     *         sql: "UPDATE books SET name = $new WHERE name = $old",
+     *         args: {old: "First Impressions", new: "Pride and Prejudice"},
+     *     },
+     * ], "write");
+     * ```
+     */
     public async batch(
         steps: Array<rawSQLStatement>,
         mode?: TransactionMode
