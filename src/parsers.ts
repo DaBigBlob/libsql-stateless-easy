@@ -57,11 +57,16 @@ export function libsqlStatementResParser(
         Rows.push(row as Row);
     }
 
-    return {
+    const resultset = {
         rows: Rows,
-        columns: res.cols.map(c => c.name!),
+        columns: res.cols.map(c => c.name||""),
+        columnTypes: res.cols.map(c => c.decltype||""),
         rowsAffected: res.affected_row_count,
-        lastInsertRowid: (res.last_insert_rowid) ? BigInt(res.last_insert_rowid) : undefined
+        lastInsertRowid: (res.last_insert_rowid) ? BigInt(res.last_insert_rowid) : undefined,
+    }
+    return {
+        ...resultset,
+        toJSON: (): any => {return resultset}
     }
 }
 

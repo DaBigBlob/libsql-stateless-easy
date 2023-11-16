@@ -6,20 +6,87 @@ export type rawSQLStatement = string|{
     want_rows?: boolean
 }
 
-//from ***
-/** Row returned from the database. This is an Array-like object (it has `length` and can be indexed with a
- * number), and in addition, it has enumerable properties from the named columns. */
+/** Row returned from an SQL statement.
+ *
+ * The row object can be used as an `Array` or as an object:
+ *
+ * ```javascript
+ * const rs = await client.execute("SELECT name, title FROM books");
+ * for (const row in rs.rows) {
+ *     // Get the value from column `name`
+ *     console.log(row.name);
+ *     // Get the value from second column (`title`)
+ *     console.log(row[1]);
+ * }
+ * ```
+ */
 export interface Row {
+    /** Number of columns in this row.
+     *
+     * All rows in one {@link ResultSet} have the same number and names of columns.
+     */
     length: number;
+
+    /** Columns can be accessed like an array by numeric indexes. */
     [index: number]: rawValue;
+
+    /** Columns can be accessed like an object by column names. */
     [name: string]: rawValue;
 }
 
-export type ResultSet = {
-    rows: Array<Row>,
-    columns: Array<string>,
-    rowsAffected: number,
-    lastInsertRowid: bigint | undefined
+/** Result of executing an SQL statement.
+ *
+ * ```javascript
+ * const rs = await client.execute("SELECT name, title FROM books");
+ * console.log(`Found ${rs.rows.length} books`);
+ * for (const row in rs.rows) {
+ *     console.log(`Book ${row[0]} by ${row[1]}`);
+ * }
+ *
+ * const rs = await client.execute("DELETE FROM books WHERE author = 'Jane Austen'");
+ * console.log(`Deleted ${rs.rowsAffected} books`);
+ * ```
+ */
+export interface ResultSet {
+    /** Names of columns.
+     *
+     * Names of columns can be defined using the `AS` keyword in SQL:
+     *
+     * ```sql
+     * SELECT author AS author, COUNT(*) AS count FROM books GROUP BY author
+     * ```
+     */
+    columns: Array<string>;
+
+    /** Types of columns.
+     *
+     * The types are currently shown for types declared in a SQL table. For
+     * column types of function calls, for example, an empty string is
+     * returned.
+     */
+    columnTypes: Array<string>;
+    
+    /** Rows produced by the statement. */
+    rows: Array<Row>;
+
+    /** Number of rows that were affected by an UPDATE, INSERT or DELETE operation.
+     *
+     * This value is not specified for other SQL statements.
+     */
+    rowsAffected: number;
+
+    /** ROWID of the last inserted row.
+     *
+     * This value is not specified if the SQL statement was not an INSERT or if the table was not a ROWID
+     * table.
+     */
+    lastInsertRowid: bigint | undefined;
+
+    /** Converts the result set to JSON.
+     *
+     * This is used automatically by `JSON.stringify()`, but you can also call it explicitly.
+     */
+    toJSON(): any;
 }
 
 /** Transaction mode.
