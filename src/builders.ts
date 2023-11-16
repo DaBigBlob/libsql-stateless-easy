@@ -84,27 +84,49 @@ export function libsqlBatchReqStepsBuilder(
 }
 
 //===========================================================
-export function libsqlBatchReqStepExecCondBuilder(c: 
-    {
-        type: "ok";
-        step: number; //uint32: 0-based index in the steps array
-    } | 
-    {
-        type: "error";
-        step: number; //uint32: 0-based index in the steps array
-    } | 
-    {
-        type: "not";
-        cond: libsqlBatchReqStepExecCond;
-    } | {
-        type: "and";
-        conds: Array<libsqlBatchReqStepExecCond>;
-    } | {
-        type: "or";
-        conds: Array<libsqlBatchReqStepExecCond>;
-    } | {
-        type: "is_autocommit";
+export function libsqlTransactionBatchReqStepsBuilder(
+    queries: Array<rawSQLStatement>,
+    mode: TransactionMode
+): Array<libsqlBatchReqStep> {
+    const main_steps = libsqlBatchReqStepsBuilder(queries);
+    return [libsqlTransactionBeginStatement(mode)].concat(main_steps).concat(libsqlTransactionEndStatements(main_steps.length));
+}
+
+//===========================================================
+export const libsqlBatchReqStepExecCondBuilder = {
+    ok: (step: number): libsqlBatchReqStepExecCond => {
+        return {
+            type: "ok",
+            step //uint32: 0-based index in the steps array
+        }
+    },
+    error: (step: number): libsqlBatchReqStepExecCond => {
+        return {
+            type: "error",
+            step //uint32: 0-based index in the steps array
+        }
+    },
+    not: (cond: libsqlBatchReqStepExecCond): libsqlBatchReqStepExecCond => {
+        return {
+            type: "not",
+            cond,
+        }
+    },
+    and: (conds: Array<libsqlBatchReqStepExecCond>): libsqlBatchReqStepExecCond => {
+        return {
+            type: "and",
+            conds
+        }
+    },
+    or: (conds: Array<libsqlBatchReqStepExecCond>): libsqlBatchReqStepExecCond => {
+        return {
+            type: "or",
+            conds
+        }
+    },
+    is_autocommit: (): libsqlBatchReqStepExecCond => {
+        return {
+            type: "is_autocommit"
+        }
     }
-): libsqlBatchReqStepExecCond {
-    return c;
 }
