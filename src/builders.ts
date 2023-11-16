@@ -15,27 +15,6 @@ export function libsqlValueBuilder(value: rawValue): libsqlSQLValue {
 }
 
 //========================================================
-export function libsqlTransactionBeginStatement(mode: TransactionMode): libsqlBatchReqStep {
-    if (mode === "write") {
-        return {stmt: {sql: "BEGIN IMMEDIATE"}};
-    } else if (mode === "read") {
-        return {stmt: {sql: "BEGIN TRANSACTION READONLY"}};
-    } else if (mode === "deferred") {
-        return {stmt: {sql: "BEGIN DEFERRED"}};
-    } else {
-        throw RangeError('Unknown transaction mode, supported values are "write", "read" and "deferred"');
-    }
-}
-
-//========================================================
-export function libsqlTransactionEndStatements(last_step_before_this: number): Array<libsqlBatchReqStep> {
-    return [
-        {stmt: {sql: "COMMIT"}},
-        {stmt: {sql: "ROLLBACK"}, condition: {type: "not", cond: {type: "ok", step: last_step_before_this+1}}}
-    ]
-}
-
-//========================================================
 export function libsqlStatementBuilder(s: rawSQLStatement): libsqlSQLStatement {
     if (typeof(s)!=="string")
     if (Object.prototype.toString.call(s.args) === '[object Array]') {
@@ -120,6 +99,27 @@ export function libsqlBatchReqStepsBuilder(
         condition: (batch_conditions) ? (batch_conditions[i]||undefined) : undefined
     });
     return p_stmts;
+}
+
+//========================================================
+export function libsqlTransactionBeginStatement(mode: TransactionMode): libsqlBatchReqStep {
+    if (mode === "write") {
+        return {stmt: {sql: "BEGIN IMMEDIATE"}};
+    } else if (mode === "read") {
+        return {stmt: {sql: "BEGIN TRANSACTION READONLY"}};
+    } else if (mode === "deferred") {
+        return {stmt: {sql: "BEGIN DEFERRED"}};
+    } else {
+        throw RangeError('Unknown transaction mode, supported values are "write", "read" and "deferred"');
+    }
+}
+
+//========================================================
+export function libsqlTransactionEndStatements(last_step_before_this: number): Array<libsqlBatchReqStep> {
+    return [
+        {stmt: {sql: "COMMIT"}},
+        {stmt: {sql: "ROLLBACK"}, condition: {type: "not", cond: {type: "ok", step: last_step_before_this+1}}}
+    ]
 }
 
 //===========================================================
