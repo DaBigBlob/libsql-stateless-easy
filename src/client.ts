@@ -1,6 +1,6 @@
 import { libsqlBatchReqStepExecCond, libsqlConfig } from "libsql-stateless";
-import { rawSQLStatement } from "./types.js";
-import { libsqlBatch, libsqlBatchTransaction, libsqlExecute, libsqlServerCompatCheck } from "./functions";
+import { TransactionMode, rawSQLStatement } from "./types.js";
+import { libsqlBatch, libsqlBatchTransaction, libsqlExecute, libsqlExecuteMultiple, libsqlServerCompatCheck } from "./functions";
 import { InternalError, LibsqlError } from "./errors.js";
 
 class libsqlClient {
@@ -20,7 +20,7 @@ class libsqlClient {
 
     public async batch(
         steps: Array<rawSQLStatement>,
-        mode?: "write" | "read" | "deferred"
+        mode?: TransactionMode
     ) {
         return await libsqlBatchTransaction(this.conf, steps, mode);
     }
@@ -32,13 +32,13 @@ class libsqlClient {
         return await libsqlBatch(this.conf, steps, step_conditions);
     }
 
-    public async transaction(mode?: "write" | "read" | "deferred") {
+    public async transaction(mode?: TransactionMode) {
         if (mode) {}
-        throw new InternalError("'libsql-stateless' is stateless and does not support interactive transactions.");
+        throw new InternalError("'libsql-stateless' is stateless and does not support interactive transactions. Use this.batch() instead.");
     }
 
     public async executeMultiple(sql: string) {
-        const sqlArr = sql.split(";")
+        return await libsqlExecuteMultiple(this.conf, sql);
     }
 
     public async sync() {
