@@ -7,9 +7,29 @@ import {
 import { ResultSet, rawSQLStatement } from "./types.js";
 import { libsqlBatchReqStepsBuilder, libsqlStatementBuilder } from "./builders.js";
 import { libsqlBatchStreamResParser, libsqlStatementResParser } from "./parsers.js";
-import { HttpServerError, ResponseError } from "./errors.js";
+import { HttpServerError, LibsqlError, ResponseError } from "./errors.js";
+
+function CheckHttpUrl(url: string) {
+    const _url: URL = (() => {
+        try {
+            return new URL(url);
+        } catch (e) {
+            throw new LibsqlError((e as Error).message, "ERR_INVALID_URL", (e as Error));
+        }
+    })();
+    
+    if (
+        _url.protocol !== 'https:' &&
+        _url.protocol !== 'http:'
+    ) throw new LibsqlError(
+        'This is a HTTP client and only supports "https:" and "http:" URLs, ' +
+            `got ${JSON.stringify(_url.protocol + ":")}`,
+        "URL_SCHEME_NOT_SUPPORTED",
+    );
+}
 
 export async function libsqlExecute(conf: libsqlConfig, stmt: rawSQLStatement): Promise<ResultSet> {
+    CheckHttpUrl(conf.db_url);
     const res = await LIBlibsqlExecute(conf, libsqlStatementBuilder(stmt));
     if (res.isOk) return libsqlStatementResParser(res.val);
     else {
@@ -19,6 +39,7 @@ export async function libsqlExecute(conf: libsqlConfig, stmt: rawSQLStatement): 
 }
 
 export async function libsqlBatch(conf: libsqlConfig, steps: Array<rawSQLStatement>): Promise<Array<ResultSet>> {
+    CheckHttpUrl(conf.db_url);
     const res = await LIBlibsqlBatch(conf, libsqlBatchReqStepsBuilder(steps));
     if (res.isOk) return libsqlBatchStreamResParser(res.val);
     else {
@@ -28,6 +49,7 @@ export async function libsqlBatch(conf: libsqlConfig, steps: Array<rawSQLStateme
 }
 
 export async function libsqlServerCompatCheck(conf: libsqlConfig) {
+    CheckHttpUrl(conf.db_url);
     const res = await LIBlibsqlServerCompatCheck(conf);
     return (res.isOk) ? true : false;
 }
