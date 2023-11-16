@@ -46,7 +46,7 @@ export async function libsqlBatch(
     conf: libsqlConfig,
     steps: Array<rawSQLStatement>,
     step_conditions?: Array<libsqlBatchReqStepExecCond|null|undefined>
-): Promise<Array<ResultSet>> {
+): Promise<Array<ResultSet|null>> {
     CheckHttpUrl(conf.db_url);
 
     const res = await LIBlibsqlBatch(conf, libsqlBatchReqStepsBuilder(steps, step_conditions));

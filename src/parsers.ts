@@ -68,12 +68,12 @@ export function libsqlStatementResParser(
 //========================================================
 export function libsqlBatchStreamResParser(
     res: libsqlBatchStreamResOkData
-): Array<ResultSet> {
-    let batchResults: Array<ResultSet> = [];
+): Array<ResultSet|null> {
+    let batchResults: Array<ResultSet|null> = [];
     for (let j=0;j<res.step_results.length;j++) {
         if (res.step_results[j]) batchResults.push(libsqlStatementResParser(res.step_results[j]!));
         else if (res.step_errors[j]) throw new ResponseError(res.step_errors[j]?.message!, res.step_errors[j]!);
-        //else batchResults.push(what?); //need help
+        else batchResults.push(null);
     }
     return batchResults;
 }
@@ -83,5 +83,5 @@ export function libsqlTransactionBatchStreamResParser(
     res: libsqlBatchStreamResOkData
 ): Array<ResultSet> {
     const resResArr = libsqlBatchStreamResParser(res);
-    return resResArr.slice(1, resResArr.length-2);
+    return resResArr.slice(1, resResArr.length-2).filter(r => r!==null) as Array<ResultSet>;
 }
