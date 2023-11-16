@@ -2,11 +2,10 @@ import {
     libsqlExecute as LIBlibsqlExecute,
     libsqlBatch as LIBlibsqlBatch,
     libsqlServerCompatCheck as LIBlibsqlServerCompatCheck,
-    libsqlConfig,
-    libsqlBatchReqStep
+    libsqlConfig
 } from "libsql-stateless";
 import { ResultSet, rawSQLStatement } from "./types.js";
-import { libsqlStatementBuilder } from "./builders.js";
+import { libsqlBatchReqStepsBuilder, libsqlStatementBuilder } from "./builders.js";
 import { libsqlBatchStreamResParser, libsqlStatementResParser } from "./parsers.js";
 import { HttpServerError, ResponseError, mapHranaError } from "./errors.js";
 
@@ -25,10 +24,7 @@ export async function libsqlExecute(conf: libsqlConfig, stmt: rawSQLStatement): 
 
 export async function libsqlBatch(conf: libsqlConfig, steps: Array<rawSQLStatement>): Promise<Array<ResultSet>> {
     try {
-        let _steps: Array<libsqlBatchReqStep> = [];
-        for (let i=0;i<steps.length;i++) _steps.push({stmt: libsqlStatementBuilder(steps[i])});
-
-        const res = await LIBlibsqlBatch(conf, _steps);
+        const res = await LIBlibsqlBatch(conf, libsqlBatchReqStepsBuilder(steps));
         if (res.isOk) return libsqlBatchStreamResParser(res.val);
         else {
             if (res.err.kind==="LIBSQL_SERVER_ERROR") throw new HttpServerError(res.err.server_message||"Server encountered error.", res.err.http_status_code);
