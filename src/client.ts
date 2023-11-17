@@ -7,11 +7,18 @@ import { ____Transaction } from "./extras.js";
 class libsqlClient {
     private readonly conf: libsqlConfig;
     public closed: boolean;
+
+    /** Which protocol does the client use?
+     *
+     * - `"http"` if the client connects over HTTP
+     * - `"ws"` if the client connects over WebSockets
+     * - `"file"` if the client works with a local file
+     */
     public protocol: string;
 
     constructor(conf: libsqlConfig) {
         this.conf = conf;
-        this.closed = true;
+        this.closed = false;
         this.protocol = "http";
     }
 
@@ -82,7 +89,7 @@ class libsqlClient {
 
     public async batchPrimitive(
         steps: Array<rawSQLStatement>,
-        step_conditions?: Array<libsqlBatchReqStepExecCond|null|undefined>
+        step_conditions: Array<libsqlBatchReqStepExecCond|null|undefined>
     ) {
         return await libsqlBatch(this.conf, steps, step_conditions);
     }
@@ -120,12 +127,6 @@ class libsqlClient {
         throw new LibsqlError("sync not supported in http mode", "SYNC_NOT_SUPPORTED");
     }
 
-    /** Which protocol does the client use?
-     *
-     * - `"http"` if the client connects over HTTP
-     * - `"ws"` if the client connects over WebSockets
-     * - `"file"` if the client works with a local file
-     */
     public close() {
         throw new InternalError("'libsql-stateless' is stateless therefore no connection to close.");
     }

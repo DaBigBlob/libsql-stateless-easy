@@ -74,13 +74,11 @@ export function libsqlStatementResParser(
 export function libsqlBatchStreamResParser(
     res: libsqlBatchStreamResOkData
 ): Array<ResultSet|null> {
-    let batchResults: Array<ResultSet|null> = [];
-    for (let j=0;j<res.step_results.length;j++) {
-        if (res.step_results[j]) batchResults.push(libsqlStatementResParser(res.step_results[j]!));
-        else if (res.step_errors[j]) throw new ResponseError(res.step_errors[j]?.message!, res.step_errors[j]!);
-        else batchResults.push(null);
-    }
-    return batchResults;
+    return res.step_results.map((r, i) => {
+        if (r) return libsqlStatementResParser(r);
+        else if (res.step_errors[i]) throw new ResponseError(res.step_errors[i]?.message||"", res.step_errors[i]!);
+        else return null;
+    });
 }
 
 //========================================================

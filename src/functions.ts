@@ -45,7 +45,7 @@ export async function libsqlExecute(conf: libsqlConfig, stmt: rawSQLStatement): 
 export async function libsqlBatch(
     conf: libsqlConfig,
     steps: Array<rawSQLStatement>,
-    step_conditions?: Array<libsqlBatchReqStepExecCond|null|undefined>
+    step_conditions: Array<libsqlBatchReqStepExecCond|null|undefined>
 ): Promise<Array<ResultSet|null>> {
     CheckHttpUrl(conf.db_url);
 
@@ -84,10 +84,12 @@ export async function libsqlBatchTransaction(
 export async function libsqlExecuteMultiple(conf: libsqlConfig, sql: string): Promise<void> {
     CheckHttpUrl(conf.db_url);
 
-    const sqlArr: Array<libsqlBatchReqStep> = sql.split(";").filter(s => s.trim()!=="").map(s => {return {stmt: {sql: s}, condition: libsqlBatchReqStepExecCondBuilder.ok(0)}});
-    for (let i=1;i<sqlArr.length;i++) sqlArr[i].condition = libsqlBatchReqStepExecCondBuilder.ok(i-1);
+    const sqlArr: Array<libsqlBatchReqStep> = sql.split(";").filter(s => s.trim()!=="").map((s, i) => {return {
+        stmt: {sql: s},
+        condition: libsqlBatchReqStepExecCondBuilder.ok(i-1)
+    }});
+    sqlArr[0].condition = undefined; //elm 0's ok index is set to -1; removing that
 
-    sqlArr[0].condition = undefined;
     const res = await LIBlibsqlBatch(conf, sqlArr);
     if (!res.isOk) {
         if (res.err.kind==="LIBSQL_SERVER_ERROR") throw new HttpServerError(res.err.server_message||"Server encountered error.", res.err.http_status_code);

@@ -18,14 +18,9 @@ export function libsqlValueBuilder(value: rawValue): libsqlSQLValue {
 export function libsqlStatementBuilder(s: rawSQLStatement): libsqlSQLStatement {
     if (typeof(s)!=="string")
     if (Object.prototype.toString.call(s.args) === '[object Array]') {
-        let p_args: Array<libsqlSQLValue>=[];
-        const _args = s.args as Array<rawValue>;
-
-        for (let i=0;i<_args.length;i++) p_args.push(libsqlValueBuilder(_args[i]));
-
         return {
             sql: s.sql,
-            args: p_args,
+            args: (s.args as Array<rawValue>).map(r => libsqlValueBuilder(r)),
             want_rows: s.want_rows
         };
     } else {
@@ -91,14 +86,12 @@ export const libsqlBatchReqStepExecCondBuilder = {
 //===========================================================
 export function libsqlBatchReqStepsBuilder(
     batch_queries: Array<rawSQLStatement>,
-    batch_conditions?: Array<libsqlBatchReqStepExecCond|undefined|null>
+    batch_conditions: Array<libsqlBatchReqStepExecCond|undefined|null>
 ): Array<libsqlBatchReqStep> {
-    let p_stmts: Array<libsqlBatchReqStep> = [];
-    for (let i=0;i<batch_queries.length;i++) p_stmts.push({
-        stmt: libsqlStatementBuilder(batch_queries[i]),
-        condition: (batch_conditions) ? (batch_conditions[i]||undefined) : undefined
-    });
-    return p_stmts;
+    return batch_queries.map((q, i) => {return {
+        stmt: libsqlStatementBuilder(q),
+        condition: batch_conditions[i]||undefined
+    }});
 }
 
 //========================================================
@@ -127,6 +120,13 @@ export function libsqlTransactionBatchReqStepsBuilder(
     queries: Array<rawSQLStatement>,
     mode: TransactionMode
 ): Array<libsqlBatchReqStep> {
-    const main_steps = libsqlBatchReqStepsBuilder(queries);
+    const main_steps: Array<libsqlBatchReqStep> = queries.map((q, i) => {return {
+        stmt: libsqlStatementBuilder(q),
+        condition: libsqlBatchReqStepExecCondBuilder.and([
+            libsqlBatchReqStepExecCondBuilder.ok(i),
+            libsqlBatchReqStepExecCondBuilder.not(libsqlBatchReqStepExecCondBuilder.is_autocommit())
+        ])
+    }});
+    main_steps[0].condition = undefined; //elm 1's ok index is set to 0 (transaction begin); removing that
     return [libsqlTransactionBeginStatement(mode)].concat(main_steps).concat(libsqlTransactionEndStatements(main_steps.length));
 }
