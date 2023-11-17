@@ -100,6 +100,8 @@ class libsqlClient {
     }
 
     /** Execute a sequence of SQL statements separated by semicolons.
+     * 
+     * NOTE: libsql-stateless-easy implements this function using `batch` under the hood instead of the `serial` endpoint.
      *
      * The statements are executed sequentially on a new logical database connection. If a statement fails,
      * further statements are not executed and this method throws an error. All results from the statements
