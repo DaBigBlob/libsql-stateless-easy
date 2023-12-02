@@ -25,7 +25,7 @@ function CheckHttpUrl(url: string) {
         _url.protocol !== 'http:'
     ) throw new LibsqlError(
         'This is a HTTP client and only supports "https:" and "http:" URLs, ' +
-            `got ${JSON.stringify(_url.protocol + ":")}`,
+            `got ${JSON.stringify(_url.protocol)}`,
         "URL_SCHEME_NOT_SUPPORTED",
     );
 }
