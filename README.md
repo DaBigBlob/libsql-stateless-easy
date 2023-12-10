@@ -3,13 +3,13 @@
 > A wrapper for `libsql-stateless` that provides a much better DX
 - ✅ **Supported runtime environments:** Web API (browser, serverless), Bun, Node.js (>=18)
 - ✅ **Is built for:** Quick stateless query execution. (Mainly for serverless and edge functions.)
-- ⚠️ Supports everything in `@libsql/client` **except (explicit) `transactions` and local or in-memory DBs.**
-- ✅ **The API provided by `libsql-stateless-easy` is simple** and (almost) exactly the same as `@libsql/client`.
-- ⚠️ `libsql-stateless-easy` comes with the cost of (computational and memory) overheads potentially unneeded by you. But is still very very very slim compared to `@libsql/client`.
+- ✅ Supports everything in `@libsql/client/web` **except (explicit) `transactions`.
+- ✅ **The API provided by `libsql-stateless-easy` is simple** and exactly the same as `@libsql/client/web`.
+- ⚠️ `libsql-stateless-easy` comes with the cost of (computational and memory) overheads potentially unneeded by you. But is still very very very slim compared to `@libsql/client/web`.
 
 <br>
 
-**For much better performance, consider using [`libsql-stateless`](https://github.com/DaBigBlob/libsql-stateless) instead**: it, however, has a pretty raw and explicit API unappreciated by many developers.
+**For better performance lower resource use, consider using [`libsql-stateless`](https://github.com/DaBigBlob/libsql-stateless) instead**: it, however, has a pretty raw and explicit API unappreciated by many developers.
 
 # Installation
 ```sh
