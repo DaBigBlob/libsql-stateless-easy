@@ -1,9 +1,15 @@
-export type rawValue = null|bigint|number|string|ArrayBuffer;
+import { libsqlConfig } from "libsql-stateless";
 
+export type rawValue = null|bigint|number|string|ArrayBuffer;
+export type intMode = "bigint" | "number" | "string";
 export type rawSQLStatement = string|{
     sql: string,
     args: Array<rawValue> | Record<string, rawValue>,
     want_rows?: boolean
+}
+
+export interface libsqlEasyConfig extends libsqlConfig {
+    intMode?: intMode
 }
 
 /** Row returned from an SQL statement.

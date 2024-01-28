@@ -19,7 +19,7 @@ function CheckHttpUrl(url: string) {
             throw new LibsqlError((e as Error).message, "ERR_INVALID_URL", (e as Error));
         }
     })();
-    
+
     if (
         _url.protocol !== 'https:' &&
         _url.protocol !== 'http:'
@@ -35,7 +35,7 @@ export async function libsqlExecute(conf: libsqlConfig, stmt: rawSQLStatement): 
 
     const res = await LIBlibsqlExecute(conf, libsqlStatementBuilder(stmt));
 
-    if (res.isOk) return libsqlStatementResParser(res.val);
+    if (res.isOk) return libsqlStatementResParser(res.val, conf.intMode);
     else {
         if (res.err.kind==="LIBSQL_SERVER_ERROR") throw new HttpServerError(res.err.server_message||"Server encountered error.", res.err.http_status_code);
         else throw new ResponseError(res.err.data.message, res.err.data);
@@ -51,7 +51,7 @@ export async function libsqlBatch(
 
     const res = await LIBlibsqlBatch(conf, libsqlBatchReqStepsBuilder(steps, step_conditions));
 
-    if (res.isOk) return libsqlBatchStreamResParser(res.val);
+    if (res.isOk) return libsqlBatchStreamResParser(res.val, conf.intMode);
     else {
         if (res.err.kind==="LIBSQL_SERVER_ERROR") throw new HttpServerError(res.err.server_message||"Server encountered error.", res.err.http_status_code);
         else throw new ResponseError(res.err.data.message, res.err.data);
@@ -74,7 +74,7 @@ export async function libsqlBatchTransaction(
 
     const res = await LIBlibsqlBatch(conf, libsqlTransactionBatchReqStepsBuilder(steps, mode));
 
-    if (res.isOk) return libsqlTransactionBatchStreamResParser(res.val);
+    if (res.isOk) return libsqlTransactionBatchStreamResParser(res.val, conf.intMode);
     else {
         if (res.err.kind==="LIBSQL_SERVER_ERROR") throw new HttpServerError(res.err.server_message||"Server encountered error.", res.err.http_status_code);
         else throw new ResponseError(res.err.data.message, res.err.data);
