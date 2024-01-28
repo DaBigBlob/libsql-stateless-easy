@@ -1,4 +1,4 @@
-import { libsqlConfig } from "libsql-stateless";
+import { libsqlConfig as LIBlibsqlConfig } from "libsql-stateless";
 
 export type rawValue = null|bigint|number|string|ArrayBuffer;
 export type intMode = "bigint" | "number" | "string";
@@ -8,7 +8,7 @@ export type rawSQLStatement = string|{
     want_rows?: boolean
 }
 
-export interface libsqlEasyConfig extends libsqlConfig {
+export interface libsqlConfig extends LIBlibsqlConfig {
     intMode?: intMode
 }
 

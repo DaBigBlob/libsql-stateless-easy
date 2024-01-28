@@ -2,11 +2,10 @@ import {
     libsqlExecute as LIBlibsqlExecute,
     libsqlBatch as LIBlibsqlBatch,
     libsqlServerCompatCheck as LIBlibsqlServerCompatCheck,
-    libsqlConfig,
     libsqlBatchReqStepExecCond,
     libsqlBatchReqStep
 } from "libsql-stateless";
-import { ResultSet, TransactionMode, rawSQLStatement } from "./types.js";
+import { ResultSet, TransactionMode, rawSQLStatement, libsqlConfig } from "./types.js";
 import { libsqlBatchReqStepExecCondBuilder, libsqlBatchReqStepsBuilder, libsqlStatementBuilder, libsqlTransactionBatchReqStepsBuilder } from "./builders.js";
 import { libsqlBatchStreamResParser, libsqlStatementResParser, libsqlTransactionBatchStreamResParser } from "./parsers.js";
 import { HttpServerError, LibsqlError, ResponseError } from "./errors.js";

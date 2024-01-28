@@ -1,28 +1,28 @@
 import { libsqlBatchStreamResOkData, libsqlSQLValue, libsqlStatementResOkData } from "libsql-stateless";
 import { ResultSet, Row, rawValue, intMode } from "./types.js";
 import { Base64 } from "js-base64";
-import { ProtoError, ResponseError } from "./errors.js";
+import { MisuseError, ProtoError, ResponseError } from "./errors.js";
 
 //========================================================
 function parseLibsqlInt(number: string, intMode?: intMode) {
     switch (intMode) {
-      case "number":
-        return +number;
-      case "string":
-        return number;
-      default:
-        return BigInt(number);
+        case ("number"): return +number;
+        case ("string"): return number;
+        case ("bigint"): return BigInt(number);
+        default: throw new MisuseError(`Invalid value for "intMode".`);
     }
-  }
+}
 
 //========================================================
 export function libsqlValueParser(value: libsqlSQLValue, intMode?: intMode): rawValue {
-    if (value.type==="null") return null;
-    if (value.type==="integer") return parseLibsqlInt(value.value, intMode);
-    if (value.type==="float") return Number(value.value);
-    if (value.type==="text") return value.value;
-    if (value.type==="blob") return Base64.toUint8Array(value.base64);
-    throw new ProtoError("Invalid data type from server. Cannot parse.");
+    switch (value.type) {
+        case ("null"): return null;
+        case ("integer"): return parseLibsqlInt(value.value, intMode);
+        case ("float"): return Number(value.value);
+        case ("text"): return value.value;
+        case ("blob"): return Base64.toUint8Array(value.base64);
+        default: throw new ProtoError("Invalid data type from server. Cannot parse.");
+    }
 }
 
 //========================================================
@@ -58,7 +58,7 @@ export function libsqlStatementResParser(
 
         Object.defineProperty(row, "length", { value: res.rows[i].length });
         for (let j=0;j<res.rows[i].length;j++) {
-            const value = libsqlValueParser(res.rows[i][j],intMode);
+            const value = libsqlValueParser(res.rows[i][j], intMode);
             Object.defineProperty(row, j, { value });
 
             const colName = res.cols[j].name!;
@@ -88,7 +88,7 @@ export function libsqlBatchStreamResParser(
     intMode?: intMode
 ): Array<ResultSet|null> {
     return res.step_results.map((r, i) => {
-        if (r) return libsqlStatementResParser(r,intMode);
+        if (r) return libsqlStatementResParser(r, intMode);
         else if (res.step_errors[i]) throw new ResponseError(res.step_errors[i]?.message||"", res.step_errors[i]!);
         else return null;
     });
