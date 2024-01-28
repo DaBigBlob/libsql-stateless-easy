@@ -1,13 +1,24 @@
 import { libsqlBatchStreamResOkData, libsqlSQLValue, libsqlStatementResOkData } from "libsql-stateless";
-import { ResultSet, Row, rawValue } from "./types.js";
+import { ResultSet, Row, rawValue, intMode } from "./types.js";
 import { Base64 } from "js-base64";
 import { ProtoError, ResponseError } from "./errors.js";
 
+//========================================================
+function parseLibsqlInt(number: string, intMode?: intMode) {
+    switch (intMode) {
+      case "number":
+        return +number;
+      case "string":
+        return number;
+      default:
+        return BigInt(number);
+    }
+  }
 
 //========================================================
-export function libsqlValueParser(value: libsqlSQLValue): rawValue {
+export function libsqlValueParser(value: libsqlSQLValue, intMode?: intMode): rawValue {
     if (value.type==="null") return null;
-    if (value.type==="integer") return BigInt(value.value);
+    if (value.type==="integer") return parseLibsqlInt(value.value, intMode);
     if (value.type==="float") return Number(value.value);
     if (value.type==="text") return value.value;
     if (value.type==="blob") return Base64.toUint8Array(value.base64);
@@ -37,7 +48,8 @@ export function libsqlValueParser(value: libsqlSQLValue): rawValue {
 
 //========================================================
 export function libsqlStatementResParser(
-    res: libsqlStatementResOkData
+    res: libsqlStatementResOkData,
+    intMode?: intMode
 ): ResultSet {
     let Rows: Array<Row> = [];
 
@@ -46,7 +58,7 @@ export function libsqlStatementResParser(
 
         Object.defineProperty(row, "length", { value: res.rows[i].length });
         for (let j=0;j<res.rows[i].length;j++) {
-            const value = libsqlValueParser(res.rows[i][j]);
+            const value = libsqlValueParser(res.rows[i][j],intMode);
             Object.defineProperty(row, j, { value });
 
             const colName = res.cols[j].name!;
@@ -72,10 +84,11 @@ export function libsqlStatementResParser(
 
 //========================================================
 export function libsqlBatchStreamResParser(
-    res: libsqlBatchStreamResOkData
+    res: libsqlBatchStreamResOkData,
+    intMode?: intMode
 ): Array<ResultSet|null> {
     return res.step_results.map((r, i) => {
-        if (r) return libsqlStatementResParser(r);
+        if (r) return libsqlStatementResParser(r,intMode);
         else if (res.step_errors[i]) throw new ResponseError(res.step_errors[i]?.message||"", res.step_errors[i]!);
         else return null;
     });
@@ -83,8 +96,9 @@ export function libsqlBatchStreamResParser(
 
 //========================================================
 export function libsqlTransactionBatchStreamResParser(
-    res: libsqlBatchStreamResOkData
+    res: libsqlBatchStreamResOkData,
+    intMode?: intMode
 ): Array<ResultSet> {
-    const resResArr = libsqlBatchStreamResParser(res);
+    const resResArr = libsqlBatchStreamResParser(res, intMode);
     return resResArr.slice(1, resResArr.length-2).filter(r => r!==null) as Array<ResultSet>;
 }

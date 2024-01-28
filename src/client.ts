@@ -1,11 +1,11 @@
-import { libsqlBatchReqStepExecCond, libsqlConfig } from "libsql-stateless";
-import { TransactionMode, rawSQLStatement } from "./types.js";
+import { libsqlBatchReqStepExecCond } from "libsql-stateless";
+import { TransactionMode, rawSQLStatement, libsqlEasyConfig, intMode } from "./types.js";
 import { libsqlBatch, libsqlBatchTransaction, libsqlExecute, libsqlExecuteMultiple, libsqlServerCompatCheck } from "./functions.js";
 import { InternalError, LibsqlError } from "./errors.js";
 import { ____Transaction } from "./extras.js";
 
 class libsqlClient {
-    private readonly conf: libsqlConfig;
+    private readonly conf: libsqlEasyConfig;
     public closed: boolean;
 
     /** Which protocol does the client use?
@@ -16,7 +16,7 @@ class libsqlClient {
      */
     public protocol: string;
 
-    constructor(conf: libsqlConfig) {
+    constructor(conf: libsqlEasyConfig) {
         this.conf = conf;
         this.closed = false;
         this.protocol = "http";
@@ -141,9 +141,11 @@ class libsqlClient {
 export function createClient(conf: {
     url: string;
     authToken?: string;
+    intMode: intMode
 }) {
     return new libsqlClient({
         db_url: conf.url,
-        authToken: conf.authToken
+        authToken: conf.authToken,
+        intMode: conf.intMode
     });
 }
