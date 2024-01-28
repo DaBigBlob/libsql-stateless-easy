@@ -130,7 +130,9 @@ class libsqlClient {
     }
 
     public close() {
-        throw new InternalError("'libsql-stateless' is stateless therefore no connection to close.");
+        // throw new InternalError("'libsql-stateless' is stateless therefore no connection to close.");
+        // don't throw error for max compatiblity
+        console.error("'libsql-stateless' is stateless therefore no connection to close.");
     }
 
     public async serverOk() {
