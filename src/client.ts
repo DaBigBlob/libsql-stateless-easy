@@ -1,6 +1,6 @@
 import { libsqlBatchReqStepExecCond } from "libsql-stateless";
 import { TransactionMode, rawSQLStatement, libsqlConfig, intMode } from "./types.js";
-import { libsqlBatch, libsqlBatchTransaction, libsqlExecute, libsqlExecuteMultiple, libsqlServerCompatCheck } from "./functions.js";
+import { CheckHttpUrl, libsqlBatch, libsqlBatchTransaction, libsqlExecute, libsqlExecuteMultiple, libsqlServerCompatCheck } from "./functions.js";
 import { InternalError, LibsqlError } from "./errors.js";
 import { ____Transaction } from "./extras.js";
 
@@ -17,6 +17,8 @@ class libsqlClient {
     public protocol: string;
 
     constructor(conf: libsqlConfig) {
+        CheckHttpUrl(conf.db_url);
+        
         this.conf = conf;
         this.closed = false;
         this.protocol = "http";

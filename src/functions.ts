@@ -10,7 +10,7 @@ import { libsqlBatchReqStepExecCondBuilder, libsqlBatchReqStepsBuilder, libsqlSt
 import { libsqlBatchStreamResParser, libsqlStatementResParser, libsqlTransactionBatchStreamResParser } from "./parsers.js";
 import { HttpServerError, LibsqlError, ResponseError } from "./errors.js";
 
-function CheckHttpUrl(url: string) {
+export function CheckHttpUrl(url: string) {
     const _url: URL = (() => {
         try {
             return new URL(url);
@@ -30,8 +30,6 @@ function CheckHttpUrl(url: string) {
 }
 
 export async function libsqlExecute(conf: libsqlConfig, stmt: rawSQLStatement): Promise<ResultSet> {
-    CheckHttpUrl(conf.db_url);
-
     const res = await LIBlibsqlExecute(conf, libsqlStatementBuilder(stmt));
 
     if (res.isOk) return libsqlStatementResParser(res.val, conf.intMode);
@@ -46,8 +44,6 @@ export async function libsqlBatch(
     steps: Array<rawSQLStatement>,
     step_conditions: Array<libsqlBatchReqStepExecCond|null|undefined>
 ): Promise<Array<ResultSet|null>> {
-    CheckHttpUrl(conf.db_url);
-
     const res = await LIBlibsqlBatch(conf, libsqlBatchReqStepsBuilder(steps, step_conditions));
 
     if (res.isOk) return libsqlBatchStreamResParser(res.val, conf.intMode);
@@ -58,8 +54,6 @@ export async function libsqlBatch(
 }
 
 export async function libsqlServerCompatCheck(conf: libsqlConfig) {
-    CheckHttpUrl(conf.db_url);
-
     const res = await LIBlibsqlServerCompatCheck(conf);
     return (res.isOk) ? true : false;
 }
@@ -69,8 +63,6 @@ export async function libsqlBatchTransaction(
     steps: Array<rawSQLStatement>,
     mode: TransactionMode="deferred"
 ): Promise<Array<ResultSet>> {
-    CheckHttpUrl(conf.db_url);
-
     const res = await LIBlibsqlBatch(conf, libsqlTransactionBatchReqStepsBuilder(steps, mode));
 
     if (res.isOk) return libsqlTransactionBatchStreamResParser(res.val, conf.intMode);
@@ -81,8 +73,6 @@ export async function libsqlBatchTransaction(
 }
 
 export async function libsqlExecuteMultiple(conf: libsqlConfig, sql: string): Promise<void> {
-    CheckHttpUrl(conf.db_url);
-
     const sqlArr: Array<libsqlBatchReqStep> = sql.split(";").filter(s => s.trim()!=="").map((s, i) => {return {
         stmt: {sql: s},
         condition: libsqlBatchReqStepExecCondBuilder.ok(i-1)
