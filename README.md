@@ -4,6 +4,8 @@
 - ✅ **Supported runtime environments:** Web API (browser, serverless), Bun, Node.js (>=18)
 - ✅ **Is built for:** Quick stateless query execution. (Mainly for serverless and edge functions.)
 - ✅ Supports everything in `@libsql/client/web` **except `interactive transactions`.
+- ✅ Unlike `@libsql/client/web`, **every function performs complete execution in exactly 1 roundtrip.**
+- ✅ **Is built for:** Quick stateless query execution. (Mainly for serverless and edge functions.)
 - ✅ **The API provided by `libsql-stateless-easy` is simple** and exactly the same as `@libsql/client/web`.
 <br>
 
