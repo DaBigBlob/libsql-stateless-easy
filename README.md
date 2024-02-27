@@ -3,10 +3,8 @@
 > A wrapper for `libsql-stateless` that provides a much better DX
 - ✅ **Supported runtime environments:** Web API (browser, serverless), Bun, Node.js (>=18)
 - ✅ **Is built for:** Quick stateless query execution. (Mainly for serverless and edge functions.)
-- ✅ Supports everything in `@libsql/client/web` **except (explicit) `transactions`.
+- ✅ Supports everything in `@libsql/client/web` **except `interactive transactions`.
 - ✅ **The API provided by `libsql-stateless-easy` is simple** and exactly the same as `@libsql/client/web`.
-- ⚠️ `libsql-stateless-easy` comes with the cost of (computational and memory) overheads potentially unneeded by you. But is still very very very slim compared to `@libsql/client/web`.
-
 <br>
 
 **For better performance lower resource use, consider using [`libsql-stateless`](https://github.com/DaBigBlob/libsql-stateless) instead**: it, however, has a pretty raw and explicit API unappreciated by many developers.
@@ -79,10 +77,8 @@ import { drizzle } from 'drizzle-orm/libsql';
 
 - **This library has the exact `LibsqlError` API as `@libsql/client`**
 
-# This Documentation is incomplete
-I'll complete it when I have more time.
 ### List of other stuff in this library
-Feel free to explore them (or even contribute to the documentation!)
+Feel free to explore them (however you dont need to as they've been neatly packaged into the `client`)
 ```ts
 import {
     libsqlValueBuilder, libsqlStatementBuilder, libsqlBatchReqStepsBuilder, libsqlBatchReqStepExecCondBuilder, libsqlTransactionBeginStatement,
