@@ -4,7 +4,7 @@ import { Base64 } from "js-base64";
 import { MisuseError, ProtoError, ResponseError } from "./errors.js";
 
 //========================================================
-function parseLibsqlInt(number: string, intMode: intMode = "bigint") {
+function parseLibsqlInt(number: string, intMode: intMode = "number") {
     switch (intMode) {
         case ("number"): return (+number);
         case ("string"): return number;
