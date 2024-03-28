@@ -178,3 +178,4 @@ dist
 lib-cjs/
 lib-esm/
 _tests/
+*.lockb
