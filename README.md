@@ -1,15 +1,13 @@
 # libsql-stateless-easy
 
-> A wrapper for `libsql-stateless` that provides a much better DX
+> Thin libSQL stateless HTTP driver for TypeScript and JavaScript for the edge but easy 🚀
 - ✅ **Supported runtime environments:** Web API (browser, serverless), Bun, Node.js (>=18)
+- ✅ **Is extremely light:** 15KB (minified)/ 4.6KB (minified+gzipped)
 - ✅ **Is built for:** Quick stateless query execution. (Mainly for serverless and edge functions.)
 - ✅ Supports everything in `@libsql/client/web` **except `interactive transactions`.
 - ✅ Unlike `@libsql/client/web`, **every function performs complete execution in exactly 1 roundtrip.**
-- ✅ **Is built for:** Quick stateless query execution. (Mainly for serverless and edge functions.)
-- ✅ **The API provided by `libsql-stateless-easy` is simple** and exactly the same as `@libsql/client/web`.
+- ✅ **`libsql-stateless-easy` is simply a drop-in replacement** and exactly same API as `@libsql/client/web`.
 <br>
-
-**For better performance lower resource use, consider using [`libsql-stateless`](https://github.com/DaBigBlob/libsql-stateless) instead**: it, however, has a pretty raw and explicit API unappreciated by many developers.
 
 # Installation
 ```sh
