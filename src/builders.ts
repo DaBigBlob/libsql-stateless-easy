@@ -110,7 +110,7 @@ export function libsqlTransactionBeginStatement(mode: TransactionMode): libsqlBa
 //========================================================
 export function libsqlTransactionEndStatements(last_step_before_this: number): Array<libsqlBatchReqStep> {
     return [
-        {stmt: {sql: "COMMIT"}},
+        {stmt: {sql: "COMMIT"}, condition: {type: "ok", step: last_step_before_this}},
         {stmt: {sql: "ROLLBACK"}, condition: {type: "not", cond: {type: "ok", step: last_step_before_this+1}}}
     ]
 }
@@ -122,11 +122,7 @@ export function libsqlTransactionBatchReqStepsBuilder(
 ): Array<libsqlBatchReqStep> {
     const main_steps: Array<libsqlBatchReqStep> = queries.map((q, i) => {return {
         stmt: libsqlStatementBuilder(q),
-        condition: libsqlBatchReqStepExecCondBuilder.and([
-            libsqlBatchReqStepExecCondBuilder.ok(i),
-            libsqlBatchReqStepExecCondBuilder.not(libsqlBatchReqStepExecCondBuilder.is_autocommit())
-        ])
+        condition: libsqlBatchReqStepExecCondBuilder.ok(i)
     }});
-    main_steps[0].condition = undefined; //elm 1's ok index is set to 0 (transaction begin); removing that
     return [libsqlTransactionBeginStatement(mode)].concat(main_steps).concat(libsqlTransactionEndStatements(main_steps.length));
 }
