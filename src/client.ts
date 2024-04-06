@@ -1,7 +1,7 @@
 import { libsqlBatchReqStepExecCond } from "libsql-stateless";
 import { TransactionMode, rawSQLStatement, libsqlConfig, intMode } from "./types.js";
 import { CheckHttpUrl, libsqlBatch, libsqlBatchTransaction, libsqlExecute, libsqlExecuteMultiple, libsqlServerCompatCheck } from "./functions.js";
-import { InternalError, LibsqlError } from "./errors.js";
+import { InternalError } from "./errors.js";
 import { ____Transaction } from "./extras.js";
 
 class libsqlClient {
@@ -128,7 +128,9 @@ class libsqlClient {
     }
 
     public async sync() {
-        throw new LibsqlError("sync not supported in http mode", "SYNC_NOT_SUPPORTED");
+        // throw new LibsqlError("sync not supported in http mode", "SYNC_NOT_SUPPORTED");
+        // don't throw error for max compatiblity
+        console.error("'libsql-stateless' is remote only so nothing to sync.");
     }
 
     public close() {
