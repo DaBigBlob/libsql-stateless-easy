@@ -1,6 +1,6 @@
 {
   "name": "libsql-stateless-easy",
-  "version": "1.6.0-alpha.1",
+  "version": "1.6.0-alpha.2",
   "homepage": "https://github.com/DaBigBlob/libsql-stateless-easy#readme",
   "repository": {
     "type": "git",
@@ -10,15 +10,15 @@
     "url": "https://github.com/DaBigBlob/libsql-stateless-easy/issues",
     "email": "localboxcrox@gmail.com"
   },
-  "main": "lib-cjs/main.js",
+  "main": "dist/main.js",
   "devDependencies": {
     "typescript": "^5.0.0"
   },
   "exports": {
     ".": {
-      "types": "./lib-esm/main.d.ts",
-      "import": "./lib-esm/main.js",
-      "require": "./lib-cjs/main.js"
+      "types": "./dist/main.d.ts",
+      "import": "./dist/main.js",
+      "require": "./dist/main.js"
     }
   },
   "author": {
@@ -27,8 +27,7 @@
   },
   "description": "this makes using libsql-stateless easy",
   "files": [
-    "lib-cjs/**",
-    "lib-esm/**"
+    "dist/**"
   ],
   "keywords": [
     "libsql",
@@ -58,7 +57,7 @@
     "prod": "npm publish && npm run clean"
   },
   "type": "module",
-  "types": "lib-esm/main.d.ts",
+  "types": "dist/main.d.ts",
   "dependencies": {
     "js-base64": "^3.7.5",
     "libsql-stateless": "^2.8.0-alpha.1"
