@@ -18,7 +18,7 @@
     "lib": ["Es2022", "WebWorker"],
     "module": "Node16",
     "target": "ES2019",
-    "declaration": false,
+    "declaration": true,
     "outDir": "./dist"
   },
   "include": ["./src/*"]
