@@ -51,7 +51,7 @@
     "prebuild": "rm -rf ./dist",
     "build": "tsc -p tsconfig.json",
     "typecheck": "tsc --noEmit",
-    "test": "bun run _tests/test2.ts",
+    "test": "bun run _tests/test4.ts",
     "perf": "bun run _tests/perf.ts",
     "clean": "npm run prebuild",
     "build:clean": "npm run clean && npm run build",
