@@ -90,6 +90,6 @@ import {
     createClient //used above
 } from "libsql-stateless-easy";
 ```
-
+## API Level
 > NOTE: current API level is that of latest stable [libsql-stateless](https://github.com/DaBigBlob/libsql-stateless).   
 Read [this section](https://github.com/DaBigBlob/libsql-stateless/?tab=readme-ov-file#api-level).
