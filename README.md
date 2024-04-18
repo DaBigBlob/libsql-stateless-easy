@@ -2,7 +2,7 @@
 
 > Thin libSQL stateless HTTP driver for TypeScript and JavaScript for the edge but easy 🚀
 - ✅ **Supported runtime environments:** Web API (browser, serverless), Bun, Node.js (>=18)
-- ✅ **Is extremely light:** 15KB (minified)/ 4.6KB (minified+gzipped)
+- ✅ **Is extremely light:** 11KB (minified)/ 4.2KB (minified+gzipped)
 - ✅ **Is built for:** Quick stateless query execution. (Mainly for serverless and edge functions.)
 - ✅ Supports everything in `@libsql/client/web` **except `interactive transactions`.
 - ✅ Unlike `@libsql/client/web`, **every function performs complete execution in exactly 1 roundtrip.**
