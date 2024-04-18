@@ -69,12 +69,15 @@ export function libsqlStatementResParser(
         Rows.push(row as Row);
     }
 
-    const resultset = {
+    const resultset: Omit<ResultSet, "toJSON"> = {
         rows: Rows,
         columns: res.cols.map(c => c.name||""),
         columnTypes: res.cols.map(c => c.decltype||""),
         rowsAffected: res.affected_row_count,
         lastInsertRowid: (res.last_insert_rowid) ? BigInt(res.last_insert_rowid) : undefined,
+        rowsRead: res.rows_read,
+        rowsWritten: res.rows_written,
+        queryDurationMS: res.query_duration_ms
     }
     return {
         ...resultset,

@@ -93,6 +93,21 @@ export interface ResultSet {
      * This is used automatically by `JSON.stringify()`, but you can also call it explicitly.
      */
     toJSON(): any;
+
+    /** Rows read during processing query.
+     * Might not be available on older server versions.
+     */
+    rowsRead: number,
+
+    /** Rows written during processing query.
+     * Might not be available on older server versions.
+     */
+    rowsWritten: number,
+
+    /** Wall time of work done by server.
+     * Might not be available on older server versions.
+     */
+    queryDurationMS: number
 }
 
 /** Transaction mode.
