@@ -179,3 +179,5 @@ lib-cjs/
 lib-esm/
 _tests/
 *.lockb
+
+package-lock.json
