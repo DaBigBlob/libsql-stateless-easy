@@ -1,4 +1,4 @@
-import { libsqlStreamResErrData } from "libsql-stateless";
+import type { libsqlStreamResErrData } from "libsql-stateless";
 
 /** Error thrown by the client. */
 export class LibsqlError extends Error {

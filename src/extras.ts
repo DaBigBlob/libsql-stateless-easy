@@ -1,4 +1,4 @@
-import { ResultSet, rawValue } from "./types.js";
+import type { ResultSet, rawValue } from "./types.js";
 
 type InStatement = { sql: string, args: InArgs } | string;
 type InArgs = Array<InValue> | Record<string, InValue>;
