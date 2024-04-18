@@ -6,12 +6,20 @@
     "strictFunctionTypes": true,
     "strictBindCallApply": true,
     "strictPropertyInitialization": true,
+    "verbatimModuleSyntax": true,
     "noImplicitThis": true,
     "alwaysStrict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
-    "lib": ["DOM", "ESNext"]
-  }
+    "isolatedModules": true,
+
+    "lib": ["Es2022", "WebWorker"],
+    "module": "Node16",
+    "target": "ES2019",
+    "declaration": false,
+    "outDir": "./dist"
+  },
+  "include": ["./src/*"]
 }

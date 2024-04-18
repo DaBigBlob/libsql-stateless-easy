@@ -1,4 +1,4 @@
-import { libsqlConfig as LIBlibsqlConfig } from "libsql-stateless";
+import type { libsqlConfig as LIBlibsqlConfig } from "libsql-stateless";
 
 export type rawValue = null|bigint|number|string|ArrayBuffer;
 export type intMode = "bigint" | "number" | "string";

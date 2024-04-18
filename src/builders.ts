@@ -1,6 +1,6 @@
 import { Base64 } from 'js-base64';
-import { TransactionMode, rawSQLStatement, rawValue } from './types.js';
-import { libsqlBatchReqStep, libsqlBatchReqStepExecCond, libsqlSQLStatement, libsqlSQLValue } from 'libsql-stateless';
+import type { TransactionMode, rawSQLStatement, rawValue } from './types.js';
+import type { libsqlBatchReqStep, libsqlBatchReqStepExecCond, libsqlSQLStatement, libsqlSQLValue } from 'libsql-stateless';
 import { InternalError } from './errors.js';
 
 //========================================================
