@@ -1,6 +1,5 @@
-import type { libsqlBatchReqStepExecCond } from "libsql-stateless";
 import type { TransactionMode, rawSQLStatement, libsqlConfig, intMode } from "./types.js";
-import { CheckHttpUrl, libsqlBatch, libsqlBatchTransaction, libsqlExecute, libsqlExecuteMultiple, libsqlServerCompatCheck } from "./functions.js";
+import { CheckHttpUrl, libsqlBatchTransaction, libsqlExecute, libsqlExecuteMultiple, libsqlServerCompatCheck } from "./functions.js";
 import { InternalError } from "./errors.js";
 
 class libsqlClient {
