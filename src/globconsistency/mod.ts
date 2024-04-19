@@ -19,7 +19,12 @@ export function checkHttpUrl(url: string) {
     const is_bad: boolean = (() => {
         if (_hasURL) {
             try {
-                return !_newURL(url);
+                const _url = _newURL(url);
+                if (
+                    _url.protocol === 'https:' ||
+                    _url.protocol === 'http:'
+                ) return true;
+                return false;
             } catch (e) {
                 throw new LibsqlError((e as Error).message, "ERR_INVALID_URL", (e as Error));
             }
@@ -27,7 +32,7 @@ export function checkHttpUrl(url: string) {
             url.startsWith('https://') ||
             url.startsWith('http://')
         ) return false;
-        else return true;
+        return true;
     })();
 
     if (is_bad) throw new LibsqlError(
