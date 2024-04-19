@@ -16,21 +16,21 @@ export function conserror(str: string): void {
 }
 
 export function checkHttpUrl(url: string) {
-    const is_good: boolean = (() => {
+    const is_bad: boolean = (() => {
         if (_hasURL) {
             try {
-                return !!_newURL(url);
+                return !_newURL(url);
             } catch (e) {
                 throw new LibsqlError((e as Error).message, "ERR_INVALID_URL", (e as Error));
             }
         } else if (
             url.startsWith('https://') ||
             url.startsWith('http://')
-        ) return true;
-        else return false;
+        ) return false;
+        else return true;
     })();
 
-    if (is_good) throw new LibsqlError(
+    if (is_bad) throw new LibsqlError(
         'This is a HTTP client and only supports "https:" and "http:" URLs.',
         "URL_SCHEME_NOT_SUPPORTED",
     );
