@@ -1,4 +1,4 @@
-import { Base64 } from 'js-base64';
+import { fromUint8Array } from './base64/mod.js';
 import type { TransactionMode, rawSQLStatement, rawValue } from './types.js';
 import type { libsqlBatchReqStep, libsqlBatchReqStepExecCond, libsqlSQLStatement, libsqlSQLValue } from 'libsql-stateless';
 import { InternalError } from './errors.js';
@@ -10,7 +10,7 @@ export function libsqlValueBuilder(value: rawValue): libsqlSQLValue {
     if (typeof(value)==="bigint") return {type: "integer", value: ""+value};
     if (typeof(value)==="number") return {type: "float", value: value};
     if (typeof(value)==="string") return {type: "text", value: value};
-    if (value instanceof Uint8Array) return {type: "blob", base64: Base64.fromUint8Array(value)};
+    if (value instanceof Uint8Array) return {type: "blob", base64: fromUint8Array(value)};
     throw new InternalError("Invalid type of input. Cannot build request to server.");
 }
 

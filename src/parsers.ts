@@ -1,6 +1,6 @@
 import type { libsqlBatchStreamResOkData, libsqlSQLValue, libsqlStatementResOkData } from "libsql-stateless";
 import type { ResultSet, Row, rawValue, intMode } from "./types.js";
-import { Base64 } from "js-base64";
+import { toUint8Array } from './base64/mod.js';
 import { MisuseError, ProtoError, ResponseError } from "./errors.js";
 
 //========================================================
@@ -20,7 +20,7 @@ export function libsqlValueParser(value: libsqlSQLValue, intMode?: intMode): raw
         case ("integer"): return parseLibsqlInt(value.value, intMode);
         case ("float"): return Number(value.value);
         case ("text"): return value.value;
-        case ("blob"): return Base64.toUint8Array(value.base64);
+        case ("blob"): return toUint8Array(value.base64);
         default: throw new ProtoError("Invalid data type from server. Cannot parse.");
     }
 }
