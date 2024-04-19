@@ -72,7 +72,7 @@ export async function libsqlBatchTransaction(
     }
 }
 
-export async function libsqlExecuteMultiple(conf: libsqlConfig, sql: string): Promise<void> {
+export async function libsqlExecuteMultiple(conf: libsqlConfig, sql: string): Promise<undefined> {
     const sqlArr: Array<libsqlBatchReqStep> = sql.split(";").filter(s => s.trim()!=="").map((s, i) => {return {
         stmt: {sql: s},
         condition: libsqlBatchReqStepExecCondBuilder.ok(i-1)
