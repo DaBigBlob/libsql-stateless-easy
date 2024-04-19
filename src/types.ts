@@ -9,16 +9,13 @@ export type rawSQLStatement = string|{
 export interface libsqlConfig {
     /** The database URL.
      *
-     * The client supports `libsql:`, `http:`/`https:`, `ws:`/`wss:` and `file:` URL. For more infomation,
-     * please refer to the project README:
-     *
-     * https://github.com/libsql/libsql-client-ts#supported-urls
+     * The client supports `http:`/`https:`.
      */
     url: string;
 
     /** Authentication token for the database. */
     authToken?: string;
-    
+
     /** How to convert SQLite integers to JavaScript values:
      *
      * - `"number"` (default): returns SQLite integers as JavaScript `number`-s (double precision floats).
@@ -32,10 +29,8 @@ export interface libsqlConfig {
 
     /** Custom `fetch` function to use for the HTTP client.
      *
-     * By default, the HTTP client uses `fetch` from the `@libsql/isomorphic-fetch` package, but you can pass
-     * your own function here. The argument to this function will be `Request` from
-     * `@libsql/isomorphic-fetch`, and it must return a promise that resolves to an object that is compatible
-     * with the Web `Response`.
+     * By default, this client uses the global `fetch`, but you can pass
+     * your own function here in case these isnt one.
      */
     fetch?: Function;
 }
