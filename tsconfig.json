@@ -14,12 +14,14 @@
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
     "isolatedModules": true,
+    
+    "allowJs": true,
 
-    "lib": ["Es2022", "WebWorker"],
+    "lib": ["ES2023"],
     "module": "Node16",
-    "target": "ES2019",
+    // "target": "ES2019",
     "declaration": true,
     "outDir": "./dist"
   },
-  "include": ["./src/*"]
+  "include": ["./src/*", "./src/*/*"]
 }

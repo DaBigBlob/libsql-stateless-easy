@@ -1,6 +1,7 @@
 {
   "name": "libsql-stateless-easy",
-  "version": "1.6.1",
+  "version": "1.6.2",
+  "description": "thin libSQL stateless http driver for TypeScript and JavaScript but easy",
   "homepage": "https://github.com/DaBigBlob/libsql-stateless-easy#readme",
   "repository": {
     "type": "git",
@@ -8,27 +9,43 @@
   },
   "bugs": {
     "url": "https://github.com/DaBigBlob/libsql-stateless-easy/issues",
-    "email": "localboxcrox@gmail.com"
+    "email": "libsqlstateless@hman.io"
   },
-  "main": "dist/main.js",
-  "devDependencies": {
-    "typescript": "^5.0.0"
+  "author": {
+    "name": "LocalBox Crox",
+    "email": "libsqlstateless@hman.io"
   },
+  "license": "MIT",
+  "type": "module",
+  "main": "./dist/main.js",
+  "types": "./dist/main.d.ts",
+  "files": [
+    "./dist/*",
+    "./LICENSE",
+    "./package.json",
+    "./README.md"
+  ],
   "exports": {
     ".": {
       "types": "./dist/main.d.ts",
       "import": "./dist/main.js",
-      "require": "./dist/main.js"
+      "require": "./dist/main.cjs"
     }
   },
-  "author": {
-    "name": "LocalBox Crox",
-    "email": "localboxcrox@gmail.com"
+  "devDependencies": {
+    "tsup": "^8.0.2",
+    "typescript": "^5.0.0"
   },
-  "description": "this makes using libsql-stateless easy",
-  "files": [
-    "dist/**"
-  ],
+  "scripts": {
+    "prepublishOnly": "npm run build",
+    "prebuild": "rm -rf ./dist",
+    "build": "tsup && rm ./dist/main.d.cts",
+    "typecheck": "tsc --noEmit",
+    "test": "bun run _tests/test4.ts",
+    "perf": "bun run _tests/perf.ts",
+    "clean": "npm run prebuild",
+    "prod": "npm publish && npm run clean"
+  },
   "keywords": [
     "libsql",
     "database",
@@ -44,21 +61,7 @@
     "cloudflare-pages",
     "edge"
   ],
-  "license": "MIT",
-  "scripts": {
-    "prepublishOnly": "npm run build",
-    "prebuild": "rm -rf ./dist",
-    "build": "tsc -p tsconfig.json",
-    "typecheck": "tsc --noEmit",
-    "test": "bun run _tests/test4.ts",
-    "perf": "bun run _tests/perf.ts",
-    "clean": "npm run prebuild",
-    "prod": "npm publish && npm run clean"
-  },
-  "type": "module",
-  "types": "dist/main.d.ts",
   "dependencies": {
-    "js-base64": "^3.7.5",
-    "libsql-stateless": "^2.8.3"
+    "libsql-stateless": "^2.8.4"
   }
 }
