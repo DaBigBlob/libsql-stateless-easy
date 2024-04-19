@@ -23,8 +23,8 @@ export function checkHttpUrl(url: string) {
                 if (
                     _url.protocol === 'https:' ||
                     _url.protocol === 'http:'
-                ) return true;
-                return false;
+                ) return false;
+                return true;
             } catch (e) {
                 throw new LibsqlError((e as Error).message, "ERR_INVALID_URL", (e as Error));
             }
