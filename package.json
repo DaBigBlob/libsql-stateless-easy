@@ -62,6 +62,7 @@
     "edge"
   ],
   "dependencies": {
+    "js-base64": "^3.7.7",
     "libsql-stateless": "^2.8.4-alpha.2"
   }
 }
