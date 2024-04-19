@@ -1,4 +1,4 @@
-import { _hasBuffer, _useBufferU8a, _useBufferBin, _useBufferStr, _hadBtoa, _hadAtob, _useAtob, _useBufferAsc } from './utils.js';
+import { _hasBuffer, _useBufferU8a, _useBufferBin, _useBufferStr, _hadBtoa, _hadAtob, _useAtob, _useBufferAsc, _useBtoa } from './utils.js';
 
 const b64ch = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
 const b64chs = Array.prototype.slice.call(b64ch);
@@ -28,7 +28,7 @@ const btoaPolyfill = (bin: string) => {
 };
 
 const _btoa = _hadBtoa
-    ? (bin: string) => btoa(bin)
+    ? (bin: string) => _useBtoa(bin)
     : _hasBuffer
         ? (bin: string) => _useBufferBin(bin)
         : btoaPolyfill

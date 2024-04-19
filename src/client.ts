@@ -1,7 +1,7 @@
 import type { TransactionMode, rawSQLStatement, libsqlConfig, intMode } from "./types.js";
 import { libsqlBatchTransaction, libsqlExecute, libsqlExecuteMultiple, libsqlServerCompatCheck } from "./functions.js";
 import { InternalError } from "./errors.js";
-import { checkHttpUrl, conserror, ensure_fetch } from "./global_consistency/mod.js";
+import { checkHttpUrl, conserror, ensure_fetch } from "./globconsistency/mod.js";
 
 class libsqlClient {
     private readonly conf: libsqlConfig;
