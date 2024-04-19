@@ -11,7 +11,7 @@ import { libsqlBatchStreamResParser, libsqlStatementResParser, libsqlTransaction
 import { HttpServerError, ResponseError } from "./errors.js";
 
 export async function libsqlExecute(conf: libsqlConfig, stmt: rawSQLStatement): Promise<ResultSet> {
-    const res = await LIBlibsqlExecute(conf, libsqlStatementBuilder(stmt));
+    const res = await LIBlibsqlExecute({db_url: conf.url, authToken: conf.authToken}, libsqlStatementBuilder(stmt));
 
     if (res.isOk) return libsqlStatementResParser(res.val, conf.intMode);
     else {
@@ -25,7 +25,7 @@ export async function libsqlBatch(
     steps: Array<rawSQLStatement>,
     step_conditions: Array<libsqlBatchReqStepExecCond|null|undefined>
 ): Promise<Array<ResultSet|null>> {
-    const res = await LIBlibsqlBatch(conf, libsqlBatchReqStepsBuilder(steps, step_conditions));
+    const res = await LIBlibsqlBatch({db_url: conf.url, authToken: conf.authToken}, libsqlBatchReqStepsBuilder(steps, step_conditions));
 
     if (res.isOk) return libsqlBatchStreamResParser(res.val, conf.intMode);
     else {
@@ -35,7 +35,7 @@ export async function libsqlBatch(
 }
 
 export async function libsqlServerCompatCheck(conf: libsqlConfig) {
-    const res = await LIBlibsqlServerCompatCheck(conf);
+    const res = await LIBlibsqlServerCompatCheck({db_url: conf.url, authToken: conf.authToken});
     return (res.isOk) ? true : false;
 }
 
@@ -44,7 +44,7 @@ export async function libsqlBatchTransaction(
     steps: Array<rawSQLStatement>,
     mode: TransactionMode="deferred"
 ): Promise<Array<ResultSet>> {
-    const res = await LIBlibsqlBatch(conf, libsqlTransactionBatchReqStepsBuilder(steps, mode));
+    const res = await LIBlibsqlBatch({db_url: conf.url, authToken: conf.authToken}, libsqlTransactionBatchReqStepsBuilder(steps, mode));
 
     if (res.isOk) return libsqlTransactionBatchStreamResParser(res.val, conf.intMode);
     else {
@@ -60,7 +60,7 @@ export async function libsqlExecuteMultiple(conf: libsqlConfig, sql: string): Pr
     }});
     sqlArr[0].condition = undefined; //elm 0's ok index is set to -1; removing that
 
-    const res = await LIBlibsqlBatch(conf, sqlArr);
+    const res = await LIBlibsqlBatch({db_url: conf.url, authToken: conf.authToken}, sqlArr);
     if (!res.isOk) {
         if (res.err.kind==="LIBSQL_SERVER_ERROR") throw new HttpServerError(res.err.server_message||"Server encountered error.", res.err.http_status_code);
         else throw new ResponseError(res.err.data.message, res.err.data);

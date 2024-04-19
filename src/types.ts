@@ -1,5 +1,3 @@
-import type { libsqlConfig as LIBlibsqlConfig } from "libsql-stateless";
-
 export type rawValue = null|bigint|number|string|ArrayBuffer;
 export type intMode = "bigint" | "number" | "string";
 export type rawSQLStatement = string|{
@@ -8,7 +6,19 @@ export type rawSQLStatement = string|{
     want_rows?: boolean
 }
 
-export interface libsqlConfig extends LIBlibsqlConfig {
+export interface libsqlConfig {
+    /** The database URL.
+     *
+     * The client supports `libsql:`, `http:`/`https:`, `ws:`/`wss:` and `file:` URL. For more infomation,
+     * please refer to the project README:
+     *
+     * https://github.com/libsql/libsql-client-ts#supported-urls
+     */
+    url: string;
+
+    /** Authentication token for the database. */
+    authToken?: string;
+    
     /** How to convert SQLite integers to JavaScript values:
      *
      * - `"number"` (default): returns SQLite integers as JavaScript `number`-s (double precision floats).

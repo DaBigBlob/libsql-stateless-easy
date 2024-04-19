@@ -1,4 +1,4 @@
-import type { TransactionMode, rawSQLStatement, libsqlConfig, intMode } from "./types.js";
+import type { TransactionMode, rawSQLStatement, libsqlConfig } from "./types.js";
 import { libsqlBatchTransaction, libsqlExecute, libsqlExecuteMultiple, libsqlServerCompatCheck } from "./functions.js";
 import { InternalError } from "./errors.js";
 import { checkHttpUrl, conserror, ensure_fetch } from "./globconsistency/mod.js";
@@ -16,7 +16,7 @@ class libsqlClient {
     public protocol: string;
 
     constructor(conf: libsqlConfig) {
-        checkHttpUrl(conf.db_url);
+        checkHttpUrl(conf.url);
         ensure_fetch(conf.fetch);
         
         this.conf = conf;
@@ -144,14 +144,6 @@ class libsqlClient {
     }
 }
 
-export function createClient(conf: {
-    url: string;
-    authToken?: string;
-    intMode?: intMode
-}) {
-    return new libsqlClient({
-        db_url: conf.url,
-        authToken: conf.authToken,
-        intMode: conf.intMode
-    });
+export function createClient(conf: libsqlConfig) {
+    return new libsqlClient(conf);
 }
