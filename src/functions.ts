@@ -8,26 +8,7 @@ import {
 import type { ResultSet, TransactionMode, rawSQLStatement, libsqlConfig } from "./types.js";
 import { libsqlBatchReqStepExecCondBuilder, libsqlBatchReqStepsBuilder, libsqlStatementBuilder, libsqlTransactionBatchReqStepsBuilder } from "./builders.js";
 import { libsqlBatchStreamResParser, libsqlStatementResParser, libsqlTransactionBatchStreamResParser } from "./parsers.js";
-import { HttpServerError, LibsqlError, ResponseError } from "./errors.js";
-
-export function CheckHttpUrl(url: string) {
-    const _url: URL = (() => {
-        try {
-            return new URL(url);
-        } catch (e) {
-            throw new LibsqlError((e as Error).message, "ERR_INVALID_URL", (e as Error));
-        }
-    })();
-
-    if (
-        _url.protocol !== 'https:' &&
-        _url.protocol !== 'http:'
-    ) throw new LibsqlError(
-        'This is a HTTP client and only supports "https:" and "http:" URLs, ' +
-            `got ${JSON.stringify(_url.protocol)}`,
-        "URL_SCHEME_NOT_SUPPORTED",
-    );
-}
+import { HttpServerError, ResponseError } from "./errors.js";
 
 export async function libsqlExecute(conf: libsqlConfig, stmt: rawSQLStatement): Promise<ResultSet> {
     const res = await LIBlibsqlExecute(conf, libsqlStatementBuilder(stmt));

@@ -1,6 +1,6 @@
 export const _hasBuffer = typeof Buffer === 'function';
 export const _hadBtoa = typeof btoa === 'function';
-export const _hadAtob = typeof atob === 'function'
+export const _hadAtob = typeof atob === 'function';
 
 export const _useAtob = (str) => atob(str);
 export const _useBufferU8a = (u8a) => Buffer.from(u8a).toString('base64');

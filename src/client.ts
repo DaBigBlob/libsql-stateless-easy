@@ -1,6 +1,7 @@
 import type { TransactionMode, rawSQLStatement, libsqlConfig, intMode } from "./types.js";
-import { CheckHttpUrl, libsqlBatchTransaction, libsqlExecute, libsqlExecuteMultiple, libsqlServerCompatCheck } from "./functions.js";
+import { libsqlBatchTransaction, libsqlExecute, libsqlExecuteMultiple, libsqlServerCompatCheck } from "./functions.js";
 import { InternalError } from "./errors.js";
+import { checkHttpUrl, conserror, ensure_fetch } from "./global_consistency/mod.js";
 
 class libsqlClient {
     private readonly conf: libsqlConfig;
@@ -15,7 +16,8 @@ class libsqlClient {
     public protocol: string;
 
     constructor(conf: libsqlConfig) {
-        CheckHttpUrl(conf.db_url);
+        checkHttpUrl(conf.db_url);
+        ensure_fetch(conf.fetch);
         
         this.conf = conf;
         this.closed = false;
@@ -128,13 +130,13 @@ class libsqlClient {
     public async sync() {
         // throw new LibsqlError("sync not supported in http mode", "SYNC_NOT_SUPPORTED");
         // don't throw error for max compatiblity
-        console.error("'libsql-stateless' is remote only so nothing to sync.");
+        conserror("'libsql-stateless' is remote only so nothing to sync.");
     }
 
     public close() {
         // throw new InternalError("'libsql-stateless' is stateless therefore no connection to close.");
         // don't throw error for max compatiblity
-        console.error("'libsql-stateless' is stateless therefore no connection to close.");
+        conserror("'libsql-stateless' is stateless therefore no connection to close.");
     }
 
     public async serverOk() {

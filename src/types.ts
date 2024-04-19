@@ -9,7 +9,25 @@ export type rawSQLStatement = string|{
 }
 
 export interface libsqlConfig extends LIBlibsqlConfig {
-    intMode?: intMode
+    /** How to convert SQLite integers to JavaScript values:
+     *
+     * - `"number"` (default): returns SQLite integers as JavaScript `number`-s (double precision floats).
+     * `number` cannot precisely represent integers larger than 2^53-1 in absolute value, so attempting to read
+     * larger integers will throw a `RangeError`.
+     * - `"bigint"`: returns SQLite integers as JavaScript `bigint`-s (arbitrary precision integers). Bigints can
+     * precisely represent all SQLite integers.
+     * - `"string"`: returns SQLite integers as strings.
+     */
+    intMode?: intMode;
+
+    /** Custom `fetch` function to use for the HTTP client.
+     *
+     * By default, the HTTP client uses `fetch` from the `@libsql/isomorphic-fetch` package, but you can pass
+     * your own function here. The argument to this function will be `Request` from
+     * `@libsql/isomorphic-fetch`, and it must return a promise that resolves to an object that is compatible
+     * with the Web `Response`.
+     */
+    fetch?: Function;
 }
 
 /** Row returned from an SQL statement.
