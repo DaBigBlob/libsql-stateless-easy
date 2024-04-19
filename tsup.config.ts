@@ -14,5 +14,5 @@ export default defineConfig({
   dts: true,
   shims: true,
   format: ['cjs', 'esm'],
-  target: ['deno1', 'node18', 'chrome120', 'edge120', 'firefox120', 'safari16', 'es2022']
+  target: ['deno1', 'node18', 'chrome120', 'edge120', 'firefox120', 'safari16', 'es2020']
 })
