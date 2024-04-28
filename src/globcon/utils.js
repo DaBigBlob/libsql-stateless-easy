@@ -5,3 +5,4 @@ export const _hasURL = typeof URL === 'function';
 
 export const _useConsoleError = (str) => console.error(str);
 export const _newURL = (str) => new URL(str);
+export const _setFetch = (ftch) => globalThis.fetch = ftch;

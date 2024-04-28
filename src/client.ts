@@ -1,9 +1,9 @@
 import type { TransactionMode, rawSQLStatement, libsqlConfig } from "./types.js";
 import { libsqlBatchTransaction, libsqlExecute, libsqlExecuteMultiple, libsqlServerCompatCheck } from "./functions.js";
 import { InternalError } from "./errors.js";
-import { checkHttpUrl, conserror, ensure_fetch } from "./globconsistency/mod.js";
+import { checkHttpUrl, conserror, ensure_fetch } from "./globcon/mod.js";
 
-class libsqlClient {
+export class libsqlClient {
     private readonly conf: libsqlConfig;
     public closed: boolean;
 
@@ -17,7 +17,7 @@ class libsqlClient {
 
     constructor(conf: libsqlConfig) {
         checkHttpUrl(conf.url);
-        ensure_fetch(conf.fetch);
+        ensure_fetch(conf);
         
         this.conf = conf;
         this.closed = false;
