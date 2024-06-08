@@ -33,6 +33,13 @@ export interface libsqlConfig {
      * your own function here in case these isnt one.
      */
     fetch?: Function;
+
+    /** Check if the LibSQL server is compatible with this client.
+     *
+     * This involves making a HTTP request when constructing the client.
+     * By default, this is enabled. Set to false to disable.
+     */
+    checkServer?: boolean;
 }
 
 /** Row returned from an SQL statement.
