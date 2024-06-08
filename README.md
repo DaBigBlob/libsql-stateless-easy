@@ -56,26 +56,37 @@ $ bun add libsql-stateless-easy
     else console.error("Server Compat Check NOT OK");
 ```
 
-# Drizzle
-**`libsql-stateless-easy`'s `client` works with drizzle out-of-the-box.**
+# Drizzle (and other ORMs)
+**`libsql-stateless-easy`'s `client` works with drizzle (and other ORMs) out-of-the-box.**
+This library implements the same Interface is the official client and therefore works with all the ORMs that the official client works with.
 ```ts
-import { createClient } from "libsql-stateless-easy";
-import { drizzle } from 'drizzle-orm/libsql';
+    import { createClient } from "libsql-stateless-easy";
+    import { drizzle } from 'drizzle-orm/libsql';
 
-(async () => {
     const client = createClient({
         url: "https://da-fish-mandible.turso.io",
         authToken: "fksdgfgksdgfksdg.javsdKDGKSBkgsdfg289374dg"
     });
 
     const db = drizzle(client);
- 
+
     const result = await db.select().from(table_name).all();
     console.log(result);
-})();
 ```
 
 - **This library has the exact `LibsqlError` API as `@libsql/client`**
+
+## Performance
+This library checks your configs, environments and server compatibality by default.
+Hoever this is _kinda_ resource intensive if you're creating client instances often.
+So, **IF YOU ARE SURE YOUR CONFIGURATION, ENVIRONMENT AND SERVER VERSION ARE CORRECT, PLEASE DISABLE THE CHECKS FOR EVEN BETTER PERFORMANCE.**
+```ts
+    const client = createClient({
+        url: "https://da-fish-mandible.turso.io",
+        authToken: "fksdgfgksdgfksdg.javsdKDGKSBkgsdfg289374dg",
+        criticalChecks: false
+    });
+```
 
 ### List of other stuff in this library
 Feel free to explore them (however you dont need to as they've been neatly packaged into the `client`)
