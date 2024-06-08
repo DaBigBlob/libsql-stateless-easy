@@ -8,13 +8,12 @@ export function ensure_fetch(conf: libsqlConfig) {
         _setFetch(conf.fetch)
     } else throw new LibsqlError("No global fetch. Please provide one.", "NO_GLOBAL_FETCH");
 
-    if (conf.checkServer) {
     try {
         const res = libsqlServerCompatCheck(conf);
         if (!res) throw new LibsqlError("Server incompatible. Please upgrade your libSQL server.", "OUT_OF_DATE_SERVER");
     } catch {
         throw new LibsqlError("The fetch function is non functional.", "FETCH_FUCKED");
-    }}
+    }
 }
 
 export function conserror(str: string) {

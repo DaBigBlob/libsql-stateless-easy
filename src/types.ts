@@ -27,19 +27,29 @@ export interface libsqlConfig {
      */
     intMode?: intMode;
 
-    /** Custom `fetch` function to use for the HTTP client.
+    /** Performs some critical checks to make sure the library wors well.
      *
-     * By default, this client uses the global `fetch`, but you can pass
-     * your own function here in case these isnt one.
-     */
-    fetch?: Function;
-
-    /** Check if the LibSQL server is compatible with this client.
-     *
-     * This involves making a HTTP request when constructing the client.
      * By default, this is enabled. Set to false to disable.
+     * 
+     * This includes:
+     * -    Checking the Database URL is valid (appropriate protocol, etc)
+     * -    Checking if global fetch is available and functioning properly.
+     * -    Checking if the LibSQL server supports this client.
+     * 
+     * IF YOU ARE SURE ALL OF THESE ARE CORRECT, PLEASE DISABLE THESE CHECKS BY SETTING TO FALSE.
+     * 
      */
-    checkServer?: boolean;
+    criticalChecks?: boolean;
+
+     /** Custom `fetch` function to use for the HTTP client.
+     *
+     * The underlying library relies of a global fetch.
+     * If your environment does not have a global fetch, provide it here
+     * and this library will set the global fetch for you.
+     * 
+     */
+     fetch?: Function;
+
 }
 
 /** Row returned from an SQL statement.

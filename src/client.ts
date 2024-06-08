@@ -16,8 +16,10 @@ export class libsqlClient {
     public protocol: string;
 
     constructor(conf: libsqlConfig) {
-        checkHttpUrl(conf.url);
-        ensure_fetch(conf);
+        if (conf.criticalChecks) {
+            checkHttpUrl(conf.url);
+            ensure_fetch(conf);
+        }
         
         this.conf = conf;
         this.closed = false;
@@ -145,5 +147,6 @@ export class libsqlClient {
 }
 
 export function createClient(conf: libsqlConfig) {
+    if (conf.criticalChecks === undefined) conf.criticalChecks = true;
     return new libsqlClient(conf);
 }
