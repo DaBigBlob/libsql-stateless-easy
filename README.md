@@ -77,8 +77,8 @@ This library implements the same Interface is the official client and therefore 
 - **This library has the exact `LibsqlError` API as `@libsql/client`**
 
 ## Performance
-This library checks your configs, environments and server compatibality by default.
-Hoever this is _kinda_ resource intensive if you're creating client instances often.
+This library checks your configs, environments and server compatibality by default.  
+Hoever this is _kinda_ resource intensive if you're creating client instances often.  
 So, **IF YOU ARE SURE YOUR CONFIGURATION, ENVIRONMENT AND SERVER VERSION ARE CORRECT, PLEASE DISABLE THE CHECKS FOR EVEN BETTER PERFORMANCE.**
 ```ts
     const client = createClient({
