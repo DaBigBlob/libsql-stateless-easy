@@ -27,19 +27,19 @@ export interface libsqlConfig {
      */
     intMode?: intMode;
 
-    /** Performs some critical checks to make sure the library wors well.
+    /** Disables performing some critical checks to make sure the library works well.
      *
-     * By default, this is enabled. Set to false to disable.
+     * By default, these checks are enabled. Set to true to disable.
      * 
-     * This includes:
+     * These includes:
      * -    Checking the Database URL is valid (appropriate protocol, etc)
      * -    Checking if global fetch is available and functioning properly.
      * -    Checking if the LibSQL server supports this client.
      * 
-     * IF YOU ARE SURE ALL OF THESE ARE CORRECT, PLEASE DISABLE THESE CHECKS BY SETTING TO FALSE.
+     * IF YOU ARE SURE ALL OF THESE ARE CORRECT, PLEASE DISABLE THESE CHECKS BY SETTING TO TRUE.
      * 
      */
-    criticalChecks?: boolean;
+    disableCriticalChecks?: boolean;
 
      /** Custom `fetch` function to use for the HTTP client.
      *

@@ -3,6 +3,10 @@ import { libsqlBatchTransaction, libsqlExecute, libsqlExecuteMultiple, libsqlSer
 import { InternalError } from "./errors.js";
 import { checkHttpUrl, conserror, ensure_fetch } from "./globcon/mod.js";
 
+export function createClient(conf: libsqlConfig) {
+    return new libsqlClient(conf);
+}
+
 export class libsqlClient {
     private readonly conf: libsqlConfig;
     public closed: boolean;
@@ -16,7 +20,7 @@ export class libsqlClient {
     public protocol: string;
 
     constructor(conf: libsqlConfig) {
-        if (conf.criticalChecks) {
+        if (!conf.disableCriticalChecks) {
             checkHttpUrl(conf.url);
             ensure_fetch(conf);
         }
@@ -144,9 +148,4 @@ export class libsqlClient {
     public async serverOk() {
         return await libsqlServerCompatCheck(this.conf);
     }
-}
-
-export function createClient(conf: libsqlConfig) {
-    if (conf.criticalChecks === undefined) conf.criticalChecks = true;
-    return new libsqlClient(conf);
 }
