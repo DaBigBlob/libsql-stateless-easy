@@ -9,7 +9,7 @@
 - ✅ **`libsql-stateless-easy` is simply a drop-in replacement** and exactly same API as `@libsql/client/web`.
 
 \* The actual js that is included with your project. (Excluding the type definitions and 2 copies of the main js for esm and cjs. (because you're gonna use one of them))  
-\*\*Interactive transactions are not supported** because this lib is stateless but [`transactions`](https://github.com/DaBigBlob/libsql-stateless/wiki/transactions) are supported.
+\*\*Interactive transactions are not supported because this lib is stateless but [`transactions`](https://github.com/DaBigBlob/libsql-stateless/wiki/transactions) are supported.
 <br>
 
 # Installation
