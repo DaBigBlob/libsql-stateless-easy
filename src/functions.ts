@@ -2,6 +2,7 @@ import {
     libsqlExecute as LIBlibsqlExecute,
     libsqlBatch as LIBlibsqlBatch,
     libsqlServerCompatCheck as LIBlibsqlServerCompatCheck,
+    type libsqlConfig as LIBlibsqlConfig,
     type libsqlBatchReqStepExecCond,
     type libsqlBatchReqStep
 } from "libsql-stateless";
@@ -10,8 +11,16 @@ import { libsqlBatchReqStepExecCondBuilder, libsqlBatchReqStepsBuilder, libsqlSt
 import { libsqlBatchStreamResParser, libsqlStatementResParser, libsqlTransactionBatchStreamResParser } from "./parsers.js";
 import { HttpServerError, ResponseError } from "./errors.js";
 
+function confTranslate(conf: libsqlConfig): LIBlibsqlConfig {
+    return {
+        db_url: conf.url,
+        authToken: conf.authToken,
+        fetch: conf.fetch
+    }
+}
+
 export async function libsqlExecute(conf: libsqlConfig, stmt: rawSQLStatement): Promise<ResultSet> {
-    const res = await LIBlibsqlExecute({db_url: conf.url, authToken: conf.authToken}, libsqlStatementBuilder(stmt));
+    const res = await LIBlibsqlExecute(confTranslate(conf), libsqlStatementBuilder(stmt));
 
     if (res.isOk) return libsqlStatementResParser(res.val, conf.intMode);
     else {
@@ -25,7 +34,7 @@ export async function libsqlBatch(
     steps: Array<rawSQLStatement>,
     step_conditions: Array<libsqlBatchReqStepExecCond|null|undefined>
 ): Promise<Array<ResultSet|null>> {
-    const res = await LIBlibsqlBatch({db_url: conf.url, authToken: conf.authToken}, libsqlBatchReqStepsBuilder(steps, step_conditions));
+    const res = await LIBlibsqlBatch(confTranslate(conf), libsqlBatchReqStepsBuilder(steps, step_conditions));
 
     if (res.isOk) return libsqlBatchStreamResParser(res.val, conf.intMode);
     else {
@@ -35,7 +44,7 @@ export async function libsqlBatch(
 }
 
 export async function libsqlServerCompatCheck(conf: libsqlConfig) {
-    const res = await LIBlibsqlServerCompatCheck({db_url: conf.url, authToken: conf.authToken});
+    const res = await LIBlibsqlServerCompatCheck(confTranslate(conf));
     return (res.isOk) ? true : false;
 }
 
@@ -44,7 +53,7 @@ export async function libsqlBatchTransaction(
     steps: Array<rawSQLStatement>,
     mode: TransactionMode="deferred"
 ): Promise<Array<ResultSet>> {
-    const res = await LIBlibsqlBatch({db_url: conf.url, authToken: conf.authToken}, libsqlTransactionBatchReqStepsBuilder(steps, mode));
+    const res = await LIBlibsqlBatch(confTranslate(conf), libsqlTransactionBatchReqStepsBuilder(steps, mode));
 
     if (res.isOk) return libsqlTransactionBatchStreamResParser(res.val, conf.intMode);
     else {
@@ -60,7 +69,7 @@ export async function libsqlExecuteMultiple(conf: libsqlConfig, sql: string): Pr
     }});
     sqlArr[0].condition = undefined; //elm 0's ok index is set to -1; removing that
 
-    const res = await LIBlibsqlBatch({db_url: conf.url, authToken: conf.authToken}, sqlArr);
+    const res = await LIBlibsqlBatch(confTranslate(conf), sqlArr);
     if (!res.isOk) {
         if (res.err.kind==="LIBSQL_SERVER_ERROR") throw new HttpServerError(res.err.server_message||"Server encountered error.", res.err.http_status_code);
         else throw new ResponseError(res.err.data.message, res.err.data);
