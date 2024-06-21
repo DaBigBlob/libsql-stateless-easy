@@ -1,5 +1,5 @@
 import type { TransactionMode, rawSQLStatement, libsqlConfig } from "./types.js";
-import { libsqlBatchTransaction, libsqlExecute, libsqlExecuteMultiple, libsqlServerCompatCheck } from "./functions.js";
+import { libsqlBatchTransaction, libsqlExecute, libsqlExecuteMultiple } from "./functions.js";
 import { InternalError } from "./errors.js";
 import { checkHttpUrl, conserror, ensure_fetch } from "./globcon/mod.js";
 
