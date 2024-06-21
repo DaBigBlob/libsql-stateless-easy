@@ -144,8 +144,4 @@ export class libsqlClient {
         // don't throw error for max compatiblity
         conserror("'libsql-stateless' is stateless therefore no connection to close.");
     }
-
-    public async serverOk() {
-        return await libsqlServerCompatCheck(this.conf);
-    }
 }
