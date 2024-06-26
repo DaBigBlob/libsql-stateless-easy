@@ -63,7 +63,7 @@ export function libsqlStatementResParser(
 
             const colName = res.cols[j].name!;
             if (colName !== undefined && !Object.hasOwn(row, colName)) {
-                Object.defineProperty(row, colName, { value, enumerable: true });
+                Object.defineProperty(row, colName, { value, enumerable: true, configurable: true, writable: true });
             }
         }
         Rows.push(row as Row);
