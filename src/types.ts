@@ -41,13 +41,7 @@ export interface libsqlConfig {
      */
     disableCriticalChecks?: boolean;
 
-     /** Custom `fetch` function to use for the HTTP client.
-     *
-     * The underlying library relies of a global fetch.
-     * If your environment does not have a global fetch, provide it here
-     * and this library will set the global fetch for you.
-     * 
-     */
+     /** Custom `fetch` function to use for the HTTP client.*/
      fetch?: Function;
 
 }
