@@ -45,12 +45,17 @@ export class libsqlClient {
      *     ["Jane Austen"],
      * });
      * // for backward compatibality
-     * const rs = await client.execute({
+     * const rs = await client.execute(
      *     sql: "SELECT * FROM books WHERE author = ?",
      *     args: ["Jane Austen"],
-     * });
+     * );
      *
      * // execute a statement with named arguments
+     * const rs = await client.execute(
+     *     "SELECT * FROM books WHERE published_at > $year",
+     *     {year: 1719},
+     * );
+     * // for backward compatibality
      * const rs = await client.execute({
      *     sql: "SELECT * FROM books WHERE published_at > $year",
      *     args: {year: 1719},
