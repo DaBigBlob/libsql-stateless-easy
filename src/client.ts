@@ -40,15 +40,15 @@ export class libsqlClient {
      * const rs = await client.execute("SELECT * FROM books");
      *
      * // execute a statement with positional arguments
-     * const rs = await client.execute({
+     * const rs = await client.execute(
      *     "SELECT * FROM books WHERE author = ?",
      *     ["Jane Austen"],
-     * });
+     * );
      * // for backward compatibality
-     * const rs = await client.execute(
+     * const rs = await client.execute({
      *     sql: "SELECT * FROM books WHERE author = ?",
      *     args: ["Jane Austen"],
-     * );
+     * });
      *
      * // execute a statement with named arguments
      * const rs = await client.execute(
