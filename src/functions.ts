@@ -6,7 +6,7 @@ import {
     type libsqlBatchReqStepExecCond,
     type libsqlBatchReqStep
 } from "libsql-stateless";
-import type { ResultSet, TransactionMode, rawSQLStatement, libsqlConfig } from "./types.js";
+import type { ResultSet, TransactionMode, rawSQLStatement, libsqlConfig, rawSQLArgs, rawSQL } from "./types.js";
 import { libsqlBatchReqStepExecCondBuilder, libsqlBatchReqStepsBuilder, libsqlStatementBuilder, libsqlTransactionBatchReqStepsBuilder } from "./builders.js";
 import { libsqlBatchStreamResParser, libsqlStatementResParser, libsqlTransactionBatchStreamResParser } from "./parsers.js";
 import { HttpServerError, ResponseError } from "./errors.js";
@@ -19,8 +19,8 @@ function confTranslate(conf: libsqlConfig): LIBlibsqlConfig {
     }
 }
 
-export async function libsqlExecute(conf: libsqlConfig, stmt: rawSQLStatement): Promise<ResultSet> {
-    const res = await LIBlibsqlExecute(confTranslate(conf), libsqlStatementBuilder(stmt));
+export async function libsqlExecute(conf: libsqlConfig, stmt_or_sql: rawSQL|rawSQLStatement, or_args?: rawSQLArgs, or_want_rows?: boolean): Promise<ResultSet> {
+    const res = await LIBlibsqlExecute(confTranslate(conf), libsqlStatementBuilder(stmt_or_sql, or_args, or_want_rows));
 
     if (res.isOk) return libsqlStatementResParser(res.val, conf.intMode);
     else {
@@ -50,7 +50,7 @@ export async function libsqlServerCompatCheck(conf: libsqlConfig) {
 
 export async function libsqlBatchTransaction(
     conf: libsqlConfig,
-    steps: Array<rawSQLStatement>,
+    steps: Array<rawSQL|rawSQLStatement>,
     mode: TransactionMode="deferred"
 ): Promise<Array<ResultSet>> {
     const res = await LIBlibsqlBatch(confTranslate(conf), libsqlTransactionBatchReqStepsBuilder(steps, mode));

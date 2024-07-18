@@ -1,4 +1,4 @@
-import type { TransactionMode, rawSQLStatement, libsqlConfig } from "./types.js";
+import type { TransactionMode, rawSQLStatement, libsqlConfig, rawSQLArgs, rawSQL, ResultSet } from "./types.js";
 import { libsqlBatchTransaction, libsqlExecute, libsqlExecuteMultiple } from "./functions.js";
 import { InternalError } from "./errors.js";
 import { checkHttpUrl, conserror, ensure_fetch } from "./globcon/mod.js";
@@ -41,6 +41,11 @@ export class libsqlClient {
      *
      * // execute a statement with positional arguments
      * const rs = await client.execute({
+     *     "SELECT * FROM books WHERE author = ?",
+     *     ["Jane Austen"],
+     * });
+     * // for backward compatibality
+     * const rs = await client.execute({
      *     sql: "SELECT * FROM books WHERE author = ?",
      *     args: ["Jane Austen"],
      * });
@@ -52,8 +57,10 @@ export class libsqlClient {
      * });
      * ```
      */
-    public async execute(stmt: rawSQLStatement) {
-        return await libsqlExecute(this.conf, stmt);
+    public async execute(stmt: rawSQL, args: rawSQLArgs, want_rows?: boolean): Promise<ResultSet>;
+    public async execute(stmt: rawSQLStatement): Promise<ResultSet>;
+    public async execute(stmt_or_sql: rawSQL|rawSQLStatement, or_args?: rawSQLArgs, or_want_rows?: boolean) {
+        return await libsqlExecute(this.conf, stmt_or_sql, or_args, or_want_rows);
     }
 
     /** Execute a batch of SQL statements in a transaction.
@@ -89,7 +96,7 @@ export class libsqlClient {
      * ```
      */
     public async batch(
-        steps: Array<rawSQLStatement>,
+        steps: Array<rawSQL|rawSQLStatement>,
         mode?: TransactionMode
     ) {
         return await libsqlBatchTransaction(this.conf, steps, mode);

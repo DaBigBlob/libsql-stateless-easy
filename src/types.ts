@@ -1,8 +1,10 @@
 export type rawValue = null|bigint|number|string|ArrayBuffer;
 export type intMode = "bigint" | "number" | "string";
-export type rawSQLStatement = string|{
-    sql: string,
-    args: Array<rawValue> | Record<string, rawValue>,
+export type rawSQL = string;
+export type rawSQLArgs = Array<rawValue> | Record<string, rawValue>;
+export type rawSQLStatement = {
+    sql: rawSQL,
+    args: rawSQLArgs,
     want_rows?: boolean
 }
 

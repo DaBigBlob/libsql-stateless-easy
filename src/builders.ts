@@ -1,5 +1,5 @@
 import { fromUint8Array } from './base64/mod.js';
-import type { TransactionMode, rawSQLStatement, rawValue } from './types.js';
+import type { TransactionMode, rawSQL, rawSQLArgs, rawSQLStatement, rawValue } from './types.js';
 import type { libsqlBatchReqStep, libsqlBatchReqStepExecCond, libsqlSQLStatement, libsqlSQLValue } from 'libsql-stateless';
 import { InternalError } from './errors.js';
 
@@ -15,33 +15,47 @@ export function libsqlValueBuilder(value: rawValue): libsqlSQLValue {
 }
 
 //========================================================
-export function libsqlStatementBuilder(s: rawSQLStatement): libsqlSQLStatement {
-    if (typeof(s)!=="string")
-    if (Object.prototype.toString.call(s.args) === '[object Array]') {
+export function libsqlArgumentsBuilder(a?: rawSQLArgs): Omit<libsqlSQLStatement, 'sql'|'want_rows'> {
+    if (a === undefined) return {};
+
+    if (Object.prototype.toString.call(a) === '[object Array]') {
         return {
-            sql: s.sql,
-            args: (s.args as Array<rawValue>).map(r => libsqlValueBuilder(r)),
-            want_rows: s.want_rows
+            args: (a as Array<rawValue>).map(r => libsqlValueBuilder(r)),
         };
     } else {
         let p_named_args: Array<{
             name: string,
             value: libsqlSQLValue,
         }>=[];
-        const _args = s.args as Record<string, rawValue>;
+        const _args = a as Record<string, rawValue>;
 
         for (const key in _args) p_named_args.push({name: key, value: libsqlValueBuilder(_args[key])});
 
         return {
-            sql: s.sql,
             named_args: p_named_args,
-            want_rows: s.want_rows
         };
     }
+}
 
-    return {
-        sql: s
-    };
+//========================================================
+export function libsqlStatementBuilder(s: rawSQL|rawSQLStatement, or_a?: rawSQLArgs, or_want_rows?: boolean): libsqlSQLStatement {
+    if (typeof(s)=="string") { // arguments as tuple
+        const _args = libsqlArgumentsBuilder(or_a);
+        return {
+            sql: s,
+            args: _args.args,
+            named_args: _args.named_args,
+            want_rows: or_want_rows
+        };
+    } else { // arguments as object
+        const s_args = libsqlArgumentsBuilder(s.args);
+        return {
+            sql: s.sql,
+            args: s_args.args,
+            named_args: s_args.named_args,
+            want_rows: s.want_rows
+        }
+    }
 }
 
 //===========================================================
@@ -117,7 +131,7 @@ export function libsqlTransactionEndStatements(last_step_before_this: number): A
 
 //===========================================================
 export function libsqlTransactionBatchReqStepsBuilder(
-    queries: Array<rawSQLStatement>,
+    queries: Array<rawSQL|rawSQLStatement>,
     mode: TransactionMode
 ): Array<libsqlBatchReqStep> {
     const main_steps: Array<libsqlBatchReqStep> = queries.map((q, i) => {return {
