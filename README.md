@@ -53,10 +53,6 @@ $ bun add libsql-stateless-easy
         args: [1]
     });
     console.log(res2);
-
-    const res3 = await client.serverOk();
-    if (res3) console.log("Server Compat Check OK");
-    else console.error("Server Compat Check NOT OK");
 ```
 
 # Drizzle (and other ORMs)
