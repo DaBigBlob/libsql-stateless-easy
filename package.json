@@ -33,7 +33,6 @@
     }
   },
   "devDependencies": {
-    "@libsql/client": "^0.8.0",
     "js-base64": "^3.7.7",
     "tsup": "^8.0.2",
     "typescript": "^5.0.0"
