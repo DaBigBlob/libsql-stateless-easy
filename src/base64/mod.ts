@@ -34,9 +34,7 @@ const _btoa = _hadBtoa
         : btoaPolyfill
 ;
 
-const _mkUriSafe = (src: string) => src.replace(/=/g, '').replace(/[+\/]/g, (m0) => m0 == '+' ? '-' : '_');
-
-const _fromUint8Array = _hasBuffer
+export const fromUint8Array = _hasBuffer
     ? (u8a: Uint8Array) => _useBufferU8a(u8a) as string
     : (u8a: Uint8Array) => {
         // cf. https://stackoverflow.com/questions/12710001/how-to-convert-uint8-array-to-base64-encoded-string/12713326#12713326
@@ -55,10 +53,12 @@ const _fromUint8Array = _hasBuffer
 
 const _fromCC = String.fromCharCode.bind(String);
 
-export const fromUint8Array = (u8a: Uint8Array, urlsafe: boolean = false): string => urlsafe
-    ? _mkUriSafe(_fromUint8Array(u8a))
-    : _fromUint8Array(u8a)
-;
+// urlsafe is never used in this library
+// const _mkUriSafe = (src: string) => src.replace(/=/g, '').replace(/[+\/]/g, (m0) => m0 == '+' ? '-' : '_');
+// export const fromUint8Array = (u8a: Uint8Array, urlsafe: boolean = false): string => urlsafe
+//     ? _mkUriSafe(_fromUint8Array(u8a))
+//     : _fromUint8Array(u8a)
+// ;
 
 const _tidyB64 = (s: string) => s.replace(/[^A-Za-z0-9\+\/]/g, '');
 
