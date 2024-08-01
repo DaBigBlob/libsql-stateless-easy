@@ -11,7 +11,6 @@ const b64tab = ((a) => {
 const b64re = /^(?:[A-Za-z\d+\/]{4})*?(?:[A-Za-z\d+\/]{2}(?:==)?|[A-Za-z\d+\/]{3}=?)?$/;
 
 const btoaPolyfill = (bin: string) => {
-    // console.log('polyfilled');
     let u32, c0, c1, c2, asc = '';
     const pad = bin.length % 3;
     for (let i = 0; i < bin.length;) {
