@@ -1,3 +1,4 @@
+import { Base64Error } from './error.js';
 import { _hasBuffer, _useBufferU8a, _useBufferBin, _useBufferStr, _hadBtoa, _hadAtob, _useAtob, _useBufferAsc, _useBtoa } from './utils.js';
 
 const b64ch = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
@@ -17,7 +18,7 @@ const btoaPolyfill = (bin: string) => {
         if ((c0 = bin.charCodeAt(i++)) > 255 ||
             (c1 = bin.charCodeAt(i++)) > 255 ||
             (c2 = bin.charCodeAt(i++)) > 255)
-            throw new TypeError('invalid character found');
+            throw new Base64Error('Invalid character found while polyfilling btoa', "BTOA_POLYFILL_INVALID_CHAR");
         u32 = (c0 << 16) | (c1 << 8) | c2;
         asc += b64chs[u32 >> 18 & 63]
             + b64chs[u32 >> 12 & 63]
@@ -33,6 +34,8 @@ const _btoa = _hadBtoa
         ? (bin: string) => _useBufferBin(bin)
         : btoaPolyfill
 ;
+
+const _fromCC = String.fromCharCode.bind(String);
 
 export const fromUint8Array = _hasBuffer
     ? (u8a: Uint8Array) => _useBufferU8a(u8a) as string
@@ -51,8 +54,6 @@ export const fromUint8Array = _hasBuffer
     }
 ;
 
-const _fromCC = String.fromCharCode.bind(String);
-
 // urlsafe is never used in this library
 // const _mkUriSafe = (src: string) => src.replace(/=/g, '').replace(/[+\/]/g, (m0) => m0 == '+' ? '-' : '_');
 // export const fromUint8Array = (u8a: Uint8Array, urlsafe: boolean = false): string => urlsafe
@@ -65,7 +66,7 @@ const _tidyB64 = (s: string) => s.replace(/[^A-Za-z0-9\+\/]/g, '');
 const atobPolyfill = (asc: string) => {
     // console.log('polyfilled');
     asc = asc.replace(/\s+/g, '');
-    if (!b64re.test(asc)) throw new TypeError('malformed base64.');
+    if (!b64re.test(asc)) throw new Base64Error("Malformed base64 while polyfilling atob", "ATOB_POLYFILL_INVALID_CHAR");
     asc += '=='.slice(2 - (asc.length & 3));
     let u24, bin = '', r1, r2;
     for (let i = 0; i < asc.length;) {
