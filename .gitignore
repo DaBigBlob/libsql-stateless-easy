@@ -175,9 +175,8 @@ dist
 .DS_Store
 
 # Project specific
-lib-cjs/
-lib-esm/
-_tests/
+*/dist/
+_tests/conf.ts
 *.lockb
 
 package-lock.json
