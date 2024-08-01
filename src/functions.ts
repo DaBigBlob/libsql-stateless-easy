@@ -24,7 +24,7 @@ export async function libsqlExecute(conf: libsqlConfig, stmt_or_sql: rawSQL|rawS
 
     if (res.isOk) return libsqlStatementResParser(res.val, conf.intMode);
     else {
-        if (res.err.kind==="LIBSQL_SERVER_ERROR") throw new HttpServerError(res.err.server_message||"Server encountered error.", res.err.http_status_code);
+        if (res.err.kind==="LIBSQL_SERVER_ERROR") throw new HttpServerError(res.err.server_message??"Server encountered error.", res.err.http_status_code);
         else throw new ResponseError(res.err.data.message, res.err.data);
     }
 }
@@ -38,7 +38,7 @@ export async function libsqlBatch(
 
     if (res.isOk) return libsqlBatchStreamResParser(res.val, conf.intMode);
     else {
-        if (res.err.kind==="LIBSQL_SERVER_ERROR") throw new HttpServerError(res.err.server_message||"Server encountered error.", res.err.http_status_code);
+        if (res.err.kind==="LIBSQL_SERVER_ERROR") throw new HttpServerError(res.err.server_message??"Server encountered error.", res.err.http_status_code);
         else throw new ResponseError(res.err.data.message, res.err.data);
     }
 }
@@ -57,7 +57,7 @@ export async function libsqlBatchTransaction(
 
     if (res.isOk) return libsqlTransactionBatchStreamResParser(res.val, conf.intMode);
     else {
-        if (res.err.kind==="LIBSQL_SERVER_ERROR") throw new HttpServerError(res.err.server_message||"Server encountered error.", res.err.http_status_code);
+        if (res.err.kind==="LIBSQL_SERVER_ERROR") throw new HttpServerError(res.err.server_message??"Server encountered error.", res.err.http_status_code);
         else throw new ResponseError(res.err.data.message, res.err.data);
     }
 }
@@ -71,7 +71,7 @@ export async function libsqlExecuteMultiple(conf: libsqlConfig, sql: string): Pr
 
     const res = await LIBlibsqlBatch(confTranslate(conf), sqlArr);
     if (!res.isOk) {
-        if (res.err.kind==="LIBSQL_SERVER_ERROR") throw new HttpServerError(res.err.server_message||"Server encountered error.", res.err.http_status_code);
+        if (res.err.kind==="LIBSQL_SERVER_ERROR") throw new HttpServerError(res.err.server_message??"Server encountered error.", res.err.http_status_code);
         else throw new ResponseError(res.err.data.message, res.err.data);
     }
 }

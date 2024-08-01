@@ -71,8 +71,8 @@ export function libsqlStatementResParser(
 
     const resultset: Omit<ResultSet, "toJSON"> = {
         rows: Rows,
-        columns: res.cols.map(c => c.name||""),
-        columnTypes: res.cols.map(c => c.decltype||""),
+        columns: res.cols.map(c => c.name??""),
+        columnTypes: res.cols.map(c => c.decltype??""),
         rowsAffected: res.affected_row_count,
         lastInsertRowid: (res.last_insert_rowid) ? BigInt(res.last_insert_rowid) : undefined,
         rowsRead: res.rows_read,
@@ -92,7 +92,7 @@ export function libsqlBatchStreamResParser(
 ): Array<ResultSet|null> {
     return res.step_results.map((r, i) => {
         if (r) return libsqlStatementResParser(r, intMode);
-        else if (res.step_errors[i]) throw new ResponseError(res.step_errors[i]?.message||"", res.step_errors[i]!);
+        else if (res.step_errors[i]) throw new ResponseError(res.step_errors[i]?.message??"", res.step_errors[i]!);
         else return null;
     });
 }

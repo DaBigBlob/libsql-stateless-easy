@@ -32,7 +32,7 @@ export class ProtoError extends LibsqlError {
 /** Error thrown when the server returns an error response. */
 export class ResponseError extends LibsqlError {
     constructor(message: string, protoError: libsqlStreamResErrData) {
-        super(message, protoError.code||"UNKNOWN", new class extends Error {
+        super(message, protoError.code??"UNKNOWN", new class extends Error {
             /** @internal */
             proto: libsqlStreamResErrData;
 

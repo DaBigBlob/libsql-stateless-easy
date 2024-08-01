@@ -104,7 +104,7 @@ export function libsqlBatchReqStepsBuilder(
 ): Array<libsqlBatchReqStep> {
     return batch_queries.map((q, i) => {return {
         stmt: libsqlStatementBuilder(q),
-        condition: batch_conditions[i]||undefined
+        condition: batch_conditions[i]??undefined
     }});
 }
 
