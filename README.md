@@ -5,7 +5,7 @@
 - ✅ **Is extremely light:** 8.82kB (unpacked)* / 3.8kB (gzipped)
 - ✅ **Is built for:** Quick stateless query execution. (Mainly for serverless and edge functions.)
 - ✅ Supports everything in `@libsql/client/web` **except `interactive transactions`.
-- ✅ Unlike `@libsql/client/web`, **every function performs complete execution in exactly 1 roundtrip.**
+- ✅ **Is Atomic and stateless**, every function performs complete execution in exactly 1 roundtrip.
 - ✅ **`libsql-stateless-easy` is simply a drop-in replacement** and exactly same API as `@libsql/client/web`.
 
 \* The actual js that is included with your project. (Excluding the type definitions and 2 copies of the main js for esm and cjs. (because you're gonna use one of them))  
@@ -73,7 +73,7 @@ This library implements the same Interface is the official client and therefore 
     console.log(result);
 ```
 
-- **This library has the exact `LibsqlError` API as `@libsql/client`**
+- **This library has the same `LibsqlError` codes as `@libsql/client`**
 
 ## Performance
 This library checks your configs, environments and server compatibility by default.  
@@ -88,10 +88,10 @@ So, **IF YOU ARE SURE YOUR CONFIGURATION, ENVIRONMENT AND SERVER VERSION ARE COR
 ```
 
 ### List of other stuff in this library
-Feel free to explore them (however you dont need to as they've been neatly packaged into the `client`)
+Feel free to explore them (however you don't need to as they've been neatly packaged into the `client`)
 ```ts
 import {
-    libsqlValueBuilder, libsqlStatementBuilder, libsqlBatchReqStepsBuilder, libsqlBatchReqStepExecCondBuilder, libsqlTransactionBeginStatement,
+    libsqlValueBuilder, libsqlArgumentsBuilder, libsqlStatementBuilder, libsqlBatchReqStepsBuilder, libsqlBatchReqStepExecCondBuilder, libsqlTransactionBeginStatement,
     libsqlValueParser, libsqlStatementResParser, libsqlBatchStreamResParser, libsqlTransactionBatchStreamResParser,
     libsqlExecute, //has easier API than `libsql-stateless`'s function of the same name
     libsqlBatch, //has easier API than `libsql-stateless`'s function of the same name
@@ -100,6 +100,8 @@ import {
     createClient //used above
 } from "libsql-stateless-easy";
 ```
+
+
 ## API Level
 > NOTE: current API level is that of latest stable [libsql-stateless](https://github.com/DaBigBlob/libsql-stateless).   
 Read [this section](https://github.com/DaBigBlob/libsql-stateless/?tab=readme-ov-file#api-level).
