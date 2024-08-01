@@ -1,7 +1,7 @@
 import { LibsqlError } from "../errors.js";
 import { libsqlServerCompatCheck } from "../functions.js";
 import type { libsqlConfig } from "../types.js";
-import { _hadConsoleError, _hasURL, _newURL, _useConsoleError } from "./utils.js";
+import { _hasConsoleError, _hasURL, _newURL, _useConsoleError } from "./utils.js";
 
 export function ensure_fetch(conf: libsqlConfig) {
     try {
@@ -13,7 +13,7 @@ export function ensure_fetch(conf: libsqlConfig) {
 }
 
 export function conserror(str: string) {
-    if (_hadConsoleError) _useConsoleError(str);
+    if (_hasConsoleError) _useConsoleError(str);
 }
 
 export function checkHttpUrl(url: string) {
