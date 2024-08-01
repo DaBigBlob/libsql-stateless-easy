@@ -31,7 +31,7 @@ export async function libsqlExecute(conf: libsqlConfig, stmt_or_sql: rawSQL|rawS
 
 export async function libsqlBatch(
     conf: libsqlConfig,
-    steps: Array<rawSQLStatement>,
+    steps: Array<rawSQL|rawSQLStatement>,
     step_conditions: Array<libsqlBatchReqStepExecCond|null|undefined>
 ): Promise<Array<ResultSet|null>> {
     const res = await LIBlibsqlBatch(confTranslate(conf), libsqlBatchReqStepsBuilder(steps, step_conditions));

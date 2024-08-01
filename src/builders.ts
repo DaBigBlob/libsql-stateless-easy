@@ -99,7 +99,7 @@ export const libsqlBatchReqStepExecCondBuilder = {
 
 //===========================================================
 export function libsqlBatchReqStepsBuilder(
-    batch_queries: Array<rawSQLStatement>,
+    batch_queries: Array<rawSQL|rawSQLStatement>,
     batch_conditions: Array<libsqlBatchReqStepExecCond|undefined|null>
 ): Array<libsqlBatchReqStep> {
     return batch_queries.map((q, i) => {return {

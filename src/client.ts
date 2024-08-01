@@ -1,7 +1,8 @@
 import type { TransactionMode, rawSQLStatement, libsqlConfig, rawSQLArgs, rawSQL, ResultSet } from "./types.js";
-import { libsqlBatchTransaction, libsqlExecute, libsqlExecuteMultiple } from "./functions.js";
+import { libsqlBatch, libsqlBatchTransaction, libsqlExecute, libsqlExecuteMultiple } from "./functions.js";
 import { InternalError } from "./errors.js";
 import { checkHttpUrl, conserror, ensure_fetch } from "./globcon/mod.js";
+import type { libsqlBatchReqStepExecCond } from "libsql-stateless";
 
 export function createClient(conf: libsqlConfig) {
     return new libsqlClient(conf);
@@ -69,6 +70,8 @@ export class libsqlClient {
     }
 
     /** Execute a batch of SQL statements in a transaction.
+     * 
+     * NOTE: For batch SQL statement execution without transaction, use {@link batchWithoutTransaction}.
      *
      * The batch is executed in its own logical database connection and the statements are wrapped in a
      * transaction. This ensures that the batch is applied atomically: either all or no changes are applied.
@@ -107,12 +110,18 @@ export class libsqlClient {
         return await libsqlBatchTransaction(this.conf, steps, mode);
     }
 
-    // public async batchPrimitive(
-    //     steps: Array<rawSQLStatement>,
-    //     step_conditions: Array<libsqlBatchReqStepExecCond|null|undefined>
-    // ) {
-    //     return await libsqlBatch(this.conf, steps, step_conditions);
-    // }
+    /** Execute a batch of SQL statements.
+     *
+     * The same as {@link batch} but the SQL statements are not executed in a transaction.
+     * 
+     * The `step_conditions` is an array of step conditions generated using {@link libsqlBatchReqStepExecCondBuilder}.
+     */
+    public async batchWithoutTransaction(
+        steps: Array<rawSQL|rawSQLStatement>,
+        step_conditions: Array<libsqlBatchReqStepExecCond|null|undefined>
+    ) {
+        return await libsqlBatch(this.conf, steps, step_conditions);
+    }
 
     // @ts-ignore
     public async transaction(mode?: TransactionMode): Promise<any> {
