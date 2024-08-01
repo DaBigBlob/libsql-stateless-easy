@@ -15,7 +15,7 @@ import { skjdgfksg } from "./conf";
             args: [6,"glomm","feru","moca@doro.co","001"]
         },
         {
-            sql: "delete from contacts where contact_id = :kkl",
+            sql: "delete from contacts where contact_id = :kkll",
             args: {kkl: 6}
         }
     ]);

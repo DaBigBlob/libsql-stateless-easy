@@ -6,7 +6,6 @@ import { InternalError } from './errors.js';
 //========================================================
 export function libsqlValueBuilder(value: rawValue): libsqlSQLValue {
     if (value===null) return {type: "null"};
-
     if (typeof(value)==="bigint") return {type: "integer", value: ""+value};
     if (typeof(value)==="number") return {type: "float", value: value};
     if (typeof(value)==="string") return {type: "text", value: value};
