@@ -92,7 +92,7 @@ export function libsqlBatchStreamResParser(
 ): Array<ResultSet|null> {
     return res.step_results.map((r, i) => {
         if (r) return libsqlStatementResParser(r, intMode);
-        else if (res.step_errors[i]) throw new ResponseError(res.step_errors[i]?.message??"", res.step_errors[i]!);
+        else if (res.step_errors[i]) throw new ResponseError(res.step_errors[i]?.message??"No error message supplied by server.", res.step_errors[i]!);
         else return null;
     });
 }
