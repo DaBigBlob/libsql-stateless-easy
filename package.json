@@ -63,6 +63,6 @@
     "edge"
   ],
   "dependencies": {
-    "libsql-stateless": "^2.8.5"
+    "libsql-stateless": "^2.8.6"
   }
 }
