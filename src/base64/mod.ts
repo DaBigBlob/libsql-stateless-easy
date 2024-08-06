@@ -63,7 +63,6 @@ export const fromUint8Array = _hasBuffer
 const _tidyB64 = (s: string) => s.replace(/[^A-Za-z0-9\+\/]/g, '');
 
 const atobPolyfill = (asc: string) => {
-    // console.log('polyfilled');
     asc = asc.replace(/\s+/g, '');
     if (!b64re.test(asc)) throw new LibsqlError("Malformed base64 while polyfilling atob", "MALFORMED_BASE64_FOR_ATOB");
     asc += '=='.slice(2 - (asc.length & 3));
