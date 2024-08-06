@@ -1,4 +1,4 @@
-import { Base64Error } from './error.js';
+import { LibsqlError } from '../errors.js';
 import { _hasBuffer, _useBufferU8a, _useBufferBin, _useBufferStr, _hadBtoa, _hadAtob, _useAtob, _useBufferAsc, _useBtoa } from './utils.js';
 
 const b64ch = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
@@ -17,7 +17,7 @@ const btoaPolyfill = (bin: string) => {
         if ((c0 = bin.charCodeAt(i++)) > 255 ||
             (c1 = bin.charCodeAt(i++)) > 255 ||
             (c2 = bin.charCodeAt(i++)) > 255)
-            throw new Base64Error('Invalid character found while polyfilling btoa', "BTOA_POLYFILL_INVALID_CHAR");
+            throw new LibsqlError('Invalid character found while polyfilling btoa', "BTOA_POLYFILL_INVALID_CHAR");
         u32 = (c0 << 16) | (c1 << 8) | c2;
         asc += b64chs[u32 >> 18 & 63]
             + b64chs[u32 >> 12 & 63]
@@ -65,7 +65,7 @@ const _tidyB64 = (s: string) => s.replace(/[^A-Za-z0-9\+\/]/g, '');
 const atobPolyfill = (asc: string) => {
     // console.log('polyfilled');
     asc = asc.replace(/\s+/g, '');
-    if (!b64re.test(asc)) throw new Base64Error("Malformed base64 while polyfilling atob", "ATOB_POLYFILL_INVALID_CHAR");
+    if (!b64re.test(asc)) throw new LibsqlError("Malformed base64 while polyfilling atob", "MALFORMED_BASE64_FOR_ATOB");
     asc += '=='.slice(2 - (asc.length & 3));
     let u24, bin = '', r1, r2;
     for (let i = 0; i < asc.length;) {

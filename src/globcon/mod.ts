@@ -37,7 +37,7 @@ export function checkHttpUrl(url: string) {
     })();
 
     if (is_bad) throw new LibsqlError(
-        'This is a HTTP client and only supports "https:" and "http:" URLs.',
+        'This is a HTTP client and only supports "https:" and "http:" URLs. For modern libsql DBs simply changing "libsql://" to "https://" should resolve this.',
         "URL_SCHEME_NOT_SUPPORTED",
     );
 }
