@@ -1,5 +1,5 @@
 import { LibsqlError } from '../errors.js';
-import { _hasBuffer, _useBufferU8a, _useBufferBin, _useBufferStr, _hadBtoa, _hadAtob, _useAtob, _useBufferAsc, _useBtoa } from './utils.js';
+import { _hasBuffer, _useBufferU8a, _useBufferBin, _useBufferStr, _hasBtoa, _hasAtob, _useAtob, _useBufferAsc, _useBtoa } from './utils.js';
 
 const b64ch = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
 const b64chs = Array.prototype.slice.call(b64ch);
@@ -27,7 +27,7 @@ const btoaPolyfill = (bin: string) => {
     return pad ? asc.slice(0, pad - 3) + "===".substring(pad) : asc;
 };
 
-const _btoa = _hadBtoa
+const _btoa = _hasBtoa
     ? (bin: string) => _useBtoa(bin)
     : _hasBuffer
         ? (bin: string) => _useBufferBin(bin)
@@ -79,7 +79,7 @@ const atobPolyfill = (asc: string) => {
     return bin;
 };
 
-const _atob = _hadAtob
+const _atob = _hasAtob
     ? (asc: string) => _useAtob(_tidyB64(asc))
     : _hasBuffer
         ? (asc: string) => _useBufferAsc(asc)
@@ -100,7 +100,7 @@ const _unURI = (a: string) => _tidyB64(a.replace(/[-_]/g, (m0) => m0 == '-' ? '+
 export const toUint8Array = (a: string): Uint8Array => _toUint8Array(_unURI(a));
 
 /**
- * To prevent supply chain attack, copied from https://github.com/dankogai/js-base64
+ * To prevent supply chain attack and better control, acquired from https://github.com/dankogai/js-base64
  * at 1713503973017 unix epoch miliseconds.
  * 
  *  == LICENSE BEGIN ==
