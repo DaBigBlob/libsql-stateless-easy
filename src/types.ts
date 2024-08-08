@@ -1,3 +1,5 @@
+import type { libsqlFetchLike } from "libsql-stateless";
+
 export type rawValue = null|bigint|number|string|ArrayBuffer;
 export type intMode = "bigint" | "number" | "string";
 export type rawSQL = string;
@@ -43,8 +45,8 @@ export interface libsqlConfig {
      */
     disableCriticalChecks?: boolean;
 
-     /** Custom `fetch` function to use for the HTTP client.*/
-     fetch?: Function;
+    /** Custom `fetch` function to use for the HTTP client.*/
+    fetch?: libsqlFetchLike;
 
 }
 

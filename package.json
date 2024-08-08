@@ -1,6 +1,6 @@
 {
   "name": "libsql-stateless-easy",
-  "version": "1.7.1",
+  "version": "1.7.2",
   "description": "thin libSQL stateless http driver for TypeScript and JavaScript but easy",
   "homepage": "https://github.com/DaBigBlob/libsql-stateless-easy#readme",
   "repository": {
@@ -63,6 +63,6 @@
     "edge"
   ],
   "dependencies": {
-    "libsql-stateless": "^2.8.6"
+    "libsql-stateless": "^2.9.0"
   }
 }
