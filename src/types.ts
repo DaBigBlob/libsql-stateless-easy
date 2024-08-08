@@ -1,5 +1,6 @@
 import type { libsqlFetchLike } from "libsql-stateless";
 
+export type { libsqlFetchLike } from "libsql-stateless";
 export type rawValue = null|bigint|number|string|ArrayBuffer;
 export type intMode = "bigint" | "number" | "string";
 export type rawSQL = string;
