@@ -1,6 +1,6 @@
 import type { TransactionMode, rawSQLStatement, libsqlConfig, rawSQLArgs, rawSQL, ResultSet } from "./types.js";
 import { libsqlBatch, libsqlBatchTransaction, libsqlExecute, libsqlExecuteMultiple } from "./functions.js";
-import { InternalError } from "./errors.js";
+import { MisuseError } from "./errors.js";
 import { checkHttpUrl, conserror, ensure_fetch } from "./globcon/mod.js";
 import type { libsqlBatchReqStepExecCond } from "libsql-stateless";
 
@@ -125,7 +125,7 @@ export class libsqlClient {
 
     // @ts-ignore
     public async transaction(mode?: TransactionMode): Promise<any> {
-        throw new InternalError("'libsql-stateless' is stateless and does not support interactive transactions. Use this.batch() instead.");
+        throw new MisuseError("'libsql-stateless' is stateless and does not support interactive transactions. Use this.batch() instead.");
     }
 
     /** Execute a sequence of SQL statements separated by semicolons.
