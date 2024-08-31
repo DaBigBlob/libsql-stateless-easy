@@ -7,6 +7,7 @@ import { conf } from './conf';
     const client = createClient({
         url: conf.db_url,
         authToken: conf.authToken,
+        //normally you'd pass the fetch directly but @libsql/isomorphic-fetch is not WEBAPI fetch spec compatible
         fetch: async (...args: Parameters<libsqlFetchLike>): ReturnType<libsqlFetchLike> => {
             return await iso_fetch(
                 new iso_Request(
