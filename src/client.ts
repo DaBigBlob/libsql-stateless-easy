@@ -63,7 +63,7 @@ export class libsqlClient {
      * });
      * ```
      */
-    public async execute(stmt: rawSQL, args: rawSQLArgs, want_rows?: boolean): Promise<ResultSet>;
+    public async execute(stmt: rawSQL, args?: rawSQLArgs, want_rows?: boolean): Promise<ResultSet>;
     public async execute(stmt: rawSQLStatement): Promise<ResultSet>;
     public async execute(stmt_or_sql: rawSQL|rawSQLStatement, or_args?: rawSQLArgs, or_want_rows?: boolean) {
         return await libsqlExecute(this.conf, stmt_or_sql, or_args, or_want_rows);

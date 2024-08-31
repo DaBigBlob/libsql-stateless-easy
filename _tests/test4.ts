@@ -39,6 +39,9 @@ import { skjdgfksg } from "./conf";
     );
     console.log(res4);
 
+    const res5 = await client.execute("select first_name, last_name, email, contact_id from contacts where contact_id = 1");
+    console.log(res5);
+
     const ress = await client.executeMultiple(
     `insert into contacts (contact_id,first_name,last_name,email,phone) values (6,"glomm","feru","moca@doro.co","001"); delete from contacts where contact_id = 6`
     );
