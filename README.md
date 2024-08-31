@@ -108,7 +108,7 @@ Pass your own implementation of fetch or fetch-like function if you don't want l
         }
     });
 
-    const res = await client.execute("select * from contacts;", []);
+    const res = await client.execute("select * from contacts;");
     console.log(res);
 ```
 
