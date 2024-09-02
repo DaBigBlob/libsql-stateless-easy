@@ -29,9 +29,11 @@ export class ResponseError extends LibsqlError {
 }
 
 /** Error thrown when the HTTP server returns an error response. */
-export class HttpServerError extends LibsqlError {    
+export class HttpServerError extends LibsqlError {
+    http_status_code: number;  
     constructor(status: number, message?: string|null) {
         super(`HTTP code ${status}: ${message ?? "No error message from server."}`, "SERVER_ERROR");
+        this.http_status_code = status;
         this.name = "HttpServerError";
     }
 }
