@@ -37,4 +37,3 @@ import { conf } from './conf';
     const res = await client.execute("select * from contacts;");
     console.log(res);
 })();
-
