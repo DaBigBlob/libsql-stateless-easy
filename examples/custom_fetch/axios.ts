@@ -23,11 +23,11 @@ import { conf } from './conf';
                 ok: ((rawRes.status > 199)&&(rawRes.status < 300)),
                 status: rawRes.status,
                 async text() {
-                    if (typeof(rawRes.data) != 'string') throw new Error("Axios Response not utf8 str");
+                    if (typeof(rawRes.data) != 'string') throw new axios.AxiosError("Axios Response not utf8 str");
                     return rawRes.data;
                 },
                 async json() {
-                    if (typeof(rawRes.data) != 'string') throw new Error("Axios Response not utf8 str");
+                    if (typeof(rawRes.data) != 'string') throw new axios.AxiosError("Axios Response not utf8 str");
                     return JSON.parse(rawRes.data);
                 }
             };
