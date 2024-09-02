@@ -1,5 +1,6 @@
+//@ts-nocheck
 //USEND THE SAME TRANSPORT AS @libsql/client
-import { Headers, fetch as iso_fetch, Request as iso_Request} from '@libsql/isomorphic-fetch';
+import { fetch as iso_fetch, Request as iso_Request, Headers as iso_Headers} from '@libsql/isomorphic-fetch';
 import { createClient, libsqlFetchLike } from 'libsql-stateless-easy';
 import { conf } from './conf';
 
@@ -15,9 +16,8 @@ import { conf } from './conf';
                         body: args[1]?.body,
                         method: args[1]?.method,
                         //@ts-ignore
-                        headers: new Headers(args[1]?.headers)
+                        headers: new iso_Headers(args[1]?.headers)
                     }
-
                 )
             );
         }
@@ -26,3 +26,4 @@ import { conf } from './conf';
     const res = await client.execute("select * from contacts;");
     console.log(res);
 })();
+
