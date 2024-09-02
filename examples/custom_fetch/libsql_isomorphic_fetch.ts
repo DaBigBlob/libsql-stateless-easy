@@ -1,5 +1,5 @@
 //@ts-nocheck
-//USEND THE SAME TRANSPORT AS @libsql/client
+//USENG THE SAME TRANSPORT AS @libsql/client
 import { fetch as iso_fetch, Request as iso_Request, Headers as iso_Headers} from '@libsql/isomorphic-fetch';
 import { createClient, libsqlFetchLike } from 'libsql-stateless-easy';
 import { conf } from './conf';
