@@ -29,7 +29,7 @@ function errorTranslate(err: LIBlibsqlError) {
     else
         return new ResponseError(
             err.data.message,
-            err.data
+            err.data.code ?? "UNKNOWN"
         );
 }
 
