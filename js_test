@@ -1,0 +1,14 @@
+#!/bin/sh
+
+bun build "$1" --target node > node_run.mjs
+bun build "$1" --target browser > web_run.js
+bun build "$1" --target bun > bun_run.js
+
+echo "running node..."
+node node_run.mjs
+echo "running deno..."
+deno run --allow-net web_run.js
+echo "running bun..."
+bun run bun_run.js
+
+rm node_run.mjs web_run.js bun_run.js

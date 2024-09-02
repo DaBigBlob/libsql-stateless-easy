@@ -42,7 +42,7 @@
     "prebuild": "rm -rf ./dist",
     "build": "tsup && rm ./dist/main.d.cts",
     "typecheck": "tsc --noEmit",
-    "test": "bun run _tests/test4.ts",
+    "test": "./js_test _tests/test4.ts",
     "perf": "bun run _tests/perf.ts",
     "clean": "npm run prebuild",
     "prod": "npm publish && npm run clean"
