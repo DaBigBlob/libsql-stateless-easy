@@ -14,18 +14,21 @@ import { conf } from './conf';
                 url: args[0],
                 method: args[1]?.method,
                 headers: args[1]?.headers,
-                data: args[1]?.body
+                data: args[1]?.body,
+                responseType: 'text',
+                responseEncoding: 'utf8',
+                validateStatus: (s) => true
             });
             return {
                 ok: ((rawRes.status > 199)&&(rawRes.status < 300)),
                 status: rawRes.status,
                 async text() {
-                    if (typeof(rawRes.data) != 'object') throw new Error("Axios Response not JSON");
-                    return JSON.stringify(rawRes.data);
+                    if (typeof(rawRes.data) != 'string') throw new Error("Axios Response not utf8 str");
+                    return rawRes.data;
                 },
                 async json() {
-                    if (typeof(rawRes.data) != 'object') throw new Error("Axios Response not JSON");
-                    return rawRes.data;
+                    if (typeof(rawRes.data) != 'string') throw new Error("Axios Response not utf8 str");
+                    return JSON.parse(rawRes.data);
                 }
             };
         }
