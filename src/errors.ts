@@ -3,13 +3,10 @@
 export class LibsqlError extends Error {
     /** Machine-readable error code. */
     code: string;
-    /** Raw numeric error code */
-    rawCode?: number;
     
     constructor(message: string, code: string, cause?: Error) {
         super(`${code}: ${message}`, { cause });
         this.code = code;
-        this.rawCode = undefined;
         this.name = "LibsqlError";
     }
 }
@@ -24,8 +21,8 @@ export class ProtoError extends LibsqlError {
 
 /** Error thrown when the server returns an error response. */
 export class ResponseError extends LibsqlError {
-    constructor(message: string, code: string) {
-        super(message, code);
+    constructor(message: string, code?: string|null) {
+        super(message, code ?? "UNKNOWN");
         this.name = "ResponseError";
         this.stack = undefined;
     }
@@ -33,8 +30,8 @@ export class ResponseError extends LibsqlError {
 
 /** Error thrown when the HTTP server returns an error response. */
 export class HttpServerError extends LibsqlError {    
-    constructor(message: string, status: number) {
-        super(`HTTP code ${status}: ${message}`, "SERVER_ERROR");
+    constructor(status: number, message?: string|null) {
+        super(`HTTP code ${status}: ${message ?? "No error message from server."}`, "SERVER_ERROR");
         this.name = "HttpServerError";
     }
 }

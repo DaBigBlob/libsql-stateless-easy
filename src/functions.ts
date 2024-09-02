@@ -23,13 +23,13 @@ function confTranslate(conf: libsqlConfig): LIBlibsqlConfig {
 function errorTranslate(err: LIBlibsqlError) {
     if (err.kind==="LIBSQL_SERVER_ERROR")
         return new HttpServerError(
-            err.server_message ?? "No error message from server.",
-            err.http_status_code
+            err.http_status_code,
+            err.server_message
         );
     else
         return new ResponseError(
             err.data.message,
-            err.data.code ?? "UNKNOWN"
+            err.data.code
         );
 }
 
