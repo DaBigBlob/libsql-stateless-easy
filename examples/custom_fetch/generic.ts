@@ -13,7 +13,6 @@ import { conf } from './conf';
              * args[0] is the url string
              * args[1] is the request init
              */
-
         }
     });
 
