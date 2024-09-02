@@ -1,7 +1,7 @@
 //@ts-nocheck
 //USING UNDICI
 import { fetch as undici_fetch } from 'undici';
-import { createClient, libsqlFetchLike } from 'libsql-stateless-easy';
+import { createClient } from 'libsql-stateless-easy';
 import { conf } from './conf';
 
 (async () => {
