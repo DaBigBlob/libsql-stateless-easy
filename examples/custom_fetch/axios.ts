@@ -17,7 +17,7 @@ import { conf } from './conf';
                 data: args[1]?.body,
                 responseType: 'text',
                 responseEncoding: 'utf8',
-                validateStatus: (s) => true
+                validateStatus: (s: number) => true
             });
             return {
                 ok: ((rawRes.status > 199)&&(rawRes.status < 300)),
