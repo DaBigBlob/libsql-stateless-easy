@@ -25,8 +25,8 @@ export class ProtoError extends LibsqlError {
 
 /** Error thrown when the server returns an error response. */
 export class ResponseError extends LibsqlError {
-    constructor(message: string, protoError: libsqlStreamResErrData) {
-        super(`${message}: ${protoError.message}`, protoError.code??"UNKNOWN");
+    constructor(protoError: libsqlStreamResErrData | null) {
+        super(protoError?.message ?? "No error message supplied by server", protoError?.code??"UNKNOWN");
         this.name = "ResponseError";
         this.stack = undefined;
     }
