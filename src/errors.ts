@@ -25,23 +25,17 @@ export class ProtoError extends LibsqlError {
 
 /** Error thrown when the server returns an error response. */
 export class ResponseError extends LibsqlError {
-    proto: libsqlStreamResErrData;
-
     constructor(message: string, protoError: libsqlStreamResErrData) {
-        super(message, protoError.code??"UNKNOWN");
+        super(`${message}: ${protoError.message}`, protoError.code??"UNKNOWN");
         this.name = "ResponseError";
-        this.proto = protoError;
         this.stack = undefined;
     }
 }
 
 /** Error thrown when the HTTP server returns an error response. */
-export class HttpServerError extends LibsqlError {
-    status: number;
-    
+export class HttpServerError extends LibsqlError {    
     constructor(message: string, status: number) {
-        super(message, "SERVER_ERROR");
-        this.status = status;
+        super(`HTTP code ${status}: ${message}`, "SERVER_ERROR");
         this.name = "HttpServerError";
     }
 }
@@ -63,7 +57,6 @@ export class HttpServerError extends LibsqlError {
 
 /** Error thrown when the API is misused. */
 export class MisuseError extends LibsqlError {
-
     constructor(message: string) {
         super(message, "UNKNOWN");
         this.name = "MisuseError";
