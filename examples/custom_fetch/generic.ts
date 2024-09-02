@@ -12,6 +12,9 @@ import { conf } from './conf';
             /** NOTE:
              * args[0] is the url string
              * args[1] is the request init
+             * - args[1].body
+             * - args[1].headers
+             * - args[1].method
              */
         }
     });
