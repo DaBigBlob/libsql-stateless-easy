@@ -99,12 +99,11 @@ Pass your own implementation of fetch or fetch-like function if you don't want l
         url: "https://da-fish-mandible.turso.io",
         authToken: "fksdgfgksdgfksdg.javsdKDGKSBkgsdfg289374dg",
         fetch: async (...args: Parameters<libsqlFetchLike>): ReturnType<libsqlFetchLike> => {
-                //implement your own fetch here (look at examples/custom_fetch/libsql_isomorphic_fetch.ts for concrete example)
-                /** NOTE:
-                 * args[0] is the url string
-                 * args[1] is the request init
-                 */
-            );
+            //implement your own fetch here (look at examples/custom_fetch/libsql_isomorphic_fetch.ts for concrete example)
+            /** NOTE:
+             * args[0] is the url string
+             * args[1] is the request init
+             */
         }
     });
 
