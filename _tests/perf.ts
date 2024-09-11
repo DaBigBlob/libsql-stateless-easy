@@ -22,7 +22,7 @@ import { skjdgfksg } from "./conf";
             sql: "delete from contacts where contact_id = :kkl",
             args: {kkl: 6}
         }
-    ], []);
+    ]);
     console.timeEnd("libsqlBatch");
 
     console.log(!!res);

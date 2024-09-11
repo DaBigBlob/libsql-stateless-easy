@@ -1,4 +1,4 @@
-import { rawValue } from "../src/types";
+import { rawValue } from "../src/commons";
 
 (() => {
     let a: Record<string, rawValue> = {
