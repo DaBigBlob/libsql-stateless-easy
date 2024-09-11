@@ -1,5 +1,5 @@
 //@ts-nocheck
-//USENG THE SAME TRANSPORT AS @libsql/client
+//USEND THE SAME TRANSPORT AS @libsql/client
 import { fetch as iso_fetch, Request as iso_Request, Headers as iso_Headers} from '@libsql/isomorphic-fetch';
 import { createClient, libsqlFetchLike } from 'libsql-stateless-easy';
 import { conf } from './conf';
@@ -15,8 +15,11 @@ import { conf } from './conf';
                     args[0], {
                         body: args[1]?.body,
                         method: args[1]?.method,
-                        //@ts-ignore
-                        headers: new iso_Headers(args[1]?.headers)
+                        headers: (() => {
+                            const h = new iso_Headers();
+                            for (const k in args[1]?.headers) h.append(k, args[1]?.headers[k]);
+                            return h;
+                        })()
                     }
                 )
             );
