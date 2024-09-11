@@ -10,7 +10,7 @@ import {
     type TransactionMode,
     type InArgs as rawSQLArgs,
     LibsqlError
-} from './official_api_1726012615447.js';
+} from './official_api_1726075384172.js';
 
 export type rawSQL = string;
 export type rawSQLStatement = {
