@@ -6,13 +6,13 @@ import {
     type IntMode as intMode,
     type Config as configInterface,
     type Row,
-    type Value as rawValue,
+    type InValue as rawValue,
     type TransactionMode,
+    type InArgs as rawSQLArgs,
     LibsqlError
 } from './official_api_1726012615447.js';
 
 export type rawSQL = string;
-export type rawSQLArgs = Array<rawValue> | Record<string, rawValue>;
 export type rawSQLStatement = {
     sql: rawSQL,
     args: rawSQLArgs,
@@ -64,5 +64,6 @@ export {
     type Row,
     type rawValue,
     type TransactionMode,
-    LibsqlError
+    LibsqlError,
+    type rawSQLArgs
 };

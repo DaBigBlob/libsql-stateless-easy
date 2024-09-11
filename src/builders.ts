@@ -6,10 +6,20 @@ import { MisuseError } from './errors.js';
 //========================================================
 export function libsqlValueBuilder(value: rawValue): libsqlSQLValue {
     if (value===null) return {type: "null"};
-    if (typeof(value)==="bigint") return {type: "integer", value: ""+value};
-    if (typeof(value)==="number") return {type: "float", value: value};
     if (typeof(value)==="string") return {type: "text", value: value};
+    if (typeof(value)==="number") {
+        if (!Number.isFinite(value)) throw new RangeError("Only finite numbers (not Infinity or NaN) can be passed as arguments");
+        return {type: "float", value: value};
+    }
+    if (typeof(value)==="bigint") {
+        if (value < -9223372036854775808n || value > 9223372036854775807n)
+            throw new RangeError("This bigint value is too large to be represented as a 64-bit integer and passed as argument");
+        return {type: "integer", value: ""+value};
+    }
+    if (typeof value === "boolean") return {type: "integer", value: ""+(value ? 1n : 0n)};
+    if (value instanceof ArrayBuffer) return {type: "blob", base64: fromUint8Array(new Uint8Array(value))};
     if (value instanceof Uint8Array) return {type: "blob", base64: fromUint8Array(value)};
+    if (value instanceof Date) return {type: "float", value: +value.valueOf()};
     throw new MisuseError("Invalid type of input. Cannot build request to server.");
 }
 

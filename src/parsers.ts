@@ -4,23 +4,34 @@ import { toUint8Array } from './base64/mod.js';
 import { MisuseError, ProtoError, ResponseError } from "./errors.js";
 
 //========================================================
-function parseLibsqlInt(number: string, intMode: intMode = "number") {
-    switch (intMode) {
-        case ("number"): return (+number);
-        case ("string"): return number;
-        case ("bigint"): return BigInt(number);
-        default: throw new MisuseError(`Invalid value for "intMode".`);
-    }
-}
+// function parseLibsqlInt(number: string, intMode: intMode = "number") {
+//     switch (intMode) {
+//         case ("number"): return (+number);
+//         case ("string"): return number;
+//         case ("bigint"): return BigInt(number);
+//         default: throw new MisuseError(`Invalid value for "intMode".`);
+//     }
+// }
 
 //========================================================
 export function libsqlValueParser(value: libsqlSQLValue, intMode?: intMode): rawValue {
     switch (value.type) {
         case ("null"): return null;
-        case ("integer"): return parseLibsqlInt(value.value, intMode);
-        case ("float"): return Number(value.value);
+        case ("integer"): {
+            switch (intMode) {
+                case ("number"): {
+                    const num = Number(value.value);
+                    if (!Number.isSafeInteger(num)) throw new RangeError("Received integer which is too large to be safely represented as a JavaScript number");
+                    return num;
+                }
+                case ("bigint"): return BigInt(value.value);
+                case ("string"): return value.value;
+                default: throw new MisuseError(`Invalid value for "intMode".`);
+            }
+        }
+        case ("float"): return value.value;
         case ("text"): return value.value;
-        case ("blob"): return toUint8Array(value.base64);
+        case ("blob"): return toUint8Array(value.base64).slice().buffer;
         default: throw new ProtoError("Invalid data type from server. Cannot parse.");
     }
 }
