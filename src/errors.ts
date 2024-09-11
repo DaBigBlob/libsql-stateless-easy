@@ -1,5 +1,5 @@
 
-import { LibsqlError } from "./types.js";
+import { LibsqlError } from "./commons.js";
 export { LibsqlError };
 
 /** Error thrown when the server violates the protocol. */

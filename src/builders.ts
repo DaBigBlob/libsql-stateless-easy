@@ -1,5 +1,5 @@
 import { fromUint8Array } from './base64/mod.js';
-import type { TransactionMode, rawSQL, rawSQLArgs, rawSQLStatement, rawValue } from './types.js';
+import type { TransactionMode, rawSQL, rawSQLArgs, rawSQLStatement, rawValue } from './commons.js';
 import type { libsqlBatchReqStep, libsqlBatchReqStepExecCond, libsqlSQLStatement, libsqlSQLValue } from 'libsql-stateless';
 import { MisuseError } from './errors.js';
 

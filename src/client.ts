@@ -1,4 +1,4 @@
-import type { TransactionMode, rawSQLStatement, libsqlConfig, rawSQLArgs, rawSQL, ResultSet, clientInterface } from "./types.js";
+import type { TransactionMode, rawSQLStatement, libsqlConfig, rawSQLArgs, rawSQL, ResultSet, clientInterface } from "./commons.js";
 import { libsqlBatchWithoutTransaction, libsqlBatch, libsqlExecute, libsqlExecuteMultiple, libsqlMigrate } from "./functions.js";
 import { MisuseError } from "./errors.js";
 import { checkHttpUrl, conserror, ensure_fetch } from "./globcon/mod.js";

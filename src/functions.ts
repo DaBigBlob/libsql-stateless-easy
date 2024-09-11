@@ -6,7 +6,7 @@ import {
     type libsqlBatchReqStep,
     type libsqlError as LIBlibsqlError
 } from "libsql-stateless";
-import type { ResultSet, TransactionMode, rawSQLStatement, libsqlConfig, rawSQLArgs, rawSQL } from "./types.js";
+import type { ResultSet, TransactionMode, rawSQLStatement, libsqlConfig, rawSQLArgs, rawSQL } from "./commons.js";
 import { libsqlBatchReqStepExecCondBuilder, libsqlBatchReqStepsBuilder, libsqlStatementBuilder, libsqlTransactionBatchReqStepsBuilder } from "./builders.js";
 import { libsqlBatchStreamResParser, libsqlStatementResParser, libsqlTransactionBatchStreamResParser } from "./parsers.js";
 import { HttpServerError, ResponseError } from "./errors.js";

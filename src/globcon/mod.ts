@@ -1,6 +1,6 @@
 import { LibsqlError } from "../errors.js";
 import { libsqlServerCompatCheck } from "../functions.js";
-import type { libsqlConfig } from "../types.js";
+import type { libsqlConfig } from "../commons.js";
 import { _hasConsoleError, _hasURL, _newURL, _useConsoleError } from "./utils.js";
 
 export function ensure_fetch(conf: libsqlConfig) {
