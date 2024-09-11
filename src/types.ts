@@ -1,12 +1,14 @@
+
 import type { libsqlFetchLike } from "libsql-stateless";
-import type {
-    Client as clientInterface,
-    ResultSet as resultSetInterface,
-    IntMode as intMode,
-    Config as configInterface,
-    Row,
-    Value as rawValue,
-    TransactionMode
+import {
+    type Client as clientInterface,
+    type ResultSet as resultSetInterface,
+    type IntMode as intMode,
+    type Config as configInterface,
+    type Row,
+    type Value as rawValue,
+    type TransactionMode,
+    LibsqlError
 } from './official_api_1726012615447.js';
 
 export type rawSQL = string;
@@ -55,11 +57,12 @@ export interface libsqlConfig extends configInterface {
     fetch?: libsqlFetchLike;
 }
 
-export type {
-    libsqlFetchLike,
-    clientInterface,
-    intMode,
-    Row,
-    rawValue,
-    TransactionMode
+export {
+    type libsqlFetchLike,
+    type clientInterface,
+    type intMode,
+    type Row,
+    type rawValue,
+    type TransactionMode,
+    LibsqlError
 };

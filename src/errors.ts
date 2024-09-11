@@ -1,15 +1,5 @@
 
-/** Error thrown by the client. */
-export class LibsqlError extends Error {
-    /** Machine-readable error code. */
-    code: string;
-    
-    constructor(message: string, code: string, cause?: Error) {
-        super(`${code}: ${message}`, { cause });
-        this.code = code;
-        this.name = "LibsqlError";
-    }
-}
+import { LibsqlError } from "./types.js";
 
 /** Error thrown when the server violates the protocol. */
 export class ProtoError extends LibsqlError {
