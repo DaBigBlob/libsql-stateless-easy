@@ -57,6 +57,17 @@ export async function libsqlBatch(
     else throw errorTranslate(res.err);
 }
 
+export async function libsqlMigrate(
+    conf: libsqlConfig,
+    stmts: Array<rawSQL|rawSQLStatement>
+): Promise<Array<ResultSet>> {
+    return libsqlBatch(
+        conf,
+        ["PRAGMA foreign_keys=off" as rawSQL|rawSQLStatement].concat(stmts).concat("PRAGMA foreign_keys=on"),
+        "deferred"
+    );
+}
+
 export async function libsqlExecuteMultiple(conf: libsqlConfig, sql: string): Promise<undefined> {
     const sqlArr: Array<libsqlBatchReqStep> = sql.split(";").filter(s => s.trim()!=="").map((s, i) => {return {
         stmt: {sql: s},
