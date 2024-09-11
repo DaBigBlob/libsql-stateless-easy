@@ -54,6 +54,11 @@ export interface libsqlConfig extends configInterface {
      */
     disableCriticalChecks?: boolean;
 
+    /** Custom `fetch` function to use for the HTTP client.
+     *
+     * By default, the HTTP client uses `globalThis.fetch` but you can pass
+     * your own function here. Check https://github.com/DaBigBlob/libsql-stateless-easy/#custom-fetch
+     */
     fetch?: libsqlFetchLike;
 }
 
