@@ -3,12 +3,13 @@ import { libsqlBatch, libsqlBatchTransaction, libsqlExecute, libsqlExecuteMultip
 import { MisuseError } from "./errors.js";
 import { checkHttpUrl, conserror, ensure_fetch } from "./globcon/mod.js";
 import type { libsqlBatchReqStepExecCond } from "libsql-stateless";
+import * as official_client_api from './official_client_api_1726012615447.js';
 
 export function createClient(conf: libsqlConfig) {
     return new libsqlClient(conf);
 }
 
-export class libsqlClient {
+export class libsqlClient implements official_client_api.Client {
     private readonly conf: libsqlConfig;
     public closed: boolean;
 
@@ -123,6 +124,10 @@ export class libsqlClient {
         return await libsqlBatch(this.conf, steps, step_conditions);
     }
 
+    public async migrate(stmts: Array<rawSQL|rawSQLStatement>) {
+        return await libsqlBatchTransaction(this.conf, stmts, "deferred");
+    }
+
     // @ts-ignore
     public async transaction(mode?: TransactionMode): Promise<any> {
         throw new MisuseError("'libsql-stateless' is stateless and does not support interactive transactions. Use this.batch() instead.");
@@ -154,7 +159,7 @@ export class libsqlClient {
         return await libsqlExecuteMultiple(this.conf, sql);
     }
 
-    public async sync() {
+    public async sync(): Promise<any> {
         // throw new LibsqlError("sync not supported in http mode", "SYNC_NOT_SUPPORTED");
         // don't throw error for max compatiblity
         conserror("'libsql-stateless' is remote only so nothing to sync.");

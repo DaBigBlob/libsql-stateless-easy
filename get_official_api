@@ -1,5 +1,0 @@
-#!/bin/sh
-
-UNIXMILI=$(node -e "console.log(Date.now())")
-
-curl -s "https://raw.githubusercontent.com/tursodatabase/libsql-client-ts/main/packages/libsql-core/src/api.ts" > "./src/api-${UNIXMILI}.ts"
