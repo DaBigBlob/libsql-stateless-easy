@@ -1,5 +1,5 @@
 import type { TransactionMode, rawSQLStatement, libsqlConfig, rawSQLArgs, rawSQL, ResultSet } from "./types.js";
-import { libsqlBatch, libsqlBatchTransaction, libsqlExecute, libsqlExecuteMultiple } from "./functions.js";
+import { libsqlBatchWithoutTransaction, libsqlBatch, libsqlExecute, libsqlExecuteMultiple } from "./functions.js";
 import { MisuseError } from "./errors.js";
 import { checkHttpUrl, conserror, ensure_fetch } from "./globcon/mod.js";
 import type { libsqlBatchReqStepExecCond } from "libsql-stateless";
@@ -108,7 +108,7 @@ export class libsqlClient implements official_client_api.Client {
         steps: Array<rawSQL|rawSQLStatement>,
         mode?: TransactionMode
     ) {
-        return await libsqlBatchTransaction(this.conf, steps, mode);
+        return await libsqlBatch(this.conf, steps, mode);
     }
 
     /** Execute a batch of SQL statements.
@@ -121,11 +121,11 @@ export class libsqlClient implements official_client_api.Client {
         steps: Array<rawSQL|rawSQLStatement>,
         step_conditions: Array<libsqlBatchReqStepExecCond|null|undefined>
     ) {
-        return await libsqlBatch(this.conf, steps, step_conditions);
+        return await libsqlBatchWithoutTransaction(this.conf, steps, step_conditions);
     }
 
     public async migrate(stmts: Array<rawSQL|rawSQLStatement>) {
-        return await libsqlBatchTransaction(this.conf, stmts, "deferred");
+        return await libsqlBatch(this.conf, stmts, "deferred");
     }
 
     // @ts-ignore

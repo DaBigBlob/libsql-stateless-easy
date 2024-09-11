@@ -31,7 +31,7 @@ export async function libsqlExecute(conf: libsqlConfig, stmt_or_sql: rawSQL|rawS
     else throw errorTranslate(res.err);
 }
 
-export async function libsqlBatch(
+export async function libsqlBatchWithoutTransaction(
     conf: libsqlConfig,
     steps: Array<rawSQL|rawSQLStatement>,
     step_conditions: Array<libsqlBatchReqStepExecCond|null|undefined>
@@ -46,7 +46,7 @@ export async function libsqlServerCompatCheck(conf: libsqlConfig) {
     return (await LIBlibsqlServerCompatCheck(conf)).isOk;
 }
 
-export async function libsqlBatchTransaction(
+export async function libsqlBatch(
     conf: libsqlConfig,
     steps: Array<rawSQL|rawSQLStatement>,
     mode: TransactionMode="deferred"

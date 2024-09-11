@@ -135,7 +135,10 @@ export function libsqlTransactionBatchReqStepsBuilder(
 ): Array<libsqlBatchReqStep> {
     const main_steps: Array<libsqlBatchReqStep> = queries.map((q, i) => {return {
         stmt: libsqlStatementBuilder(q),
-        condition: libsqlBatchReqStepExecCondBuilder.ok(i)
+        condition: libsqlBatchReqStepExecCondBuilder.and([
+            libsqlBatchReqStepExecCondBuilder.ok(i),
+            libsqlBatchReqStepExecCondBuilder.not(libsqlBatchReqStepExecCondBuilder.is_autocommit())
+        ])
     }});
     return [libsqlTransactionBeginStatement(mode)].concat(main_steps).concat(libsqlTransactionEndStatements(main_steps.length));
 }
