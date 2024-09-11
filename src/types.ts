@@ -9,9 +9,6 @@ import type {
     TransactionMode
 } from './official_client_api_1726012615447.js';
 
-
-
-
 export type rawSQL = string;
 export type rawSQLArgs = Array<rawValue> | Record<string, rawValue>;
 export type rawSQLStatement = {
