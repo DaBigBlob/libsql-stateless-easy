@@ -3,12 +3,12 @@ import { libsqlBatch, libsqlBatchTransaction, libsqlExecute, libsqlExecuteMultip
 import { MisuseError } from "./errors.js";
 import { checkHttpUrl, conserror, ensure_fetch } from "./globcon/mod.js";
 import type { libsqlBatchReqStepExecCond } from "libsql-stateless";
-import * as official_client_api from './official_client_api_1726012615447.js';
 
 export function createClient(conf: libsqlConfig) {
     return new libsqlClient(conf);
 }
 
+import * as official_client_api from './official_client_api_1726012615447.js';
 export class libsqlClient implements official_client_api.Client {
     private readonly conf: libsqlConfig;
     public closed: boolean;
