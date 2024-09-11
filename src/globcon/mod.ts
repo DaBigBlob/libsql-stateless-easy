@@ -27,7 +27,7 @@ export function checkHttpUrl(url: string) {
                 ) return false;
                 return true;
             } catch (e) {
-                throw new LibsqlError((e as Error).message, "ERR_INVALID_URL", (e as Error));
+                throw new LibsqlError((e as Error).message, "ERR_INVALID_URL", undefined, (e as Error));
             }
         } else if (
             url.startsWith('https://') ||

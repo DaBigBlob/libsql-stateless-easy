@@ -31,10 +31,8 @@ export class HttpServerError extends LibsqlError {
 
 /** Error thrown when an internal client error happens. */
 // export class InternalError extends LibsqlError {
-
 //     constructor(message: string) {
 //         super(message, "INTERNAL_ERROR", new class extends Error {
-
 //             /** @private */
 //             constructor() {
 //                 super(message);
