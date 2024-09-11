@@ -7,7 +7,7 @@ import type {
     Row,
     Value as rawValue,
     TransactionMode
-} from './official_client_api_1726012615447.js';
+} from './official_api_1726012615447.js';
 
 export type rawSQL = string;
 export type rawSQLArgs = Array<rawValue> | Record<string, rawValue>;
