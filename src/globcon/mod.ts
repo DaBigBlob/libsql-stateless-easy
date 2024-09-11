@@ -41,3 +41,11 @@ export function checkHttpUrl(url: string) {
         "URL_SCHEME_NOT_SUPPORTED",
     );
 }
+
+export function checkRedundantConfig(conf: libsqlConfig) {
+    if (conf.encryptionKey) conserror("'encryptionKey' config unsupported.");
+    if (conf.syncUrl) conserror("'syncUrl' config unsupported because 'url' is the remote url. (embedded replicas unsupported)");
+    if (conf.syncInterval) conserror("'syncInterval' config unsupported because nothing to sync. (embedded replicas unsupported)");
+    if (conf.tls) conserror("'tls' config unsupported. Change url scheme to 'http' for no tls and 'https' for tls.");
+    if (conf.concurrency) conserror("'concurrency' config unsupported. You may use a custom fetch to specify concurrency.");
+}

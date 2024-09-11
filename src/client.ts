@@ -1,7 +1,7 @@
 import type { TransactionMode, rawSQLStatement, libsqlConfig, rawSQLArgs, rawSQL, ResultSet, clientInterface } from "./commons.js";
 import { libsqlBatchWithoutTransaction, libsqlBatch, libsqlExecute, libsqlExecuteMultiple, libsqlMigrate } from "./functions.js";
 import { MisuseError } from "./errors.js";
-import { checkHttpUrl, conserror, ensure_fetch } from "./globcon/mod.js";
+import { checkHttpUrl, checkRedundantConfig, conserror, ensure_fetch } from "./globcon/mod.js";
 import type { libsqlBatchReqStepExecCond } from "libsql-stateless";
 
 export function createClient(conf: libsqlConfig) {
@@ -12,19 +12,13 @@ export function createClient(conf: libsqlConfig) {
 export class libsqlClient implements clientInterface {
     private readonly conf: libsqlConfig;
     public closed: boolean;
-
-    /** Which protocol does the client use?
-     *
-     * - `"http"` if the client connects over HTTP
-     * - `"ws"` if the client connects over WebSockets
-     * - `"file"` if the client works with a local file
-     */
     public protocol: string;
 
     constructor(conf: libsqlConfig) {
         if (!conf.disableCriticalChecks) {
             checkHttpUrl(conf.url);
             ensure_fetch(conf);
+            checkRedundantConfig(conf);
         }
         
         this.conf = conf;
@@ -32,38 +26,6 @@ export class libsqlClient implements clientInterface {
         this.protocol = "http";
     }
 
-    /** Execute a single SQL statement.
-     *
-     * Every statement executed with this method is executed in its own logical database connection. If you
-     * want to execute a group of statements in a transaction, use the {@link batch} method.
-     *
-     * ```javascript
-     * // execute a statement without arguments
-     * const rs = await client.execute("SELECT * FROM books");
-     *
-     * // execute a statement with positional arguments
-     * const rs = await client.execute(
-     *     "SELECT * FROM books WHERE author = ?",
-     *     ["Jane Austen"],
-     * );
-     * // for backward compatibality
-     * const rs = await client.execute({
-     *     sql: "SELECT * FROM books WHERE author = ?",
-     *     args: ["Jane Austen"],
-     * });
-     *
-     * // execute a statement with named arguments
-     * const rs = await client.execute(
-     *     "SELECT * FROM books WHERE published_at > $year",
-     *     {year: 1719},
-     * );
-     * // for backward compatibality
-     * const rs = await client.execute({
-     *     sql: "SELECT * FROM books WHERE published_at > $year",
-     *     args: {year: 1719},
-     * });
-     * ```
-     */
     public async execute(stmt: rawSQL, args?: rawSQLArgs, want_rows?: boolean): Promise<ResultSet>;
     public async execute(stmt: rawSQLStatement): Promise<ResultSet>;
     public async execute(stmt_or_sql: rawSQL|rawSQLStatement, or_args?: rawSQLArgs, or_want_rows?: boolean) {
@@ -128,8 +90,7 @@ export class libsqlClient implements clientInterface {
         return await libsqlMigrate(this.conf, stmts);
     }
 
-    // @ts-ignore
-    public async transaction(mode?: TransactionMode): Promise<any> {
+    public async transaction(_mode?: TransactionMode): Promise<any> {
         throw new MisuseError("'libsql-stateless' is stateless and does not support interactive transactions. Use this.batch() instead.");
     }
 
