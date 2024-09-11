@@ -1,4 +1,4 @@
-import type { TransactionMode, rawSQLStatement, libsqlConfig, rawSQLArgs, rawSQL, ResultSet } from "./types.js";
+import type { TransactionMode, rawSQLStatement, libsqlConfig, rawSQLArgs, rawSQL, ResultSet, clientInterface } from "./types.js";
 import { libsqlBatchWithoutTransaction, libsqlBatch, libsqlExecute, libsqlExecuteMultiple, libsqlMigrate } from "./functions.js";
 import { MisuseError } from "./errors.js";
 import { checkHttpUrl, conserror, ensure_fetch } from "./globcon/mod.js";
@@ -8,8 +8,8 @@ export function createClient(conf: libsqlConfig) {
     return new libsqlClient(conf);
 }
 
-import * as official_client_api from './official_client_api_1726012615447.js';
-export class libsqlClient implements official_client_api.Client {
+
+export class libsqlClient implements clientInterface {
     private readonly conf: libsqlConfig;
     public closed: boolean;
 
