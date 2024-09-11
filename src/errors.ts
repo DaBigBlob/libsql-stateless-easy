@@ -1,6 +1,5 @@
 
 import { LibsqlError } from "./types.js";
-
 export { LibsqlError };
 
 /** Error thrown when the server violates the protocol. */
