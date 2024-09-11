@@ -14,7 +14,7 @@ import { MisuseError, ProtoError, ResponseError } from "./errors.js";
 // }
 
 //========================================================
-export function libsqlValueParser(value: libsqlSQLValue, intMode?: intMode): rawValue {
+export function libsqlValueParser(value: libsqlSQLValue, intMode: intMode = "number"): rawValue {
     switch (value.type) {
         case ("null"): return null;
         case ("integer"): {
