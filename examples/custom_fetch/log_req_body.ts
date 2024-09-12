@@ -7,8 +7,9 @@ import { conf } from './conf';
     const client = createClient({
         url: conf.db_url,
         authToken: conf.authToken,
+        // as easy as that
         fetch: async (...args: Parameters<libsqlFetchLike>): ReturnType<libsqlFetchLike> => {
-            console.log(args[1]?.body);
+            console.log(`[${args[1]?.method} ${args[0]}]: ${args[1]?.body}`);
             return await globalThis.fetch(...args);
         }
     });
