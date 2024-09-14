@@ -1,8 +1,8 @@
-import { createClient } from "../src/main";
+import { createClient, libsqlFetchLike } from "../src/main";
 import { skjdgfksg } from "./conf";
 
 (async () => {
-    const client = createClient({url: skjdgfksg.db_url, authToken: skjdgfksg.authToken});
+    let client = createClient({url: skjdgfksg.db_url, authToken: skjdgfksg.authToken});
     
     const res = await client.batch([
         {
@@ -32,6 +32,13 @@ import { skjdgfksg } from "./conf";
         [1]
     );
     console.log(res3);
+
+    client = client.mutateClone({
+        fetch: async (...args: Parameters<libsqlFetchLike>): ReturnType<libsqlFetchLike> => {
+            console.log(`[${args[1]?.method} ${args[0]}]: ${args[1]?.body}`);
+            return await globalThis.fetch(...args);
+        }
+    });
 
     const res4 = await client.execute(
         "select first_name, last_name, email, contact_id from contacts where contact_id = :aae;",
