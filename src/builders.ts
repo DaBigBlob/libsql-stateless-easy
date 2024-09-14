@@ -142,17 +142,16 @@ export function libsqlTransactionEndStatements(step_before_this: number): Array<
 export function libsqlTransactionBatchReqStepsBuilder(
     queries: Array<rawSQL|rawSQLStatement>,
     mode: TransactionMode,
-    offset?: number
+    offset: number = 0
 ): Array<libsqlBatchReqStep> {
-    const _offset = offset ?? 0; // external offset
     const main_steps: Array<libsqlBatchReqStep> = queries.map((q, i) => {return {
         stmt: libsqlStatementBuilder(q),
         condition: libsqlBatchReqStepExecCondBuilder.and([
-            libsqlBatchReqStepExecCondBuilder.ok(i+_offset), // step before this
+            libsqlBatchReqStepExecCondBuilder.ok(i+offset), // step before this
             libsqlBatchReqStepExecCondBuilder.not(libsqlBatchReqStepExecCondBuilder.is_autocommit())
         ])
     }});
-    return [libsqlTransactionBeginStatement(mode)] // is idx: 0+_offset
-        .concat(main_steps) // is idx: (1..=len)+_offset
-        .concat(libsqlTransactionEndStatements(main_steps.length+_offset)); // is idx: len+1+_offset
+    return [libsqlTransactionBeginStatement(mode)] // is idx: 0 + offset
+        .concat(main_steps) // is idx: (1..=len) + offset
+        .concat(libsqlTransactionEndStatements(main_steps.length+offset)); // is idx: len+1 + offset
 }
