@@ -26,6 +26,19 @@ export class libsqlClient implements clientInterface {
         this.protocol = "http";
     }
 
+    /** Mutate the configuration of the current client and return a new client with that config.
+     * 
+     * libsql-stateless-easy makes this zero cost because the client is very thin.
+     */
+    public mutateClone(mutConf: Partial<libsqlConfig> = {}): libsqlClient {
+        let thisConf = this.conf;
+        for (const key in mutConf) {
+            // @ts-ignore
+            thisConf[key] = mutConf[key];
+        }
+        return new libsqlClient(thisConf);
+    }
+
     public async execute(stmt: rawSQL, args?: rawSQLArgs, want_rows?: boolean): Promise<ResultSet>;
     public async execute(stmt: rawSQLStatement): Promise<ResultSet>;
     public async execute(stmt_or_sql: rawSQL|rawSQLStatement, or_args?: rawSQLArgs, or_want_rows?: boolean) {
